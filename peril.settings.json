@@ -4,11 +4,11 @@
   },
   "rules": {
     "pull_request": "artsy/artsy-danger@blank.ts",
-    "issue": "orta/example-peril@issue.ts"
+    "issues": "orta/example-peril@issue.ts"
   },
   "repos" : {
     "artsy/emission": {
-      "issue.created": "artsy/artsy-danger@dangerfile.ts"
+      "issues.opened": "artsy/artsy-danger@dangerfile.ts"
     }
   }
 }
