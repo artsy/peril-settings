@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "onlyForOrgMembers": false
+  },
+  "rules": {
+    "pull_request": "artsy/artsy-danger@blank.ts",
+    "issue": "artsy/artsy-danger@blank.ts"
+  },
+  "repos" : {
+    "artsy/emission": {
+      "issue.created": "artsy/artsy-danger@dangerfile.ts"
+    }
+  }
+}
