@@ -1,0 +1,12 @@
+{
+  "name": "artsy-danger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/artsy-danger",
+  "author": "Orta Therox <orta@artsymail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "danger": "^0.18.0",
+    "typescript": "^2.3.2"
+  }
+}

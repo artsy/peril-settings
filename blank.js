@@ -1,3 +1,3 @@
 import {message} from "danger"
 
-message("Hello from Peril TS")
+message("Hello from Peril JS")
