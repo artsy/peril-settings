@@ -3,7 +3,7 @@
     "onlyForOrgMembers": false
   },
   "rules": {
-    "pull_request": "artsy/artsy-danger@blank.ts",
+    "pull_request": "artsy/artsy-danger@blank.js",
     "issues": "orta/example-peril@issue.ts"
   },
   "repos" : {
