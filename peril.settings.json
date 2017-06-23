@@ -10,6 +10,9 @@
     },
     "artsy/reaction-force": {
       "pull_request": "danger/pr.js"
+    },
+    "artsy/positron": {
+      "pull_request": "dangerfile.js"
     }
   }
 }
