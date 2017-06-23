@@ -1,6 +1,6 @@
 {
   "settings": {
-    "onlyForOrgMembers": false
+    "onlyForOrgMembers": true
   },
   "rules": {
   },
