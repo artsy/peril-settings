@@ -9,7 +9,7 @@
       "issues.opened": "artsy/artsy-danger@dangerfile.ts"
     },
     "artsy/reaction-force": {
-      "pull_request": "danger/pr.ts"
+      "pull_request": "danger/pr.js"
     }
   }
 }
