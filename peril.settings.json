@@ -8,7 +8,7 @@
     "artsy/emission": {
       "issues.opened": "artsy/artsy-danger@dangerfile.ts"
     },
-    "artsy/reaction-force": {
+    "artsy/reaction": {
       "pull_request": "danger/pr.js"
     },
     "artsy/positron": {
