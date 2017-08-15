@@ -79,6 +79,9 @@
     "linter",
     "config",
     "linux",
-    "CHANGELOG"
+    "CHANGELOG",
+    "flexbox",
+    "node.js",
+    "podspec"
   ]
 }
