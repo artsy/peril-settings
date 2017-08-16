@@ -6,7 +6,11 @@
   "author": "Orta Therox <orta@artsymail.com>",
   "license": "MIT",
   "dependencies": {
-    "danger": "^0.18.0",
+    "danger": "^2.0.0-alpha.8",
     "typescript": "^2.3.2"
+  },
+  "devDependencies": {
+    "danger-plugin-spellcheck": "^0.7.7",
+    "danger-plugin-yarn": "^0.3.2"
   }
 }

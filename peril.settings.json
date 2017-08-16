@@ -1,13 +1,11 @@
 {
   "settings": {
-    "onlyForOrgMembers": true
+    "plugins": ["danger-plugin-spellcheck", "danger-plugin-yarn"]
   },
   "rules": {
+    "pull_request": "danger/all-prs.ts"
   },
   "repos" : {
-    "artsy/emission": {
-      "issues.opened": "artsy/artsy-danger@dangerfile.ts"
-    },
     "artsy/reaction": {
       "pull_request": "danger/pr.js"
     },
