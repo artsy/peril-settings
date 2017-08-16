@@ -3,7 +3,7 @@
     "plugins": ["danger-plugin-spellcheck", "danger-plugin-yarn"]
   },
   "rules": {
-    "pull_request": "danger/all-prs.ts"
+    "pull_request": "artsy/artsy-danger@org/all-prs.ts"
   },
   "repos" : {
     "artsy/reaction": {
