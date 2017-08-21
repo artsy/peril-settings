@@ -1,6 +1,6 @@
 {
   "settings": {
-    "plugins": ["danger-plugin-spellcheck", "danger-plugin-yarn"]
+    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn"]
   },
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts"
