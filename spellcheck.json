@@ -84,5 +84,6 @@
     "node.js",
     "podspec",
     "sarahscott"
-  ]
+  ],
+  "whitelistFiles": ["CHANGELOG.md"]
 }
