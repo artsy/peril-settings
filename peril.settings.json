@@ -7,10 +7,10 @@
   },
   "repos" : {
     "artsy/reaction": {
-      "pull_request": "danger/pr.js"
+      "pull_request": "danger/pr.ts"
     },
     "artsy/positron": {
-      "pull_request": "dangerfile.js"
+      "pull_request": "dangerfile.ts"
     }
   }
 }
