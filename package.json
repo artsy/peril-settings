@@ -6,10 +6,12 @@
   "author": "Orta Therox <orta@artsymail.com>",
   "license": "MIT",
   "dependencies": {
+    "@slack/client": "^3.12.0",
     "danger": "^2.0.0-alpha.8",
     "typescript": "^2.3.2"
   },
   "devDependencies": {
+    "@types/node": "^8.0.25",
     "danger-plugin-spellcheck": "^0.7.7",
     "danger-plugin-yarn": "^0.3.2"
   }
