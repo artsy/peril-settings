@@ -1,7 +1,8 @@
 import { schedule, danger } from "danger";
 import { IncomingWebhook } from "@slack/client";
 
-const issue = danger.issue as any
+const gh = danger.github as any // danger/peril#128
+const issue = gh.issue
 
 if (issue.title.includes("RFC:")) {
   var url = process.env.SLACK_RFC_WEBHOOK_URL || "";
