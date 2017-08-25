@@ -1,6 +1,6 @@
 {
   "settings": {
-    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn"]
+    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts"
@@ -11,6 +11,9 @@
     },
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
+    },
+    "artsy/artsy-danger": {
+      "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
     }
   }
 }
