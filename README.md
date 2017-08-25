@@ -51,4 +51,5 @@ Any PR that adds a new rule at org-wide level to every repo should be treated as
     be avoided in every repo.
 
     Other than that, we can continue to build up a global list of words to ignore.
-    
+
+Peril will [post a message](/danger/new_rfc.ts) in the #dev slack channel for everyone to see when you include `"RFC:"` in your issue title.
