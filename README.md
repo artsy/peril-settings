@@ -32,11 +32,23 @@ You will need node and yarn installed beforehand. You can get them both by runni
 Any PR that adds a new rule at org-wide level to every repo should be treated as [an RFC](https://en.wikipedia.org/wiki/Request_for_Comments). Please make an issue with this template:
 
 
-    Title: "RFC: Add an emoji for when a node package is version bumped" 
+    Title: "RFC: Add a Markdown Spell Checker to all Markdown docs in PR" 
 
-    Proposal: If the repo has a `package.json`, we should look to see if its version has 
-              changed and then submit a tada emoji.
+    ## Proposal: 
 
-    Reasoning: A release is important, we should chrish them.
+    Apply a spell checker to every markdown document that appears in a PR.
 
-    Exceptions: None
+    ## Reasoning
+
+    We want to have polished documents, both internally and externally. Having a spellcheck
+    happening without any effort on a developers part means that we'll get a second look at
+    any documentation improvements on any repo.
+
+    ## Exceptions: 
+
+    This won't be perfect, but it is better to get something working than to not have it at all.
+    I added the ability to ignore files: so CHANGELOGs which tend to be really jargon heavy will
+    be avoided in every repo.
+
+    Other than that, we can continue to build up a global list of words to ignore.
+    
