@@ -1,9 +1,10 @@
 import { schedule, danger } from "danger";
 import { IncomingWebhook } from "@slack/client";
+import {Issues} from "github-webhook-event-types"
 
 declare const peril: any // danger/danger#351
 
-const gh = danger.github as any // danger/peril#128
+const gh = danger.github as any as Issues
 const issue = gh.issue
 
 if (issue.title.includes("RFC:")) {
