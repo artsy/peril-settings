@@ -83,7 +83,8 @@
     "flexbox",
     "node.js",
     "podspec",
-    "sarahscott"
+    "sarahscott",
+    "Eidolon"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
