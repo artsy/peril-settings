@@ -84,7 +84,15 @@
     "node.js",
     "podspec",
     "sarahscott",
-    "Eidolon"
+    "Eidolon",
+    "artsy.net",
+    "ezel",
+    "webpack",
+    "setups",
+    "babelrc",
+    "pre-es6",
+    "Browserify",
+    "Coffeeify"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
