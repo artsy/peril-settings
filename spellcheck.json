@@ -93,7 +93,13 @@
     "pre-es6",
     "Browserify",
     "Coffeeify",
-    "Babelify"
+    "Babelify",
+    "Hokusai",
+    "dockerize",
+    "dockerizes",
+    "kubectl",
+    "homebrew",
+    "Katsushika"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
