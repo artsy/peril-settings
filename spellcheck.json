@@ -92,7 +92,8 @@
     "babelrc",
     "pre-es6",
     "Browserify",
-    "Coffeeify"
+    "Coffeeify",
+    "Babelify"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
