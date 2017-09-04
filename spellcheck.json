@@ -107,7 +107,8 @@
     "ts",
     "heroku",
     "artifacts",
-    "artifact"
+    "artifact",
+    "anymore"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
