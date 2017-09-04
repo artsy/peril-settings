@@ -99,7 +99,15 @@
     "dockerizes",
     "kubectl",
     "homebrew",
-    "Katsushika"
+    "Katsushika",
+    "webhook",
+    "webhooks",
+    "RFC",
+    "org,
+    "ts",
+    "heroku",
+    "artifacts",
+    "artifact"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
