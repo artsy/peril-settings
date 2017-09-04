@@ -109,7 +109,9 @@
     "heroku",
     "artifacts",
     "artifact",
-    "anymore"
+    "anymore",
+    "Eigen",
+    "216k+"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
