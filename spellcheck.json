@@ -111,7 +111,11 @@
     "artifact",
     "anymore",
     "Eigen",
-    "216k+"
+    "216k+",
+    "TextMate",
+    "Orta's",
+    "microservice",
+    "vars"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
