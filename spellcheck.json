@@ -47,10 +47,13 @@
     "NPM",
     "OSS",
     "Orta's",
+    "PR",
+    "Procfile",
     "RFC",
     "RFCs",
     "React's",
     "Redux",
+    "RuboCop",
     "SemVer",
     "TLDR",
     "TLDR:",
@@ -80,7 +83,9 @@
     "graphql",
     "heroku",
     "homebrew",
+    "honor",
     "inline",
+    "jonallured",
     "kubectl",
     "linter",
     "linters",
@@ -113,7 +118,7 @@
     "webhook",
     "webhooks",
     "webpack",
-    "workflow",
+    "workflow"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
