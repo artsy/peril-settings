@@ -124,7 +124,9 @@
     "webhook",
     "webhooks",
     "webpack",
-    "workflow"
+    "workflow",
+    "Memcached",
+    "localhost"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
