@@ -53,3 +53,57 @@ Any PR that adds a new rule at org-wide level to every repo should be treated as
     Other than that, we can continue to build up a global list of words to ignore.
 
 Peril will [post a message](/danger/new_rfc.ts) in the #dev slack channel for everyone to see when you include `"RFC:"` in your issue title.
+
+### Implementing an RFC
+
+#### Adding a rule
+
+A rule should be wrapped in an rfc closure:
+
+```ts
+
+// https://github.com/artsy/artsy-danger/issues/2
+rfc("2", "Keep our Markdown documents awesome", () => {
+  // [...]
+})
+```
+
+This self-documents where a rule has come from, making it easy for others to understand how we came to specific rules.
+
+#### Testing a rule
+
+We use Jest to test our Dangerfiles. It uses the same techniques as testing a danger plugin where the  global imports from danger are fake.
+
+The tests are set up to _only_ run the rules that corrrespond to the tests filename. So `rfc_2.test.ts` would only run code inside the closure `rfc("2", ...)`. This makes it easier to check each test in isolation.
+
+1. Create a file for your RFC: `tests/rfc_[x].test.ts`.
+1. Add a `before` and `after` setting up and reseting mocks:
+
+    ```ts
+    const runtime: any = global
+
+    beforeEach(() => {
+      runtime.fail = jest.fn()
+      runtime.danger = {}
+    })
+
+    afterEach(() => {
+      runtime.fail = undefined
+      runtime.danger = undefined
+    })
+    ```
+
+1. Set up your danger object and run the Dangerfile: 
+
+    ```ts
+    import { runDangerfile } from "./utils"
+
+    it("warns when there's there's no assignee and no WIP in the title", () => {
+      runtime.danger.github = { pr: { title: "Changes to the setup script", assignee: null }}
+      runDangerfile("./org/all-prs.ts")  
+
+      // [...]
+    })
+    ```
+
+1. Validate that the `fail`/`warn/`message`/`markdown` is called.

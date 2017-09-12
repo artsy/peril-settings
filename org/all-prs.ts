@@ -1,23 +1,31 @@
 import { schedule, danger, warn, fail } from "danger"
 const pr = danger.github.pr
 
-// Highlight package dependencies on Node projects.
+const isJest = typeof jest !== "undefined"
+
+const rfc = isJest ? require("./utils").rfc : (id: string, reason: string, closure: any) => closure()
+
 import yarn from "danger-plugin-yarn"
-schedule(yarn())
+rfc("1", "Highlight package dependencies on Node projects", () => {
+  schedule(yarn())
+})
 
-// Keep our Markdown documents awesome
 import spellcheck from "danger-plugin-spellcheck"
-schedule(spellcheck({ settings: "artsy/artsy-danger@spellcheck.json" }))
+rfc("2", "Keep our Markdown documents awesome", () => {
+  schedule(spellcheck({ settings: "artsy/artsy-danger@spellcheck.json" }))
+})
 
-// RFC: #5 - No PR is too small to warrant a paragraph or two of summary
 // https://github.com/artsy/artsy-danger/issues/5
-if (pr.body.length === 0) {
-  fail("Please add a description to your PR.")
-}
+rfc("5", "No PR is too small to warrant a paragraph or two of summary", () => {
+  if (pr.body.length === 0) {
+    fail("Please add a description to your PR.")
+  }
+})
 
-// RFC: #13 - Always ensure we assign someone, so that our Slackbot work correctly
 // https://github.com/artsy/artsy-danger/issues/13
-const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
-if (!wipPR && pr.assignee === null) {
-  warn("Please assign someone to merge this PR, and optionally include people who should review.")
-}
+rfc("13", "Always ensure we assign someone, so that our Slackbot work correctly", () => {
+  const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
+  if (!wipPR && pr.assignee === null) {
+    warn("Please assign someone to merge this PR, and optionally include people who should review.")
+  }
+})
