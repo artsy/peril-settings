@@ -6,14 +6,30 @@
   "author": "Orta Therox <orta@artsymail.com>",
   "license": "MIT",
   "dependencies": {
-    "@slack/client": "^3.12.0",
-    "danger": "^2.0.0-alpha.8",
-    "typescript": "^2.3.2"
-  },
+  },    
   "devDependencies": {
+    "@slack/client": "^3.12.0",
+    "@types/jest": "^20.0.8",
     "@types/node": "^8.0.25",
     "danger-plugin-spellcheck": "^0.7.7",
     "danger-plugin-yarn": "^0.3.2",
-    "github-webhook-event-types": "^1.0.0"
+    "danger": "^2.0.0-alpha.8",
+    "github-webhook-event-types": "^1.0.0",
+    "jest": "^21.0.2",
+    "ts-jest": "^21.0.0",
+    "typescript": "^2.3.2"
+  },
+    "jest": {
+      "transform": {
+        "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      },
+      "testRegex": "(.test)\\.(ts|tsx)$",      
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json"
+      ]
+    }
   }
-}
