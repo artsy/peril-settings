@@ -77,7 +77,7 @@ We use Jest to test our Dangerfiles. It uses the same techniques as testing a da
 The tests are set up to _only_ run the rules that corrrespond to the tests filename. So `rfc_2.test.ts` would only run code inside the closure `rfc("2", ...)`. This makes it easier to check each test in isolation.
 
 1. Create a file for your RFC: `tests/rfc_[x].test.ts`.
-1. Add a `before` and `after` setting up and reseting mocks:
+1. Add a `before` and `after` setting up and resetting mocks:
 
     ```ts
     const runtime: any = global
@@ -106,4 +106,4 @@ The tests are set up to _only_ run the rules that corrrespond to the tests filen
     })
     ```
 
-1. Validate that the `fail`/`warn/`message`/`markdown` is called.
+1. Validate that the `fail`/`warn`/`message`/`markdown` is called.
