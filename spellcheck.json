@@ -1,8 +1,8 @@
 {
   "ignore": [
     "/.*.md",
-    "/*.x",
-    "/*.yml",
+    "/.*.x",
+    "/.*.yml",
     "1password",
     "216k+",
     "anymore",

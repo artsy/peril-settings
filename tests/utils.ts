@@ -5,9 +5,9 @@ export const rfc = (id: string, reason: string, closure: any) => {
   const numberRegex = /rfc_(.*).test.ts/
   const matches = thisTestPath.match(numberRegex)
   if (matches && matches.length > 1) {
-     if(id === matches[1]) {
+    if (id === matches[1]) {
       closure()
-     }
+    }
   }
 }
 
@@ -20,4 +20,3 @@ export const runDangerfile = (path: string) => {
   let js = result.outputText
   eval(js)
 }
-
