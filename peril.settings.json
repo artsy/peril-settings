@@ -1,7 +1,8 @@
 {
   "settings": {
-    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"],
-    "env_vars": ["SLACK_RFC_WEBHOOK_URL"]
+    "env_vars": ["SLACK_RFC_WEBHOOK_URL"],
+    "ignored_repos": ["artsy/looker"],
+    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts"
