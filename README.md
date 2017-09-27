@@ -21,6 +21,7 @@ run on every issue and pull request for all our repos.
 
 ```sh
 git clone https://github.com/artsy/artsy-danger.git
+cd artsy-danger
 yarn install
 code .
 ```
