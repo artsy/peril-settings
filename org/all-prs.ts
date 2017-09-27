@@ -1,32 +1,35 @@
 import { schedule, danger, warn, fail } from "danger"
-const pr = danger.github.pr
 
 const isJest = typeof jest !== "undefined"
 
-const runRFC = async (fnOrPromise: () => void | Promise<any>) => 
-  fnOrPromise instanceof Promise ? await fnOrPromise : fnOrPromise()
+const runRFC = async (reason: string, closure: () => void | Promise<any>) =>
+  closure instanceof Promise ? await closure : closure()
 
-const rfc = isJest ? require("./utils").rfc : (id: string, reason: string, closure: any) => runRFC(closure)
+const storeRFC = (reason: string, closure: () => void | Promise<any>) => Promise.resolve({ reason, closure })
+
+const rfc = isJest ? storeRFC : runRFC
 
 import yarn from "danger-plugin-yarn"
-rfc("1", "Highlight package dependencies on Node projects", () => {
+rfc("Highlight package dependencies on Node projects", () => {
   schedule(yarn())
 })
 
 import spellcheck from "danger-plugin-spellcheck"
-rfc("2", "Keep our Markdown documents awesome", () => {
+rfc("Keep our Markdown documents awesome", () => {
   schedule(spellcheck({ settings: "artsy/artsy-danger@spellcheck.json" }))
 })
 
 // https://github.com/artsy/artsy-danger/issues/5
-rfc("5", "No PR is too small to warrant a paragraph or two of summary", () => {
+export const rfc5 = rfc("No PR is too small to warrant a paragraph or two of summary", () => {
+  const pr = danger.github.pr
   if (pr.body.length === 0) {
     fail("Please add a description to your PR.")
   }
 })
 
 // https://github.com/artsy/artsy-danger/issues/13
-rfc("13", "Always ensure we assign someone, so that our Slackbot work correctly", () => {
+export const rfc13 = rfc("Always ensure we assign someone, so that our Slackbot work correctly", () => {
+  const pr = danger.github.pr
   const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
   if (!wipPR && pr.assignee === null) {
     warn("Please assign someone to merge this PR, and optionally include people who should review.")
@@ -34,7 +37,8 @@ rfc("13", "Always ensure we assign someone, so that our Slackbot work correctly"
 })
 
 // https://github.com/artsy/artsy-danger/issues/16
-rfc("16", "Require changelog entries on PRs with code changes", () => {
+export const rfc16 = rfc("Require changelog entries on PRs with code changes", () => {
+  const pr = danger.github.pr
   schedule(async () => {
     const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
 
@@ -50,10 +54,8 @@ rfc("16", "Require changelog entries on PRs with code changes", () => {
 
       if (hasCodeChanges && !hasChangelogChanges) {
         console.log("!!!")
-        console.log(warn)
         warn("It looks like code was changed without adding anything to the Changelog")
       }
     }
   })
 })
-

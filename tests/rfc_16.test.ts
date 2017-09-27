@@ -4,7 +4,7 @@ import { runDangerfile } from "./utils"
 beforeEach(() => {
   runtime.warn = jest.fn()
   runtime.danger = {}
-  runtime.schedule = (f: any) => f()
+  runtime.schedule = async (f: any) => await f()
 })
 
 afterEach(() => {
@@ -81,12 +81,12 @@ it("does nothing when the changelog was changed", () => {
 })
 
 it("warns when code has changed but no changelog entry was made", async () => {
-  jest.useFakeTimers()
+  // jest.useFakeTimers()
 
   runtime.danger.github = {
     api: {
       repos: {
-        getContent: jest.fn(() => [{ name: "CHANGELOG.md" }])
+        getContent: jest.fn(() => Promise.resolve([{ name: "CHANGELOG.md" }]))
       }
     },
     pr
@@ -97,15 +97,9 @@ it("warns when code has changed but no changelog entry was made", async () => {
     created_files: []
   }
 
+  console.log("before")
   runDangerfile("./org/all-prs.ts")
-  console.log("123")
-  jest.runAllTicks()
-  jest.runAllImmediates()
-  jest.runOnlyPendingTimers()
-  console.log("321")
-  console.log(runtime.schedule)
-  runtime.schedule.then(() =>  {
-  // console.log("OK")
-    expect(runtime.warn).toBeCalled()
-  })
+  console.log("after")
+
+  expect(runtime.warn).toBeCalled()
 })
