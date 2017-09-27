@@ -1,13 +1,10 @@
-
 const runtime: any = global
 import { runDangerfile } from "./utils"
 
-let invocations: number
 beforeEach(() => {
-  invocations = 0
   runtime.warn = jest.fn()
   runtime.danger = {}
-  runtime.schedule = async (f: any) => { return await f() }
+  runtime.schedule = (f: any) => f()
 })
 
 afterEach(() => {
@@ -16,76 +13,99 @@ afterEach(() => {
   runtime.schedule = undefined
 })
 
-const callAfterInvocations = (retVal: any, done: any) => {
-  return async () => {
-    invocations++
-    if (invocations >= 3) { 
-      console.log("resuming", invocations)
-      done() 
+const pr ={
+  head: {
+    user: {
+      login: "danger"
+    },
+    repo: {
+      name: "danger-js"
     }
-    return retVal
   }
 }
 
-it("does nothing when there is no changelog file", (done) => {
-  runtime.danger.github = { 
-    utils: {
-      fileContents: callAfterInvocations(null, done)
-    }
+it("does nothing when there is no changelog file", () => {
+  runtime.danger.github = {
+    api: {
+      repos: {
+        getContent: jest.fn(() => [{ name: "README.md" }])
+      }
+    },
+    pr
   }
+
   runtime.danger.git = {
     modified_files: [],
     created_files: []
   }
-  runDangerfile("./org/all-prs.ts")  
+
+  runDangerfile("./org/all-prs.ts")
+  
   expect(runtime.warn).not.toBeCalled()
 })
 
-it("does nothing when only `test` files were changed", (done) => {
-  runtime.danger.github = { 
-    utils: {
-      fileContents: callAfterInvocations("some changes", done)
-    }
+it("does nothing when only `test` files were changed", () => {
+  runtime.danger.github = {
+    api: {
+      repos: {
+        getContent: jest.fn(() => [{ name: "changelog.md" }])
+      }
+    },
+    pr
   }
+
   runtime.danger.git = {
     modified_files: ["tests/AuctionCalculatorSpec.scala"],
     created_files: []
   }
-  runDangerfile("./org/all-prs.ts")  
+  runDangerfile("./org/all-prs.ts")
   expect(runtime.warn).not.toBeCalled()
 })
 
-it("does nothing when the changelog was changed", (done) => {
-  runtime.danger.github = { 
-    utils: {
-      fileContents: callAfterInvocations("some changes", done)
-    }
+it("does nothing when the changelog was changed", () => {
+  runtime.danger.github = {
+    api: {
+      repos: {
+        getContent: jest.fn(() => [{ name: "CHANGELOG.md" }])
+      }
+    },
+    pr
   }
+  
   runtime.danger.git = {
     modified_files: ["src/index.html", "CHANGELOG.md"],
     created_files: []
   }
-  runDangerfile("./org/all-prs.ts")  
+  runDangerfile("./org/all-prs.ts")
   expect(runtime.warn).not.toBeCalled()
 })
 
-fit("warns when code has changed but no changelog entry was made", (done) => {
-  runtime.danger.github = { 
-    utils: {
-      fileContents: () => Promise.resolve("some changes")
-    }
+it("warns when code has changed but no changelog entry was made", async () => {
+  jest.useFakeTimers()
+
+  runtime.danger.github = {
+    api: {
+      repos: {
+        getContent: jest.fn(() => [{ name: "CHANGELOG.md" }])
+      }
+    },
+    pr
   }
-  let called = false
-  
-  runtime.warn = () => {
-    called = true
-    console.log("warning", done)
-    done()
-  }
+
   runtime.danger.git = {
     modified_files: ["src/index.html"],
     created_files: []
   }
-  runDangerfile("./org/all-prs.ts")  
-  expect(called).toBeTruthy()
+
+  runDangerfile("./org/all-prs.ts")
+  console.log("123")
+  jest.runAllTicks()
+  jest.runAllImmediates()
+  jest.runOnlyPendingTimers()
+  console.log("321")
+  console.log(runtime.schedule)
+  runtime.schedule.then(() =>  {
+  // console.log("OK")
+    expect(runtime.warn).toBeCalled()
+  })
 })

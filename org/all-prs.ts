@@ -3,13 +3,9 @@ const pr = danger.github.pr
 
 const isJest = typeof jest !== "undefined"
 
-const runRFC = async (fnOrPromise: ()=> void | Promise<any>) => {
-  if (fnOrPromise instanceof Promise) {
-    await fnOrPromise
-  } else {
-    fnOrPromise()
-  }
-}
+const runRFC = async (fnOrPromise: () => void | Promise<any>) => 
+  fnOrPromise instanceof Promise ? await fnOrPromise : fnOrPromise()
+
 const rfc = isJest ? require("./utils").rfc : (id: string, reason: string, closure: any) => runRFC(closure)
 
 import yarn from "danger-plugin-yarn"
@@ -38,30 +34,26 @@ rfc("13", "Always ensure we assign someone, so that our Slackbot work correctly"
 })
 
 // https://github.com/artsy/artsy-danger/issues/16
-schedule(async () => 
-  rfc("16", "Require changelog entries on PRs with code changes", async () => {
-    const getFile = danger.github.utils.fileContents
-    const files = [...danger.git.modified_files, ...danger.git.modified_files]
+rfc("16", "Require changelog entries on PRs with code changes", () => {
+  schedule(async () => {
     const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
-    let changelogExists = false
-    for (var changelog of changelogs) {
-      const content = await getFile(changelog)
-      if (content) {
-        changelogExists = true;
+
+    const getContentParams = { path: "/", owner: pr.head.user.login, repo: pr.head.repo.name }
+    const rootContents: any[] = await danger.github.api.repos.getContent(getContentParams)
+
+    const hasChangelog = rootContents.find(file => changelogs.includes(file.name))
+    if (hasChangelog) {
+      const files = [...danger.git.modified_files, ...danger.git.created_files]
+
+      const hasCodeChanges = files.find(file => !file.match(/(test|spec)/i))
+      const hasChangelogChanges = files.find(file => changelogs.includes(file))
+
+      if (hasCodeChanges && !hasChangelogChanges) {
+        console.log("!!!")
+        console.log(warn)
+        warn("It looks like code was changed without adding anything to the Changelog")
       }
-    }  
-    if (!changelogExists) {
-      return;
-    }
-    const hasCodeChanges = (files.filter(file => {
-      return file.match(/(test|spec)/i) === null
-    }).length > 0)
-    const changelogRegex = new RegExp(changelogs.join('|'), 'i')
-    const hasChangelogChanges = (files.filter( file => {
-      return file.match(changelogRegex) !== null
-    }).length > 0)
-    if (hasCodeChanges && !hasChangelogChanges) {
-      warn("It looks like code was changed without adding anything to the Changelog")
     }
   })
-)
+})
+

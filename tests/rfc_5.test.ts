@@ -4,6 +4,7 @@ import { runDangerfile } from "./utils"
 beforeEach(() => {
   runtime.fail = jest.fn()
   runtime.danger = {}
+  runtime.schedule = () => {}
 })
 
 afterEach(() => {

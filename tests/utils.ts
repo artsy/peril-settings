@@ -1,13 +1,13 @@
 import * as fs from "fs"
 
-export const rfc =  async (id: string, reason: string, closure: any) => {
+export const rfc = async (id: string, reason: string, closure: any) => {
   const thisTestPath = (expect as any).getState("testPath").testPath as string
   const numberRegex = /rfc_(.*).test.ts/
   const matches = thisTestPath.match(numberRegex)
   if (matches && matches.length > 1) {
     if (id === matches[1]) {
       if (closure instanceof Promise) {
-        await closure
+       return await closure
       } else {
         closure()
       }
