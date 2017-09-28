@@ -58,13 +58,9 @@ export const rfc16 = rfc("Require changelog entries on PRs with code changes", a
     }
   }
   if (changelogExists) {
-    const hasCodeChanges = (files.filter(file => {
-      return file.match(/(test|spec)/i) === null
-    }).length > 0)
+    const hasCodeChanges = files.find(file => file.match(/(test|spec)/i) === null)
     const changelogRegex = new RegExp(changelogs.join('|'), 'i')
-    const hasChangelogChanges = (files.filter(file => {
-      return file.match(changelogRegex) !== null
-    }).length > 0)
+    const hasChangelogChanges = files.find(file => file.match(changelogRegex) !== null)
     if (hasCodeChanges && !hasChangelogChanges) {
       warn("It looks like code was changed without adding anything to the Changelog")
     }
