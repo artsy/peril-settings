@@ -6,12 +6,10 @@ import { rfc5 } from "../org/all-prs"
 
 beforeEach(() => {
   dm.fail = jest.fn()
-  dm.schedule = () => { }
 })
 
 afterEach(() => {
   dm.fail = undefined
-  dm.schedule = undefined
 })
 
 it("fails when there's no PR body", () => {

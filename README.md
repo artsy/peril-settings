@@ -88,7 +88,6 @@ We use Jest to test our Dangerfiles. It uses the same techniques as testing a da
 
     afterEach(() => {
       dm.fail = undefined
-      dm.schedule = undefined
     })
     ```
 

@@ -11,7 +11,6 @@ beforeEach(() => {
 
 afterEach(() => {
   dm.warn = undefined
-  dm.schedule = undefined
 })
 
 it("warns when there's there's no assignee and no WIP in the title", () => {

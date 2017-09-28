@@ -11,7 +11,6 @@ beforeEach(() => {
 
 afterEach(() => {
   dm.warn = undefined
-  dm.schedule = undefined
 })
 
 it("warns when code has changed but no changelog entry was made", () => {
