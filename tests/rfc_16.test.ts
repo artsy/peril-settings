@@ -24,7 +24,7 @@ it("warns when code has changed but no changelog entry was made", () => {
   dm.danger.github = {
     api: {
       repos: {
-        getContent: () => Promise.resolve([{ name: "code.js" }, { name: "CHANGELOG.md" }]),
+        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
       },
     },
     pr,
@@ -42,7 +42,7 @@ it("does nothing when there is no changelog file", () => {
   dm.danger.github = {
     api: {
       repos: {
-        getContent: () => Promise.resolve([{ name: "code.js" }]),
+        getContent: () => Promise.resolve({ data: [{ name: "code.js" }] }),
       },
     },
     pr,
@@ -60,7 +60,7 @@ it("does nothing when only `test` files were changed", () => {
   dm.danger.github = {
     api: {
       repos: {
-        getContent: () => Promise.resolve([{ name: "CHANGELOG.md" }]),
+        getContent: () => Promise.resolve({ data: [{ name: "CHANGELOG.md" }] }),
       },
     },
     pr,
@@ -78,7 +78,7 @@ it("does nothing when the changelog was changed", () => {
   dm.danger.github = {
     api: {
       repos: {
-        getContent: () => Promise.resolve([{ name: "code.js" }, { name: "CHANGELOG.md" }]),
+        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
       },
     },
     pr,
