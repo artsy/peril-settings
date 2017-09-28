@@ -46,7 +46,7 @@ export const rfc16 = rfc("Require changelog entries on PRs with code changes", a
   const pr = danger.github.pr
   const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
 
-  const getContentParams = { path: "", owner: pr.head.user.login, repo: pr.head.repo.name }
+  const getContentParams = { path: "", owner: pr.base.user.login, repo: pr.base.repo.name }
   const rootContents: any = await danger.github.api.repos.getContent(getContentParams)
 
   const hasChangelog = rootContents.data.find(file => changelogs.includes(file.name))
