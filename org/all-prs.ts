@@ -34,7 +34,21 @@ export const rfc5 = rfc("No PR is too small to warrant a paragraph or two of sum
 
 // https://github.com/artsy/artsy-danger/issues/7
 export const rfc7 = rfc("Hook commit contexts to GitHub PR/Issue labels", async () => {
-
+  const pr = danger.github.thisPR
+  const commitLabels = danger.git.commits
+    .map(c => c.message)
+    .filter(m => m.startsWith("[") && m.includes("]"))
+    .map(m => (m.match(/\[(.*)\]/) as any)[1]) // Guaranteed to match based on filter above.
+  if (commitLabels.length > 0) {
+    const api = danger.github.api
+    const githubLabels = await api.issues.getLabels({ owner: pr.owner, repo: pr.repo })
+    const matchingLabels = githubLabels.data
+      .map((l: any) => l.name)
+      .filter((l: string) => commitLabels.find(cl => l === cl))
+    if (matchingLabels.length > 0) {
+      await api.issues.addLabels({ owner: pr.owner, repo: pr.repo, number: pr.number, labels: matchingLabels })
+    }
+  }
 })
 
 // https://github.com/artsy/artsy-danger/issues/13
