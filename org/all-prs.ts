@@ -32,6 +32,11 @@ export const rfc5 = rfc("No PR is too small to warrant a paragraph or two of sum
   }
 })
 
+// https://github.com/artsy/artsy-danger/issues/7
+export const rfc7 = rfc("Hook commit contexts to GitHub PR/Issue labels", async () => {
+
+})
+
 // https://github.com/artsy/artsy-danger/issues/13
 export const rfc13 = rfc("Always ensure we assign someone, so that our Slackbot work correctly", () => {
   const pr = danger.github.pr
