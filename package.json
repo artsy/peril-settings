@@ -5,8 +5,7 @@
   "repository": "https://github.com/artsy-danger",
   "author": "Orta Therox <orta@artsymail.com>",
   "license": "MIT",
-  "dependencies": {
-  },    
+  "dependencies": {},
   "devDependencies": {
     "@slack/client": "^3.12.0",
     "@types/jest": "^20.0.8",
@@ -19,17 +18,18 @@
     "ts-jest": "^21.0.0",
     "typescript": "^2.3.2"
   },
-    "jest": {
-      "transform": {
-        "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-      },
-      "testRegex": "(.test)\\.(ts|tsx)$",      
-      "moduleFileExtensions": [
-        "ts",
-        "tsx",
-        "js",
-        "jsx",
-        "json"
-      ]
-    }
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(.test)\\.(ts|tsx)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
   }
+}

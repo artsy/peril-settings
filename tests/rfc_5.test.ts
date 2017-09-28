@@ -1,24 +1,27 @@
-const runtime: any = global
-import { runDangerfile } from "./utils"
+jest.mock("danger", () => jest.fn())
+import * as danger from "danger"
+const dm = (danger as any)
+
+import { rfc5 } from "../org/all-prs"
 
 beforeEach(() => {
-  runtime.fail = jest.fn()
-  runtime.danger = {}
+  dm.fail = jest.fn()
 })
 
 afterEach(() => {
-  runtime.fail = undefined
-  runtime.danger = undefined
+  dm.fail = undefined
 })
 
 it("fails when there's no PR body", () => {
-  runtime.danger.github = { pr: { body: "" }}
-  runDangerfile("./org/all-prs.ts")  
-  expect(runtime.fail).toHaveBeenCalledWith("Please add a description to your PR.")
+  dm.danger = { github: { pr: { body: "" } } }
+  return rfc5().then(() => {
+    expect(dm.fail).toHaveBeenCalledWith("Please add a description to your PR.")
+  })
 })
 
 it("does nothing when there's a PR body", () => {
-  runtime.danger.github = { pr: { body: "Hello world" }}
-  runDangerfile("./org/all-prs.ts")  
-  expect(runtime.fail).not.toBeCalled()
+  dm.danger = { github: { pr: { body: "Hello world" } } }
+  return rfc5().then(() => {
+    expect(dm.fail).not.toHaveBeenCalled()
+  })
 })
