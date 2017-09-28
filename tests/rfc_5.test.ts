@@ -1,15 +1,11 @@
 jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
-const dm = (danger as any)
+const dm = danger as any
 
 import { rfc5 } from "../org/all-prs"
 
 beforeEach(() => {
   dm.fail = jest.fn()
-})
-
-afterEach(() => {
-  dm.fail = undefined
 })
 
 it("fails when there's no PR body", () => {

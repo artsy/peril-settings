@@ -1,22 +1,20 @@
 jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
-const dm = (danger as any)
+const dm = danger as any
 
-import { rfc13 } from '../org/all-prs'
+import { rfc13 } from "../org/all-prs"
 
 beforeEach(() => {
   dm.danger = {}
   dm.warn = jest.fn()
 })
 
-afterEach(() => {
-  dm.warn = undefined
-})
-
 it("warns when there's there's no assignee and no WIP in the title", () => {
   dm.danger.github = { pr: { title: "My Thing", assignee: null } }
   rfc13().then(() => {
-    expect(dm.warn).toHaveBeenCalledWith("Please assign someone to merge this PR, and optionally include people who should review.")
+    expect(dm.warn).toHaveBeenCalledWith(
+      "Please assign someone to merge this PR, and optionally include people who should review."
+    )
   })
 })
 
