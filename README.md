@@ -73,8 +73,6 @@ This self-documents where a rule has come from, making it easy for others to und
 
 We use Jest to test our Dangerfiles. It uses the same techniques as testing a danger plugin where the  global imports from danger are fake.
 
-Make sure to test with `jest --watch` so you can see progress on as you implement the RFC!
-
 1.  Create a file for your RFC: `tests/rfc_[x].test.ts`.
 2.  Add a `before` and `after` setting up and resetting mocks:
 
