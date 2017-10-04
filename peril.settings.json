@@ -7,7 +7,7 @@
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts"
   },
-  "repos" : {
+  "repos": {
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
     },
@@ -17,5 +17,8 @@
     "artsy/artsy-danger": {
       "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
     }
+  },
+  "schedule": {
+    "0 0 12 * * ?": "scheduled/daily_log.ts"
   }
 }
