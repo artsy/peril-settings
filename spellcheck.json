@@ -161,7 +161,11 @@
     "webpack",
     "workflow",
     "xcode",
-    "yayoi"
+    "yayoi",
+    "mongodb",
+    "elasticsearch",
+    "zwirner",
+    "mongo"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
