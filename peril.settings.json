@@ -5,9 +5,10 @@
     "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
-    "pull_request": "artsy/artsy-danger@org/all-prs.ts"
+    "pull_request": "artsy/artsy-danger@org/all-prs.ts",
+    "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts"
   },
-  "repos" : {
+  "repos": {
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
     },
