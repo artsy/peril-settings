@@ -27,16 +27,11 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
     consignments: "C52403S10",
   } as any
 
-  // We need an issue to get labels
-  const issue = await danger.github.api.issues.get({
-    owner: pr.base.user.login,
-    repo: pr.base.repo.name,
-    number: pr.number,
-  })
-
   // Find the labels in both the map above, and in the PR's labels
   const allWantedLabels = Object.keys(labelsMap)
-  const labelsToAlert: string[] = issue.labels.filter((l: string) => allWantedLabels.includes(l))
+  const labelsToAlert: string[] = danger.github.issue.labels
+    .map(l => l.name.toLowerCase())
+    .filter((l: string) => allWantedLabels.includes(l))
 
   // Loop through and send out Slack messages
   for (const label of labelsToAlert) {

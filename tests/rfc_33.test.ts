@@ -15,7 +15,18 @@ import { rfc33 } from "../org/closed-prs"
 it("calls the issues API to get labels", () => {
   dm.danger = {
     github: {
-      pull_request: {
+      issue: {
+        labels: [
+          {
+            name: "Consignments",
+          },
+          {
+            name: "12345",
+          },
+        ],
+      },
+      pr: {
+        title: "This awesome PR",
         user: {
           login: "orta",
           avatar_url: "https://123.com/image",
@@ -28,6 +39,7 @@ it("calls the issues API to get labels", () => {
           },
           repo: {
             name: "danger-js",
+            html_url: "http://my_url.com",
           },
         },
         number: 23,
@@ -38,13 +50,6 @@ it("calls the issues API to get labels", () => {
     },
   }
 
-  const issue = {
-    labels: ["12345", "consignments"],
-  }
-
-  const issuesMock = dm.danger.github.api.issues.get
-  issuesMock.mockImplementationOnce(() => Promise.resolve(issue))
-
   global.peril = {
     env: {
       SLACK_RFC_WEBHOOK_URL: "123",
@@ -54,16 +59,13 @@ it("calls the issues API to get labels", () => {
   IncomingWebhook.prototype.send = jest.fn()
 
   return rfc33().then(() => {
-    expect(issuesMock).toHaveBeenCalledWith({ number: 23, owner: "orta", repo: "danger-js" })
-
     expect(IncomingWebhook.prototype.send).toHaveBeenCalledWith({
       attachments: [
         {
-          author_icon: "https://123.com/image",
           author_name: "orta",
           color: "good",
-          title: "Merged: <undefined|undefined> from orta",
-          title_link: undefined,
+          title: "Merged: <http://my_url.com|This awesome PR> from orta",
+          title_link: "http://my_url.com",
         },
       ],
       channel: "C52403S10",
