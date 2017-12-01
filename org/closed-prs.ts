@@ -44,9 +44,12 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
       attachments: [
         {
           color: "good",
-          title: `Merged: <${pr.base.repo.html_url}/pull/${pr.number}|${pr.title}> from ${pr.user.login}`,
+          title: `Merged PR on <${pr.base.repo.name}|${pr.base.repo.html_url}>: <${pr.base.repo.html_url}/pull/${
+            pr.number
+          }|${pr.title}>`,
           title_link: pr.base.repo.html_url,
           author_name: pr.user.login,
+          author_icon: (pr.user as any).avatar_url, // This'll be fixed in the next Danger 2.x release
         },
       ],
     })
