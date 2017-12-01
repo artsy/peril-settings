@@ -44,7 +44,7 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
       attachments: [
         {
           color: "good",
-          title: `Merged: <${pr.base.repo.html_url}|${pr.title}> from ${pr.user.login}`,
+          title: `Merged: <${pr.base.repo.html_url}/pull/${pr.number}|${pr.title}> from ${pr.user.login}`,
           title_link: pr.base.repo.html_url,
           author_name: pr.user.login,
         },
