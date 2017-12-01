@@ -20,8 +20,7 @@ const rfc: any = isJest ? storeRFC : runRFC
 
 // https://github.com/artsy/artsy-danger/issues/33
 export const rfc33 = rfc("Ping slack channels for related labels", async () => {
-  const gh = (danger.github as any) as PullRequest
-  const pr = gh.pull_request
+  const pr = danger.github.pr
   // You can get the channel ID by opening slack in
   // the web inspector and looking at the channel name
   const labelsMap = {
@@ -50,10 +49,9 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
       attachments: [
         {
           color: "good",
-          title: `Merged: <${pr.url}|${pr.title}> from ${pr.user.login}`,
-          title_link: pr.url,
+          title: `Merged: <${pr.base.repo.html_url}|${pr.title}> from ${pr.user.login}`,
+          title_link: pr.base.repo.html_url,
           author_name: pr.user.login,
-          author_icon: pr.user.avatar_url,
         },
       ],
     })
