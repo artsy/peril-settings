@@ -62,10 +62,11 @@ it("calls the issues API to get labels", () => {
     expect(IncomingWebhook.prototype.send).toHaveBeenCalledWith({
       attachments: [
         {
+          author_icon: "https://123.com/image",
           author_name: "orta",
           color: "good",
-          title: "Merged: <http://my_url.com|This awesome PR> from orta",
-          title_link: "http://my_url.com",
+          title: "PR merged on danger-js - This awesome PR",
+          title_link: "http://my_url.com/pull/23",
         },
       ],
       channel: "C52403S10",
