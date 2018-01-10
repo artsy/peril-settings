@@ -30,7 +30,10 @@ You will need node and yarn installed beforehand. You can get them both by runni
 
 ### RFCs
 
-Any PR that adds a new rule at org-wide level to every repo should be treated as [an RFC](https://en.wikipedia.org/wiki/Request_for_Comments). Please make an issue with this template:
+Any PR that adds a new rule at org-wide level to every repo should be treated as [an RFC](https://en.wikipedia.org/wiki/Request_for_Comments). It should be open for at least a week
+before a PR can be merged for the RFC.
+
+Please make an issue with this template:
 
     Title: "RFC: Add a Markdown Spell Checker to all Markdown docs in PR" 
 
@@ -51,6 +54,10 @@ Any PR that adds a new rule at org-wide level to every repo should be treated as
     be avoided in every repo.
 
     Other than that, we can continue to build up a global list of words to ignore.
+    
+    ## Additional Context: 
+
+    You can see our discussion [in slack here](/link/to/slack.com)
 
 Peril will [post a message](/danger/new_rfc.ts) in the #dev slack channel for everyone to see when you include `"RFC:"` in your issue title.
 
