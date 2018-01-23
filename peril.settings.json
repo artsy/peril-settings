@@ -6,7 +6,8 @@
   },
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts",
-    "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts"
+    "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts",
+    "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
   },
   "repos": {
     "artsy/reaction": {
@@ -14,9 +15,6 @@
     },
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
-    },
-    "artsy/artsy-danger": {
-      "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
     }
   }
 }
