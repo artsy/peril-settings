@@ -1,6 +1,7 @@
 {
   "ignore": [
     "/.*.md",
+    "/.*.rb",
     "/.*.x",
     "/.*.yml",
     "1password",
@@ -19,6 +20,7 @@
     "artsy's",
     "artsy",
     "ashfurrow",
+    "ashkan18",
     "async",
     "awesommmmee",
     "babelify",
@@ -80,6 +82,7 @@
     "imagemagick",
     "jekyll",
     "jira",
+    "joeyaghion",
     "jonallured",
     "js",
     "json",
@@ -137,6 +140,7 @@
     "rmagick",
     "sarahscott",
     "semver",
+    "sendgrid",
     "serializer",
     "setups",
     "sonatype",
