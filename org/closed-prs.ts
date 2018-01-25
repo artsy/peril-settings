@@ -1,8 +1,6 @@
-import { schedule, danger, warn, fail } from "danger"
+import { schedule, danger, warn, fail, peril } from "danger"
 import { IncomingWebhook } from "@slack/client"
 import { PullRequest, Issues } from "github-webhook-event-types"
-
-declare const peril: any // danger/danger#351
 
 const isJest = typeof jest !== "undefined"
 
@@ -47,7 +45,7 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
           title: `PR merged on ${pr.base.repo.name} - ${pr.title}`,
           title_link: `${pr.base.repo.html_url}/pull/${pr.number}`,
           author_name: pr.user.login,
-          author_icon: (pr.user as any).avatar_url, // This'll be fixed in the next Danger 2.x release
+          author_icon: pr.user.avatar_url,
         },
       ],
     })
