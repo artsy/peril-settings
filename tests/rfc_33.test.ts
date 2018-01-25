@@ -50,7 +50,7 @@ it("calls the issues API to get labels", () => {
     },
   }
 
-  global.peril = {
+  dm.peril = {
     env: {
       SLACK_RFC_WEBHOOK_URL: "123",
     },
