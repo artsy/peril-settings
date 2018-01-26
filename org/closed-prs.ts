@@ -25,6 +25,7 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
   // the web inspector and looking at the channel name
   const labelsMap = {
     consignments: "C52403S10",
+    auctions: "C0C4AJ1PF",
   } as any
 
   // Find the labels in both the map above, and in the PR's labels
