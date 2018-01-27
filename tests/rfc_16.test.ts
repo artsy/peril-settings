@@ -24,8 +24,8 @@ const pr = {
 it("warns when code has changed but no changelog entry was made", () => {
   dm.danger.github = {
     api: {
-      repos: {
-        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
     pr,
@@ -42,8 +42,8 @@ it("warns when code has changed but no changelog entry was made", () => {
 it("does nothing when there is no changelog file", () => {
   dm.danger.github = {
     api: {
-      repos: {
-        getContent: () => Promise.resolve({ data: [{ name: "code.js" }] }),
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }] } }),
       },
     },
     pr,
@@ -60,8 +60,8 @@ it("does nothing when there is no changelog file", () => {
 it("does nothing when only `test` files were changed", () => {
   dm.danger.github = {
     api: {
-      repos: {
-        getContent: () => Promise.resolve({ data: [{ name: "CHANGELOG.md" }] }),
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "CHANGELOG.md" }] } }),
       },
     },
     pr,
@@ -78,8 +78,8 @@ it("does nothing when only `test` files were changed", () => {
 it("does nothing when the changelog was changed", () => {
   dm.danger.github = {
     api: {
-      repos: {
-        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
     pr,
@@ -96,8 +96,8 @@ it("does nothing when the changelog was changed", () => {
 it("does not warns with a closed PR", () => {
   dm.danger.github = {
     api: {
-      repos: {
-        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
     pr: { ...pr, state: "closed" },

@@ -69,10 +69,12 @@ export const rfc16 = rfc("Require changelog entries on PRs with code changes", a
   const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
   const isOpen = danger.github.pr.state === "open"
 
-  const getContentParams = { path: "", owner: pr.head.user.login, repo: pr.head.repo.name }
-  const rootContents: any = await danger.github.api.repos.getContent(getContentParams)
+  // Get all the files in the root folder of the repo
+  // e.g. https://api.github.com/repos/artsy/eigen/git/trees/master
+  const getContentParams = { owner: pr.head.user.login, repo: pr.head.repo.name, sha: "master" }
+  const rootContents: any = await danger.github.api.gitdata.getTree(getContentParams)
 
-  const hasChangelog = rootContents.data.find((file: any) => changelogs.includes(file.name))
+  const hasChangelog = rootContents.data.tree.find((file: { path: string }) => changelogs.includes(file.path))
   if (isOpen && hasChangelog) {
     const files = [...danger.git.modified_files, ...danger.git.created_files]
 
