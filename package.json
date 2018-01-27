@@ -41,6 +41,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": ["yarn prettier --write", "git add"],
     "*.test.@(ts|tsx)": ["jest"],
-    "*.json": ["yarn prettier --write", "git add"]
+    "*.json": ["yarn prettier --write", "git add"],
+    "*.md": ["yarn prettier --write", "git add"]
   }
 }

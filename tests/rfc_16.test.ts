@@ -18,6 +18,7 @@ const pr = {
       name: "danger-js",
     },
   },
+  state: "open",
 }
 
 it("warns when code has changed but no changelog entry was made", () => {
@@ -85,6 +86,24 @@ it("does nothing when the changelog was changed", () => {
   }
   dm.danger.git = {
     modified_files: ["src/index.html", "CHANGELOG.md"],
+    created_files: [],
+  }
+  return rfc16().then(() => {
+    expect(dm.warn).not.toBeCalled()
+  })
+})
+
+it("does not warns with a closed PR", () => {
+  dm.danger.github = {
+    api: {
+      repos: {
+        getContent: () => Promise.resolve({ data: [{ name: "code.js" }, { name: "CHANGELOG.md" }] }),
+      },
+    },
+    pr: { ...pr, state: "closed" },
+  }
+  dm.danger.git = {
+    modified_files: ["src/index.html"],
     created_files: [],
   }
   return rfc16().then(() => {
