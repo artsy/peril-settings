@@ -10,7 +10,7 @@
     "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
   },
   "tasks": {
-    "slack-dev-channel": "artsy/artsy-danger@danger/tasks/slack-dev-channel.ts"
+    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts"
   },
   "repos": {
     "artsy/reaction": {
