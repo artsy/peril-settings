@@ -2,7 +2,7 @@ jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
 
-import { check } from "../danger/new_rfc"
+import { check } from "../danger/new-rfc"
 
 it("ignores issues which aren't RFCs", () => {
   dm.danger = {

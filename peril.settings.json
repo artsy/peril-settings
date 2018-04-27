@@ -7,7 +7,8 @@
   "rules": {
     "pull_request": "artsy/artsy-danger@org/all-prs.ts",
     "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts",
-    "issues.opened": "artsy/artsy-danger@danger/new_rfc.ts"
+    "issues.opened": "artsy/artsy-danger@danger/new-rfc.ts",
+    "create": "artsy/artsy-danger@org/new-release.ts"
   },
   "tasks": {
     "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts"
