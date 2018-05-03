@@ -1,7 +1,7 @@
 {
   "settings": {
     "env_vars": ["SLACK_RFC_WEBHOOK_URL"],
-    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design"],
+    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"],
     "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
