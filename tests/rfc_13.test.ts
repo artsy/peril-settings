@@ -11,23 +11,20 @@ beforeEach(() => {
 
 it("warns when there's there's no assignee and no WIP in the title", () => {
   dm.danger.github = { pr: { title: "My Thing", assignee: null } }
-  rfc13().then(() => {
-    expect(dm.warn).toHaveBeenCalledWith(
-      "Please assign someone to merge this PR, and optionally include people who should review."
-    )
-  })
+  rfc13()
+  expect(dm.warn).toHaveBeenCalledWith(
+    "Please assign someone to merge this PR, and optionally include people who should review."
+  )
 })
 
 it("does not warn when there's there's no assignee and WIP in the title", () => {
   dm.danger.github = { pr: { title: "[WIP] My thing", assignee: null } }
-  rfc13().then(() => {
-    expect(dm.warn).not.toBeCalled()
-  })
+  rfc13()
+  expect(dm.warn).not.toBeCalled()
 })
 
 it("does not warn when there's there's an assignee", () => {
   dm.danger.github = { pr: { title: "My thing", assignee: {} } }
-  rfc13().then(() => {
-    expect(dm.warn).not.toBeCalled()
-  })
+  rfc13()
+  expect(dm.warn).not.toBeCalled()
 })

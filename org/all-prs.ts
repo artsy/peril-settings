@@ -1,39 +1,30 @@
 import { schedule, danger, warn, fail } from "danger"
 
-const isJest = typeof jest !== "undefined"
-
-// Stores the parameter in a closure that can be invoked in tests.
-const storeRFC = (reason: string, closure: () => void | Promise<any>) =>
-  // We return a closure here so that the (promise is resolved|closure is invoked)
-  // during test time and not when we call rfc().
-  () => (closure instanceof Promise ? closure : Promise.resolve(closure()))
-
-// Either schedules the promise for execution via Danger, or invokes closure.
-const runRFC = (reason: string, closure: () => void | Promise<any>) =>
-  closure instanceof Promise ? schedule(closure) : closure()
-
-const rfc: any = isJest ? storeRFC : runRFC
-
 import yarn from "danger-plugin-yarn"
-rfc("Highlight package dependencies on Node projects", async () => {
+
+// "Highlight package dependencies on Node projects"
+const rfc1 = async () => {
   await yarn()
-})
+}
 
 import spellcheck from "danger-plugin-spellcheck"
-rfc("Keep our Markdown documents awesome", async () => {
+// "Keep our Markdown documents awesome",
+const rfc2 = async () => {
   await spellcheck({ settings: "artsy/artsy-danger@spellcheck.json" })
-})
+}
 
+// "No PR is too small to warrant a paragraph or two of summary"
 // https://github.com/artsy/artsy-danger/issues/5
-export const rfc5 = rfc("No PR is too small to warrant a paragraph or two of summary", () => {
+export const rfc5 = () => {
   const pr = danger.github.pr
   if (pr.body === null || pr.body.length === 0) {
     fail("Please add a description to your PR.")
   }
-})
+}
 
+// "Hook commit contexts to GitHub PR/Issue labels"
 // https://github.com/artsy/artsy-danger/issues/7
-export const rfc7 = rfc("Hook commit contexts to GitHub PR/Issue labels", async () => {
+export const rfc7 = async () => {
   const pr = danger.github.thisPR
   const commitLabels: string[] = danger.git.commits
     .map(c => c.message)
@@ -52,19 +43,21 @@ export const rfc7 = rfc("Hook commit contexts to GitHub PR/Issue labels", async 
       await api.issues.addLabels({ owner: pr.owner, repo: pr.repo, number: pr.number, labels: matchingLabels })
     }
   }
-})
+}
 
+// Always ensure we assign someone, so that our Slackbot work correctly
 // https://github.com/artsy/artsy-danger/issues/13
-export const rfc13 = rfc("Always ensure we assign someone, so that our Slackbot work correctly", () => {
+export const rfc13 = () => {
   const pr = danger.github.pr
   const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
   if (!wipPR && pr.assignee === null) {
     warn("Please assign someone to merge this PR, and optionally include people who should review.")
   }
-})
+}
 
+// Require changelog entries on PRs with code changes
 // https://github.com/artsy/artsy-danger/issues/16
-export const rfc16 = rfc("Require changelog entries on PRs with code changes", async () => {
+export const rfc16 = async () => {
   const pr = danger.github.pr
   const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
   const isOpen = danger.github.pr.state === "open"
@@ -85,4 +78,14 @@ export const rfc16 = rfc("Require changelog entries on PRs with code changes", a
       warn("It looks like code was changed without adding anything to the Changelog")
     }
   }
-})
+}
+
+// The default run
+export default async () => {
+  rfc1()
+  await rfc2()
+  rfc5()
+  await rfc7()
+  rfc13()
+  await rfc16()
+}

@@ -6,7 +6,7 @@ jest.mock("@slack/client", () => ({
 }))
 import { IncomingWebhook } from "@slack/client"
 
-import { rfc53 } from "../org/new-release"
+import rfc53 from "../org/new-release"
 
 it("ignores creates which aren't tags", async () => {
   dm.danger = {

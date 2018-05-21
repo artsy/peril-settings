@@ -2,22 +2,9 @@ import { schedule, danger, warn, fail, peril } from "danger"
 import { IncomingWebhook } from "@slack/client"
 import { PullRequest, Issues } from "github-webhook-event-types"
 
-const isJest = typeof jest !== "undefined"
-
-// Stores the parameter in a closure that can be invoked in tests.
-const storeRFC = (reason: string, closure: () => void | Promise<any>) =>
-  // We return a closure here so that the (promise is resolved|closure is invoked)
-  // during test time and not when we call rfc().
-  () => (closure instanceof Promise ? closure : Promise.resolve(closure()))
-
-// Either schedules the promise for execution via Danger, or invokes closure.
-const runRFC = (reason: string, closure: () => void | Promise<any>) =>
-  closure instanceof Promise ? schedule(closure) : closure()
-
-const rfc: any = isJest ? storeRFC : runRFC
-
+// Ping slack channels for related labels
 // https://github.com/artsy/artsy-danger/issues/33
-export const rfc33 = rfc("Ping slack channels for related labels", async () => {
+export default async () => {
   const pr = danger.github.pr
   // You can get the channel ID by opening slack in
   // the web inspector and looking at the channel name
@@ -51,4 +38,4 @@ export const rfc33 = rfc("Ping slack channels for related labels", async () => {
       ],
     })
   }
-})
+}
