@@ -2,22 +2,9 @@ import { schedule, danger, warn, fail, peril } from "danger"
 import { IncomingWebhook } from "@slack/client"
 import { Create } from "github-webhook-event-types"
 
-const isJest = typeof jest !== "undefined"
-
-// Stores the parameter in a closure that can be invoked in tests.
-const storeRFC = (reason: string, closure: () => void | Promise<any>) =>
-  // We return a closure here so that the (promise is resolved|closure is invoked)
-  // during test time and not when we call rfc().
-  () => (closure instanceof Promise ? closure : Promise.resolve(closure()))
-
-// Either schedules the promise for execution via Danger, or invokes closure.
-const runRFC = (reason: string, closure: () => void | Promise<any>) =>
-  closure instanceof Promise ? schedule(closure) : closure()
-
-const rfc: any = isJest ? storeRFC : runRFC
-
+// Note new tags inside a releases channel
 // https://github.com/artsy/artsy-danger/issues/33
-export const rfc53 = rfc("Note new tags inside a releases channel", async () => {
+export default async () => {
   const api = danger.github.api
   const create = (danger.github as any) as Create
 
@@ -42,4 +29,4 @@ export const rfc53 = rfc("Note new tags inside a releases channel", async () => 
       },
     ],
   })
-})
+}

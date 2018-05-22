@@ -10,7 +10,7 @@ jest.mock("@slack/client", () => ({
 
 import { IncomingWebhook } from "@slack/client"
 
-import { rfc33 } from "../org/closed-prs"
+import rfc33 from "../org/closed-prs"
 
 it("calls the issues API to get labels", () => {
   dm.danger = {
