@@ -31,7 +31,6 @@ beforeEach(() => {
     },
   }
   ;(global as any).console = {
-    error: jest.fn(),
     log: jest.fn(),
   }
 })
@@ -39,12 +38,12 @@ beforeEach(() => {
 describe("for adding the label", () => {
   it("bails when the comment is not on a pr", async () => {
     await markAsMergeOnGreen({ issue: {} } as any)
-    expect(console.error).toBeCalledWith("Not a Pull Request")
+    expect(console.log).toBeCalledWith("Not a Pull Request")
   })
 
   it("bails when the issue body doesn't contain the key words", async () => {
     await markAsMergeOnGreen({ comment: { body: "Hi" }, issue: { pull_request: {} } } as any)
-    expect(console.error).toBeCalledWith(expect.stringMatching("Did not find"))
+    expect(console.log).toBeCalledWith(expect.stringMatching("Did not find"))
   })
 
   it("bails when the issue already has merge on green", async () => {
@@ -52,7 +51,7 @@ describe("for adding the label", () => {
       comment: { body: "Merge on green" },
       issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
     } as any)
-    expect(console.error).toBeCalledWith("Already has Merge on Green")
+    expect(console.log).toBeCalledWith("Already has Merge on Green")
   })
 
   it("creates the label when the label doesn't exist on the repo", async () => {
@@ -96,7 +95,7 @@ describe("for adding the label", () => {
 describe("for handling merging when green", () => {
   it("bails when its not a success", async () => {
     await mergeOnGreen({ state: "fail" } as any)
-    expect(console.error).toBeCalled()
+    expect(console.log).toBeCalled()
   })
 
   it("bails when the whole status is not a success", async () => {
@@ -110,7 +109,7 @@ describe("for handling merging when green", () => {
       commit: { sha: "123abc" },
     } as any)
 
-    expect(console.error).toBeCalledWith("Not all statuses are green")
+    expect(console.log).toBeCalledWith("Not all statuses are green")
   })
 
   it("does nothing when the PR does not have merge on green ", async () => {
@@ -133,7 +132,7 @@ describe("for handling merging when green", () => {
       commit: { sha: "123abc" },
     } as any)
 
-    expect(console.error).toBeCalledWith("PR does not have Merge on Green")
+    expect(console.log).toBeCalledWith("PR does not have Merge on Green")
   })
 
   it("triggers a PR merge when there is a merge on green label ", async () => {

@@ -19,7 +19,7 @@ export const rfc10 = async (issueComment: IssueComment) => {
 
   // Only look at PR issue comments, this isn't in the type system
   if (!(issue as any).pull_request) {
-    console.error("Not a Pull Request")
+    console.log("Not a Pull Request")
     return
   }
 
@@ -27,13 +27,13 @@ export const rfc10 = async (issueComment: IssueComment) => {
   const keywords = ["merge on green", "merge on ci green"]
   const match = keywords.find(k => comment.body.toLowerCase().includes(k))
   if (!match) {
-    console.error(`Did not find any of the phrases in the comment: ${comment.body.toLocaleLowerCase()}`)
+    console.log(`Did not find any of the phrases in the comment: ${comment.body.toLocaleLowerCase()}`)
     return
   }
 
   // Check to see if the label has already been set
   if (issue.labels.find(l => l.name === "Merge On Green")) {
-    console.error("Already has Merge on Green")
+    console.log("Already has Merge on Green")
     return
   }
 
@@ -47,7 +47,7 @@ export const rfc10 = async (issueComment: IssueComment) => {
     await api.orgs.checkMembership({ org, username })
   } catch (error) {
     // Someone does not have permission to force a merge
-    return console.error("Sender does not have permission to merge")
+    return console.log("Sender does not have permission to merge")
   }
 
   // Create or re-use an existing label

@@ -6,7 +6,7 @@ export const rfc10 = async (status: Status) => {
   const api = danger.github.api
 
   if (status.state !== "success") {
-    return console.error(
+    return console.log(
       `Not a successful state (note that you can define state in the settings.json) - got ${status.state}`
     )
   }
@@ -16,7 +16,7 @@ export const rfc10 = async (status: Status) => {
   const repo = status.repository.name
   const allGreen = await api.repos.getCombinedStatusForRef({ owner, repo, ref: status.commit.sha })
   if (allGreen.data.state !== "success") {
-    return console.error("Not all statuses are green")
+    return console.log("Not all statuses are green")
   }
 
   // See https://github.com/maintainers/early-access-feedback/issues/114 for more context on getting a PR from a SHA
@@ -32,7 +32,7 @@ export const rfc10 = async (status: Status) => {
     // Get the PR combined status
     const mergeLabel = issue.data.labels.find((l: LabelLabel) => l.name === "Merge On Green")
     if (!mergeLabel) {
-      return console.error("PR does not have Merge on Green")
+      return console.log("PR does not have Merge on Green")
     }
 
     // Merge the PR
