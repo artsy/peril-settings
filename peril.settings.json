@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/danger/peril/master/peril-settings-json.schema",
   "settings": {
     "env_vars": ["SLACK_RFC_WEBHOOK_URL"],
     "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"],
@@ -10,9 +11,6 @@
     "issues.opened": "artsy/artsy-danger@danger/new-rfc.ts",
     "create": "artsy/artsy-danger@org/new-release.ts"
   },
-  "tasks": {
-    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts"
-  },
   "repos": {
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
@@ -20,5 +18,12 @@
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
     }
+  },
+  "tasks": {
+    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts",
+    "daily-license-check": "artsy/artsy-danger@tasks/daily-license-check.ts"
+  },
+  "scheduler": {
+    "0 0 12 * * ?": "daily-license-check"
   }
 }
