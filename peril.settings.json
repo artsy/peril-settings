@@ -20,9 +20,10 @@
     }
   },
   "tasks": {
-    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts"
+    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts",
+    "daily-license-check": "artsy/artsy-danger@tasks/daily-license-check.ts"
   },
   "scheduler": {
-    "0 0 12 * * ?": "daily-license-check.ts"
+    "0 0 12 * * ?": "daily-license-check"
   }
 }
