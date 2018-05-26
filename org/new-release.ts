@@ -3,19 +3,14 @@ import { IncomingWebhook } from "@slack/client"
 import { Create } from "github-webhook-event-types"
 
 // Note new tags inside a releases channel
-// https://github.com/artsy/artsy-danger/issues/33
-export default async () => {
-  const api = danger.github.api
-  const create = (danger.github as any) as Create
-
-  // Only make announcements for tags
-  if (create.ref_type !== "tag") {
-    return
+// https://github.com/artsy/artsy-danger/issues/40
+//
+export default async (create: Create) => {
+  if (!peril.env.SLACK_RFC_WEBHOOK_URL) {
+    throw new Error("There is no slack webhook env var set up")
   }
 
-  var url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
-  var webhook = new IncomingWebhook(url)
-
+  var webhook = new IncomingWebhook(peril.env.SLACK_RFC_WEBHOOK_URL)
   await webhook.send({
     unfurl_links: false,
     channel: "CA3LTRT0T",

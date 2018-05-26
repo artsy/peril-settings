@@ -1,9 +1,8 @@
 import { danger, peril } from "danger"
 import { Issues } from "github-webhook-event-types"
 
-export const check = () => {
-  const gh = (danger.github as any) as Issues
-  const issue = gh.issue
+export default async (issues: Issues) => {
+  const issue = issues.issue
 
   const slackify = (text: string) => ({
     unfurl_links: false,
@@ -20,13 +19,12 @@ export const check = () => {
   })
 
   if (issue.title.includes("RFC:") || issue.title.includes("[RFC]")) {
-    peril.runTask("slack-dev-channel", "in 5 minutes", slackify("🎉: A new RFC has been published."))
-    peril.runTask("slack-dev-channel", "in 3 days", slackify("🕰: A new RFC was published 3 days ago."))
-    peril.runTask("slack-dev-channel", "in 7 days", slackify("🕰: A new RFC is ready to be resolved."))
-  }
-}
+    console.log("Triggering slack notifications")
 
-const isJest = typeof jest !== "undefined"
-if (!isJest) {
-  check()
+    await peril.runTask("slack-dev-channel", "in 5 minutes", slackify("🎉: A new RFC has been published."))
+    await peril.runTask("slack-dev-channel", "in 3 days", slackify("🕰: A new RFC was published 3 days ago."))
+    await peril.runTask("slack-dev-channel", "in 7 days", slackify("🕰: A new RFC is ready to be resolved."))
+
+    console.log("Triggered slack notifications")
+  }
 }
