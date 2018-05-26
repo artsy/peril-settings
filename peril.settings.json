@@ -6,7 +6,7 @@
     "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
-    "create": "artsy/artsy-danger@org/new-release.ts",
+    "create (ref_type == tag)": "artsy/artsy-danger@org/new-release.ts",
     "pull_request": "artsy/artsy-danger@org/all-prs.ts",
     "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts",
     "issues.opened": "artsy/artsy-danger@danger/new-rfc.ts",

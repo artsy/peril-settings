@@ -8,36 +8,18 @@ import { IncomingWebhook } from "@slack/client"
 
 import rfc53 from "../org/new-release"
 
-it("ignores creates which aren't tags", async () => {
-  dm.danger = {
-    github: {
-      ref_type: "branch",
-    },
-  }
-
-  dm.peril = {
-    env: { SLACK_RFC_WEBHOOK_URL: "https://123.com/api" },
-  }
-
-  await rfc53()
-
-  expect(IncomingWebhook).not.toBeCalled()
-})
-
 it("sends a webhook for creates which are tags", async () => {
   IncomingWebhook.prototype.send = jest.fn()
 
-  dm.danger = {
-    github: {
-      ref_type: "tag",
-      ref: "v1.4.0",
-      repository: {
-        name: "eigen",
-      },
-      sender: {
-        login: "Yuki",
-        avatar_url: "http://my.avatar.com",
-      },
+  const webhook = {
+    ref_type: "tag",
+    ref: "v1.4.0",
+    repository: {
+      name: "eigen",
+    },
+    sender: {
+      login: "Yuki",
+      avatar_url: "http://my.avatar.com",
     },
   }
 
@@ -45,7 +27,7 @@ it("sends a webhook for creates which are tags", async () => {
     env: { SLACK_RFC_WEBHOOK_URL: "https://123.com/api" },
   }
 
-  await rfc53()
+  await rfc53(webhook as any)
 
   expect(IncomingWebhook.prototype.send).toHaveBeenCalledWith({
     attachments: [
