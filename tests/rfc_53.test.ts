@@ -16,6 +16,7 @@ it("sends a webhook for creates which are tags", async () => {
     ref: "v1.4.0",
     repository: {
       name: "eigen",
+      html_url: "http://url.com",
     },
     sender: {
       login: "Yuki",
@@ -36,7 +37,7 @@ it("sends a webhook for creates which are tags", async () => {
         author_name: "Yuki",
         color: "good",
         title: "Deployed eigen - v1.4.0",
-        title_link: "undefined}",
+        title_link: "http://url.com",
       },
     ],
     channel: "CA3LTRT0T",

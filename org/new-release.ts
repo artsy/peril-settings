@@ -6,6 +6,10 @@ import { Create } from "github-webhook-event-types"
 // https://github.com/artsy/artsy-danger/issues/40
 //
 export default async (create: Create) => {
+  if (create.ref_type !== "tag") {
+    return console.log("Skipping because it's not a tag")
+  }
+
   if (!peril.env.SLACK_RFC_WEBHOOK_URL) {
     throw new Error("There is no slack webhook env var set up")
   }
@@ -18,7 +22,7 @@ export default async (create: Create) => {
       {
         color: "good",
         title: `Deployed ${create.repository.name} - ${create.ref}`,
-        title_link: `${create.repository.html_url}}`,
+        title_link: create.repository.html_url,
         author_name: create.sender.login,
         author_icon: create.sender.avatar_url,
       },
