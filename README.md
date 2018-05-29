@@ -23,6 +23,7 @@ run on every issue and pull request for all our repos.
 git clone https://github.com/artsy/artsy-danger.git
 cd artsy-danger
 yarn install
+yarn jest
 code .
 ```
 
@@ -37,11 +38,13 @@ It's likely that any time you want to make a change here you should consult the 
 
 #### Adding a rule
 
-A rule should be wrapped in an rfc closure:
+A rule should include a link to its rfc:
 
 ```ts
+// Keep our Markdown documents awesome
 // https://github.com/artsy/artsy-danger/issues/2
-rfc("Keep our Markdown documents awesome", () => {
+//
+export default async (webhook: any) => {
   // [...]
 })
 ```
@@ -54,35 +57,37 @@ The closure passed to `rfc` can be async as well.
 We use Jest to test our Dangerfiles. It uses the same techniques as testing a
 [danger plugin](http://danger.systems/js/usage/extending-danger.html) where the global imports from danger are fake.
 
-1. Create a file for your RFC: `tests/rfc_[x].test.ts`.
-2. Add a `before` and `after` setting up and resetting mocks:
+1.  Create a file for your RFC: `tests/rfc_[x].test.ts`.
+2.  Add a `before` and `after` setting up and resetting mocks:
 
-   ```ts
-   jest.mock("danger", () => jest.fn())
-   import * as danger from "danger"
-   const dm = danger as any
+    ```ts
+    jest.mock("danger", () => jest.fn())
+    import * as danger from "danger"
+    const dm = danger as any
 
-   beforeEach(() => {
-     dm.danger = {}
-     dm.fail = jest.fn() // as necessary
-   })
+    beforeEach(() => {
+      dm.danger = {}
+      dm.fail = jest.fn() // as necessary
+    })
 
-   afterEach(() => {
-     dm.fail = undefined
-   })
-   ```
+    afterEach(() => {
+      dm.fail = undefined
+    })
+    ```
 
-3. Set up your danger object and run the function exported in `all-prs.ts`:
+3.  Set up your danger object and run the function exported in `all-prs.ts`:
 
-   ```ts
-   import { rfcN } from "../org/all-prs"
+    ```ts
+    import rfcN from "../org/all-prs"
 
-   it("warns when there's there's no assignee and no WIP in the title", () => {
-     dm.danger.github = { pr: { title: "Changes to the setup script", assignee: null } }
-     return rfcN().then(() => {
-       // [...]
-     })
-   })
-   ```
+    it("warns when there's there's no assignee and no WIP in the title", async () => {
+      dm.danger.github = { pr: { title: "Changes to the setup script", assignee: null } }
+      await rfcN()
 
-4. Validate that the `fail`/`warn`/`message`/`markdown` is called.
+      expect(something).toHappen()
+        // [...]
+      })
+    })
+    ```
+
+4.  Validate that the `fail`/`warn`/`message`/`markdown` is called.
