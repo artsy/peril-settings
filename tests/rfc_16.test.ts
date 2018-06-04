@@ -10,7 +10,7 @@ beforeEach(() => {
 })
 
 const pr = {
-  head: {
+  base: {
     user: {
       login: "danger",
     },
