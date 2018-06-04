@@ -64,7 +64,7 @@ export const rfc16 = async () => {
 
   // Get all the files in the root folder of the repo
   // e.g. https://api.github.com/repos/artsy/eigen/git/trees/master
-  const getContentParams = { owner: pr.head.user.login, repo: pr.head.repo.name, sha: "master" }
+  const getContentParams = { owner: pr.base.user.login, repo: pr.base.repo.name, tree_sha: pr.base.sha } as any
   const rootContents: any = await danger.github.api.gitdata.getTree(getContentParams)
 
   const hasChangelog = rootContents.data.tree.find((file: { path: string }) => changelogs.includes(file.path))
