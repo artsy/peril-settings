@@ -3,7 +3,7 @@ import { IncomingWebhook } from "@slack/client"
 import { PullRequest, Issues } from "github-webhook-event-types"
 
 // Ping slack channels for related labels
-// https://github.com/artsy/artsy-danger/issues/33
+// https://github.com/artsy/peril-settings/issues/33
 export default async () => {
   const pr = danger.github.pr
   // You can get the channel ID by opening slack in

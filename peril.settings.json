@@ -6,12 +6,12 @@
     "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
   },
   "rules": {
-    "create (ref_type == tag)": "artsy/artsy-danger@org/new-release.ts",
-    "pull_request": "artsy/artsy-danger@org/all-prs.ts",
-    "pull_request.closed": "artsy/artsy-danger@org/closed-prs.ts",
-    "issues.opened": "artsy/artsy-danger@danger/new-rfc.ts",
-    "issue_comment": "artsy/artsy-danger@org/markAsMergeOnGreen.ts",
-    "status.success": "artsy/artsy-danger@org/mergeOnGreen.ts"
+    "create (ref_type == tag)": "artsy/peril-settings@org/new-release.ts",
+    "pull_request": "artsy/peril-settings@org/all-prs.ts",
+    "pull_request.closed": "artsy/peril-settings@org/closed-prs.ts",
+    "issues.opened": "artsy/peril-settings@danger/new-rfc.ts",
+    "issue_comment": "artsy/peril-settings@org/markAsMergeOnGreen.ts",
+    "status.success": "artsy/peril-settings@org/mergeOnGreen.ts"
   },
   "repos": {
     "artsy/reaction": {
@@ -22,8 +22,8 @@
     }
   },
   "tasks": {
-    "slack-dev-channel": "artsy/artsy-danger@tasks/slack-dev-channel.ts",
-    "daily-license-check": "artsy/artsy-danger@tasks/daily-license-check.ts"
+    "slack-dev-channel": "artsy/peril-settings@tasks/slack-dev-channel.ts",
+    "daily-license-check": "artsy/peril-settings@tasks/daily-license-check.ts"
   },
   "scheduler": {
     "0 0 12 * * ?": "daily-license-check"

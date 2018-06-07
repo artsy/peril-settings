@@ -3,7 +3,7 @@ import { IncomingWebhook } from "@slack/client"
 import { Create } from "github-webhook-event-types"
 
 // Note new tags inside a releases channel
-// https://github.com/artsy/artsy-danger/issues/40
+// https://github.com/artsy/peril-settings/issues/40
 //
 export default async (create: Create) => {
   if (create.ref_type !== "tag") {

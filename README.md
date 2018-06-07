@@ -20,7 +20,7 @@ run on every issue and pull request for all our repos.
 ### To Develop
 
 ```sh
-git clone https://github.com/artsy/artsy-danger.git
+git clone https://github.com/artsy/peril-settings.git
 cd artsy-danger
 yarn install
 yarn jest
@@ -42,7 +42,7 @@ A rule should include a link to its rfc:
 
 ```ts
 // Keep our Markdown documents awesome
-// https://github.com/artsy/artsy-danger/issues/2
+// https://github.com/artsy/peril-settings/issues/2
 //
 export default async (webhook: any) => {
   // [...]

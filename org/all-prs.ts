@@ -10,11 +10,11 @@ const rfc1 = async () => {
 import spellcheck from "danger-plugin-spellcheck"
 // "Keep our Markdown documents awesome",
 const rfc2 = async () => {
-  await spellcheck({ settings: "artsy/artsy-danger@spellcheck.json" })
+  await spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
 }
 
 // "No PR is too small to warrant a paragraph or two of summary"
-// https://github.com/artsy/artsy-danger/issues/5
+// https://github.com/artsy/peril-settings/issues/5
 export const rfc5 = () => {
   const pr = danger.github.pr
   if (pr.body === null || pr.body.length === 0) {
@@ -23,7 +23,7 @@ export const rfc5 = () => {
 }
 
 // "Hook commit contexts to GitHub PR/Issue labels"
-// https://github.com/artsy/artsy-danger/issues/7
+// https://github.com/artsy/peril-settings/issues/7
 export const rfc7 = async () => {
   const pr = danger.github.thisPR
   const commitLabels: string[] = danger.git.commits
@@ -46,7 +46,7 @@ export const rfc7 = async () => {
 }
 
 // Always ensure we assign someone, so that our Slackbot work correctly
-// https://github.com/artsy/artsy-danger/issues/13
+// https://github.com/artsy/peril-settings/issues/13
 export const rfc13 = () => {
   const pr = danger.github.pr
   const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
@@ -56,7 +56,7 @@ export const rfc13 = () => {
 }
 
 // Require changelog entries on PRs with code changes
-// https://github.com/artsy/artsy-danger/issues/16
+// https://github.com/artsy/peril-settings/issues/16
 export const rfc16 = async () => {
   const pr = danger.github.pr
   const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
