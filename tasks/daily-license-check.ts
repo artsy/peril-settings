@@ -22,7 +22,7 @@ export default async () => {
   const contentWithRepos = `${header}\n\n${markdowns.join("\n")}`
   const noOpenRepos = "This issue will be updated next year"
 
-  const body = open ? contentWithRepos : ""
+  const body = open ? contentWithRepos : noOpenRepos
   const title = "Public Repos which have a license that's not up-to-date"
 
   await danger.github.utils.createUpdatedIssueWithID("License-Check", body, {
