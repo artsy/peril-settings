@@ -4,9 +4,11 @@ export default async () => {
   const api = danger.github.api
   const org = "artsy"
   const { data: repos } = await api.repos.getForOrg({ org, type: "public", per_page: 100 })
+  console.log(`Found ${repos.length} repos`)
 
   const markdowns: string[] = []
   for (const repo of repos) {
+    console.log(`Grabbing ${org}/${repo.name}'s license`)
     const { data: contents } = await api.repos.getContent({ owner: org, repo: repo.name, path: "LICENSE" })
     const license = Buffer.from(contents.content, "base64").toString("utf8")
 
@@ -14,6 +16,7 @@ export default async () => {
       // Say that it needs changing
       const slug = `${org}/${repo.name}`
       markdowns.push(`- [${slug}](https://github.com/${slug}/blob/master/CHANGELOG).`)
+      console.log(`- Did not find 2018`)
     }
   }
 
@@ -25,6 +28,7 @@ export default async () => {
   const body = open ? contentWithRepos : noOpenRepos
   const title = "Public Repos which have a license that's not up-to-date"
 
+  console.log(`Posting`)
   await danger.github.utils.createUpdatedIssueWithID("License-Check", body, {
     title,
     open,
