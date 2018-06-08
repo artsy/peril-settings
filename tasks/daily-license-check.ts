@@ -9,14 +9,19 @@ export default async () => {
   const markdowns: string[] = []
   for (const repo of repos) {
     console.log(`Grabbing ${org}/${repo.name}'s license`)
-    const { data: contents } = await api.repos.getContent({ owner: org, repo: repo.name, path: "LICENSE" })
-    const license = Buffer.from(contents.content, "base64").toString("utf8")
+    const slug = `${org}/${repo.name}`
 
-    if (!license.includes("2018")) {
-      // Say that it needs changing
-      const slug = `${org}/${repo.name}`
-      markdowns.push(`- [${slug}](https://github.com/${slug}/blob/master/CHANGELOG).`)
-      console.log(`- Did not find 2018`)
+    try {
+      const { data: contents } = await api.repos.getContent({ owner: org, repo: repo.name, path: "LICENSE" })
+      const license = Buffer.from(contents.content, "base64").toString("utf8")
+
+      if (!license.includes("2018")) {
+        // Say that it needs changing
+        markdowns.push(`- No 2018 on [${slug}](https://github.com/${slug}).`)
+        console.log(`- Did not find 2018`)
+      }
+    } catch (error) {
+      markdowns.push(`-No License on [${slug}](https://github.com/${slug}/blob/master/CHANGELOG).`)
     }
   }
 
