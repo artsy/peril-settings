@@ -20,20 +20,18 @@ export default async () => {
 
       if (!license.includes(year)) {
         // Say that it needs changing
-        noThisYear.push(`- [${slug}](https://github.com/${slug}).`)
-        console.log(`- x`)
+        noThisYear.push(`[${slug}](https://github.com/${slug})`)
       }
     } catch (error) {
-      noLicense.push(`-No License on [${slug}](https://github.com/${slug}/blob/master/CHANGELOG).`)
-      console.log(`- no license`)
+      noLicense.push(`[${slug}](https://github.com/${slug})`)
     }
   }
 
   const open = noThisYear.length > 0 || noLicense.length > 0
-  const notThisYearContent = `List of repos which have a license without ${year} in them.\n\n`
-  const noLicenseAndOSS = `List of repos which don't have a license.\n\n`
-  const contentWithRepos = [notThisYearContent, noThisYear.join("\n"), noLicenseAndOSS, noLicense.join("\n")].join("\n")
-  const noOpenRepos = "This issue will be updated next year"
+  const notThisYearContent = `\n## List of repos which have a license without ${year} in them.\n\n`
+  const noLicenseAndOSS = `\n## List of repos which don't have a license.\n\n`
+  const contentWithRepos = [notThisYearContent, noThisYear.join(", "), noLicenseAndOSS, noLicense.join(", ")].join("\n")
+  const noOpenRepos = "This issue will be updated daily"
 
   const body = open ? contentWithRepos : noOpenRepos
   const title = "Public Repos which have a license that's not up-to-date"
