@@ -13,12 +13,18 @@ export default async () => {
   for (const repo of repos) {
     console.log(`Grabbing ${org}/${repo.name}'s license`)
     const slug = `${org}/${repo.name}`
+    // Skip forks
+    if (repo.fork) {
+      continue
+    }
 
     try {
       const { data: contents } = await api.repos.getContent({ owner: org, repo: repo.name, path: "LICENSE" })
       const license = Buffer.from(contents.content, "base64").toString("utf8")
 
-      if (!license.includes(year)) {
+      // Skip repos that haven't been updated this year
+      const updatedThisYear = repo.pushed_at && repo.pushed_at.includes(year)
+      if (updatedThisYear && !license.includes(year)) {
         // Say that it needs changing
         noThisYear.push(`[${slug}](https://github.com/${slug})`)
       }
