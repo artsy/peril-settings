@@ -59,6 +59,9 @@ export const rfc13 = () => {
 // https://github.com/artsy/peril-settings/issues/16
 export const rfc16 = async () => {
   const pr = danger.github.pr
+  if (pr.body.includes("#trivial")) {
+    return
+  }
   const changelogs = ["CHANGELOG.md", "changelog.md", "CHANGELOG.yml"]
   const isOpen = danger.github.pr.state === "open"
 
@@ -75,7 +78,9 @@ export const rfc16 = async () => {
     const hasChangelogChanges = files.find(file => changelogs.includes(file))
 
     if (hasCodeChanges && !hasChangelogChanges) {
-      warn("It looks like code was changed without adding anything to the Changelog")
+      warn(
+        "It looks like code was changed without adding anything to the Changelog.<br/>You can add #trivial in the PR body to skip the check."
+      )
     }
   }
 }

@@ -19,6 +19,7 @@ const pr = {
     },
   },
   state: "open",
+  body: "Hello World",
 }
 
 it("warns when code has changed but no changelog entry was made", () => {
@@ -101,6 +102,24 @@ it("does not warns with a closed PR", () => {
       },
     },
     pr: { ...pr, state: "closed" },
+  }
+  dm.danger.git = {
+    modified_files: ["src/index.html"],
+    created_files: [],
+  }
+  return rfc16().then(() => {
+    expect(dm.warn).not.toBeCalled()
+  })
+})
+
+it("is skipped via #trivial", () => {
+  dm.danger.github = {
+    api: {
+      gitdata: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
+      },
+    },
+    pr: { ...pr, body: "Skip this, #trivial" },
   }
   dm.danger.git = {
     modified_files: ["src/index.html"],
