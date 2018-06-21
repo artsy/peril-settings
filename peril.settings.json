@@ -20,6 +20,9 @@
     },
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
+    },
+    "artsy/exchange": {
+      "pull_request": "dangerfile.ts"
     }
   },
   "tasks": {
