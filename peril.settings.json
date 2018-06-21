@@ -22,7 +22,7 @@
       "pull_request": "dangerfile.ts"
     },
     "artsy/exchange": {
-      "pull_request": "dangerfile.ts"
+      "pull_request": "artsy/exchange@dangerfile.ts"
     }
   },
   "tasks": {
