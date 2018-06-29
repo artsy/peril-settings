@@ -23,6 +23,9 @@
     },
     "artsy/exchange": {
       "pull_request": "artsy/exchange@dangerfile.ts"
+    },
+    "artsy/volt": {
+      "pull_request": "artsy/volt@dangerfile.ts"
     }
   },
   "tasks": {
