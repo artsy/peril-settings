@@ -1,0 +1,181 @@
+{
+  "expand": "transitions",
+  "transitions": [
+    {
+      "id": "21",
+      "name": "Define",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10078",
+        "description": "Needs definition before work can begin",
+        "iconUrl": "https://artsyproduct.atlassian.net/images/icons/statuses/generic.png",
+        "name": "Define",
+        "id": "10078",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/2",
+          "id": 2,
+          "key": "new",
+          "colorName": "blue-gray",
+          "name": "To Do"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "31",
+      "name": "Ready",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10077",
+        "description": "",
+        "iconUrl": "https://artsyproduct.atlassian.net/images/icons/statuses/generic.png",
+        "name": "Ready",
+        "id": "10077",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/2",
+          "id": 2,
+          "key": "new",
+          "colorName": "blue-gray",
+          "name": "To Do"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "41",
+      "name": "In Progress",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/3",
+        "description": "This issue is being actively worked on at the moment by the assignee.",
+        "iconUrl": "https://artsyproduct.atlassian.net/images/icons/statuses/inprogress.png",
+        "name": "In Progress",
+        "id": "3",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "51",
+      "name": "Merged",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10074",
+        "description": "This status is managed internally by Jira Software",
+        "iconUrl": "https://artsyproduct.atlassian.net/",
+        "name": "Merged",
+        "id": "10074",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "61",
+      "name": "Monitoring/QA",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10044",
+        "description": "This status is managed internally by Jira Software",
+        "iconUrl": "https://artsyproduct.atlassian.net/",
+        "name": "Monitoring/QA",
+        "id": "10044",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "71",
+      "name": "Done",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10001",
+        "description": "",
+        "iconUrl": "https://artsyproduct.atlassian.net/",
+        "name": "Done",
+        "id": "10001",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/3",
+          "id": 3,
+          "key": "done",
+          "colorName": "green",
+          "name": "Done"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "81",
+      "name": "Closed",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/6",
+        "description": "The issue was closed without work because it was de-prioritized or not relevant.",
+        "iconUrl": "https://artsyproduct.atlassian.net/images/icons/statuses/closed.png",
+        "name": "Closed",
+        "id": "6",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/3",
+          "id": 3,
+          "key": "done",
+          "colorName": "green",
+          "name": "Done"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    },
+    {
+      "id": "91",
+      "name": "In Review",
+      "to": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10018",
+        "description": "",
+        "iconUrl": "https://artsyproduct.atlassian.net/",
+        "name": "In Review",
+        "id": "10018",
+        "statusCategory": {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/4",
+          "id": 4,
+          "key": "indeterminate",
+          "colorName": "yellow",
+          "name": "In Progress"
+        }
+      },
+      "hasScreen": false,
+      "isGlobal": true,
+      "isInitial": false,
+      "isConditional": false
+    }
+  ]
+}
