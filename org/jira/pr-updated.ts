@@ -15,7 +15,8 @@ const jiraURLRegex = new RegExp("https://" + companyPrefix + urlSuffix)
 export default async (webhook: PullRequest) => {
   const prBody = danger.github.pr.body
 
-  const tickets = [...getJiraTicketIDsFromText(prBody), ...getJiraTicketIDsFromCommits()]
+  // Grab tickets from the PR body, and the commit messages
+  const tickets = uniq([...getJiraTicketIDsFromText(prBody), ...getJiraTicketIDsFromCommits(danger.git.commits)])
 
   if (!tickets.length) {
     return
@@ -48,7 +49,8 @@ export default async (webhook: PullRequest) => {
       const newStatus = statuses.transitions.find((t: any) => t.name === statusToUpdateTo)
 
       // Switch to the new status, e.g. Ready - and leave a comment
-      await jira.transitionIssue(ticketID, makeJiraTransition("PR has been made", newStatus))
+      const message = `PR been submitted: ${(danger.github.pr as any).html_url}`
+      await jira.transitionIssue(ticketID, makeJiraTransition(message, newStatus))
     } catch (err) {
       console.error(`Had an issue changing the status of ${ticketID}`)
       console.error(err)
@@ -67,8 +69,8 @@ export const getJiraTicketIDsFromText = (body: string) => {
   ].reverse()
 }
 
-export const getJiraTicketIDsFromCommits = () => {
-  const commitMessages = danger.git.commits.map(m => m.message)
+export const getJiraTicketIDsFromCommits = (commits: Array<{ message: string }>) => {
+  const commitMessages = commits.map(m => m.message)
   var ids: string[] = []
   commitMessages.forEach(message => {
     const shorthandReferences = reverse(message).match(jiraTicketRegex)
@@ -76,6 +78,8 @@ export const getJiraTicketIDsFromCommits = () => {
   })
   return ids
 }
+
+let uniq = (a: any[]) => Array.from(new Set(a))
 
 const makeJiraTransition = (comment: string, status: any) => ({
   update: {
