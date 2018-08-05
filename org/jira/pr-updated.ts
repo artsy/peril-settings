@@ -13,6 +13,8 @@ const urlSuffix = `.atlassian.net\/browse\/\d+-[A-Z]+(?!-?[a-zA-Z]{1,10})/g`
 const jiraURLRegex = new RegExp("https://" + companyPrefix + urlSuffix)
 
 export default async (webhook: PullRequest) => {
+  // Grab some util functions for Jira manipulation
+  const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } = await import("./utils")
   const prBody = danger.github.pr.body
 
   // Grab tickets from the PR body, and the commit messages
@@ -57,46 +59,3 @@ export default async (webhook: PullRequest) => {
     }
   })
 }
-
-export const getJiraTicketIDsFromText = (body: string) => {
-  // Look for jira ticket references like PLAT-123
-  const shorthandReferences = reverse(body).match(jiraTicketRegex)
-  const urlReferences = body.match(jiraURLRegex)
-
-  return [
-    ...((shorthandReferences && shorthandReferences.map(id => reverse(id))) || []),
-    ...(urlReferences || []),
-  ].reverse()
-}
-
-export const getJiraTicketIDsFromCommits = (commits: Array<{ message: string }>) => {
-  const commitMessages = commits.map(m => m.message)
-  var ids: string[] = []
-  commitMessages.forEach(message => {
-    const shorthandReferences = reverse(message).match(jiraTicketRegex)
-    ids = [...ids, ...((shorthandReferences && shorthandReferences.map(id => reverse(id))) || [])]
-  })
-  return ids
-}
-
-let uniq = (a: any[]) => Array.from(new Set(a))
-
-const makeJiraTransition = (comment: string, status: any) => ({
-  update: {
-    comment: [
-      {
-        add: {
-          body: comment,
-        },
-      },
-    ],
-  },
-  transition: {
-    id: status.id,
-  },
-})
-
-const reverse = (str: string) =>
-  Array.from(str)
-    .reverse()
-    .join("")
