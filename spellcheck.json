@@ -64,6 +64,7 @@
     "es6",
     "eslint",
     "ezel",
+    "env",
     "facebook",
     "fastlane",
     "flexbox",
