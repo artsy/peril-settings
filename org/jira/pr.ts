@@ -33,6 +33,7 @@ export default async (webhook: PullRequest) => {
     strictSSL: true,
   })
 
+  // We could get many ticket references
   tickets.forEach(async ticketID => {
     try {
       // So we have ticket references, will need to check each ticket
