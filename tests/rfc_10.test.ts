@@ -28,6 +28,9 @@ beforeEach(() => {
           checkMembership: jest.fn(),
         },
       },
+      utils: {
+        createOrAddLabel: jest.fn(),
+      },
     },
   }
   ;(global as any).console = {
@@ -56,7 +59,6 @@ describe("for adding the label", () => {
 
   it("creates the label when the label doesn't exist on the repo", async () => {
     dm.danger.github.api.orgs.checkMembership.mockReturnValueOnce(Promise.resolve({ data: {} }))
-
     dm.danger.github.api.issues.getLabels.mockReturnValueOnce(Promise.resolve({ data: [] }))
 
     await markAsMergeOnGreen({
@@ -68,27 +70,7 @@ describe("for adding the label", () => {
       repository: { owner: { login: "danger" } },
     } as any)
 
-    expect(dm.danger.github.api.issues.createLabel).toBeCalled()
-    expect(dm.danger.github.api.issues.addLabels).toBeCalled()
-  })
-
-  it("use the existing label when the label is on the repo", async () => {
-    dm.danger.github.api.orgs.checkMembership.mockReturnValueOnce(Promise.resolve({ data: {} }))
-
-    // When we ask for labels, it returns the the merge on green one
-    dm.danger.github.api.issues.getLabels.mockReturnValueOnce(Promise.resolve({ data: [{ name: "Merge On Green" }] }))
-
-    await markAsMergeOnGreen({
-      comment: {
-        body: "Merge on green",
-        user: { sender: { login: "orta" } },
-      },
-      issue: { labels: [], pull_request: {} },
-      repository: { owner: { login: "danger" } },
-    } as any)
-
-    expect(dm.danger.github.api.issues.createLabel).not.toBeCalled()
-    expect(dm.danger.github.api.issues.addLabels).toBeCalled()
+    expect(dm.danger.github.utils.createOrAddLabel).toBeCalled()
   })
 })
 

@@ -1,0 +1,198 @@
+{
+  "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+  "id": "13382",
+  "self": "https://artsyproduct.atlassian.net/rest/api/2/issue/13382",
+  "key": "PLATFORM-600",
+  "fields": {
+    "issuetype": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/issuetype/10002",
+      "id": "10002",
+      "description": "A task that needs to be done.",
+      "iconUrl": "https://artsyproduct.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype",
+      "name": "Task",
+      "subtask": false,
+      "avatarId": 10318
+    },
+    "timespent": null,
+    "customfield_10030": null,
+    "project": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/project/10040",
+      "id": "10040",
+      "key": "PLATFORM",
+      "name": "Platform",
+      "projectTypeKey": "software",
+      "avatarUrls": {
+        "48x48": "https://artsyproduct.atlassian.net/secure/projectavatar?pid=10040&avatarId=10521",
+        "24x24": "https://artsyproduct.atlassian.net/secure/projectavatar?size=small&pid=10040&avatarId=10521",
+        "16x16": "https://artsyproduct.atlassian.net/secure/projectavatar?size=xsmall&pid=10040&avatarId=10521",
+        "32x32": "https://artsyproduct.atlassian.net/secure/projectavatar?size=medium&pid=10040&avatarId=10521"
+      }
+    },
+    "customfield_10032": null,
+    "customfield_10033": null,
+    "fixVersions": [],
+    "aggregatetimespent": null,
+    "customfield_10034": null,
+    "customfield_10035": null,
+    "resolution": null,
+    "customfield_10037": null,
+    "customfield_10027": null,
+    "resolutiondate": null,
+    "workratio": -1,
+    "lastViewed": "2018-08-03T20:03:25.993-0400",
+    "watches": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/issue/PLATFORM-600/watchers",
+      "watchCount": 2,
+      "isWatching": true
+    },
+    "created": "2018-06-30T11:06:22.305-0400",
+    "priority": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/priority/3",
+      "iconUrl": "https://artsyproduct.atlassian.net/images/icons/priorities/medium.svg",
+      "name": "Medium",
+      "id": "3"
+    },
+    "customfield_10026": null,
+    "labels": ["CLIENT-INFRA", "infrastructure"],
+    "customfield_10017": null,
+    "aggregatetimeoriginalestimate": null,
+    "timeestimate": null,
+    "issuelinks": [],
+    "assignee": null,
+    "updated": "2018-07-23T16:16:59.087-0400",
+    "status": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/status/10077",
+      "description": "",
+      "iconUrl": "https://artsyproduct.atlassian.net/images/icons/statuses/generic.png",
+      "name": "Ready",
+      "id": "10077",
+      "statusCategory": {
+        "self": "https://artsyproduct.atlassian.net/rest/api/2/statuscategory/2",
+        "id": 2,
+        "key": "new",
+        "colorName": "blue-gray",
+        "name": "To Do"
+      }
+    },
+    "components": [],
+    "timeoriginalestimate": null,
+    "description": "Justin mentioned that there's about 200kb of queries inside the reaction source code, that'd remove some of the download time and speed up client-side queries\n\nGiven the rate of deployment for Reaction, this likely is requires metaphysics to support storing them in a db",
+    "customfield_10010": [],
+    "customfield_10011": "0|i00hx3:",
+    "customfield_10012": "2018-07-02T12:00:57.690-0400",
+    "customfield_10013": null,
+    "customfield_10014": null,
+    "timetracking": {},
+    "security": null,
+    "customfield_10008": null,
+    "aggregatetimeestimate": null,
+    "customfield_10009": null,
+    "attachment": [],
+    "summary": "Move Reaction to use persisted queries",
+    "creator": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/user?username=orta",
+      "name": "orta",
+      "key": "orta",
+      "accountId": "5a620c0f8fa9a1334131b4f7",
+      "emailAddress": "orta@artsymail.com",
+      "avatarUrls": {
+        "48x48": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue",
+        "24x24": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue",
+        "16x16": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue",
+        "32x32": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue"
+      },
+      "displayName": "Orta Therox",
+      "active": true,
+      "timeZone": "America/New_York"
+    },
+    "subtasks": [],
+    "reporter": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/user?username=orta",
+      "name": "orta",
+      "key": "orta",
+      "accountId": "5a620c0f8fa9a1334131b4f7",
+      "emailAddress": "orta@artsymail.com",
+      "avatarUrls": {
+        "48x48": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue",
+        "24x24": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue",
+        "16x16": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue",
+        "32x32": "https://avatar-cdn.atlassian.com/b841949525ebe49d4e0d1fe125cde0d7?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fb841949525ebe49d4e0d1fe125cde0d7%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue"
+      },
+      "displayName": "Orta Therox",
+      "active": true,
+      "timeZone": "America/New_York"
+    },
+    "customfield_10000": "{}",
+    "aggregateprogress": {
+      "progress": 0,
+      "total": 0
+    },
+    "customfield_10001": null,
+    "customfield_10004": null,
+    "customfield_10038": null,
+    "environment": null,
+    "duedate": null,
+    "progress": {
+      "progress": 0,
+      "total": 0
+    },
+    "votes": {
+      "self": "https://artsyproduct.atlassian.net/rest/api/2/issue/PLATFORM-600/votes",
+      "votes": 0,
+      "hasVoted": false
+    },
+    "comment": {
+      "comments": [
+        {
+          "self": "https://artsyproduct.atlassian.net/rest/api/2/issue/13382/comment/12706",
+          "id": "12706",
+          "author": {
+            "self": "https://artsyproduct.atlassian.net/rest/api/2/user?username=alloy",
+            "name": "alloy",
+            "key": "eloy",
+            "accountId": "5a620c04a9eb266e7c57da8e",
+            "emailAddress": "eloy@artsymail.com",
+            "avatarUrls": {
+              "48x48": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue",
+              "24x24": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue",
+              "16x16": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue",
+              "32x32": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue"
+            },
+            "displayName": "Eloy Durán",
+            "active": true,
+            "timeZone": "Europe/Amsterdam"
+          },
+          "body": "This somewhat depends on https://artsyproduct.atlassian.net/browse/PLATFORM-571, although Reaction could theoretically start using persisted queries by merging the query maps manually like is done with the queries of Emission, but not sure if I should add it to that epic.",
+          "updateAuthor": {
+            "self": "https://artsyproduct.atlassian.net/rest/api/2/user?username=alloy",
+            "name": "alloy",
+            "key": "eloy",
+            "accountId": "5a620c04a9eb266e7c57da8e",
+            "emailAddress": "eloy@artsymail.com",
+            "avatarUrls": {
+              "48x48": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue",
+              "24x24": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue",
+              "16x16": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue",
+              "32x32": "https://avatar-cdn.atlassian.com/9545a5eeef53ef54296a9b1516405a6a?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F9545a5eeef53ef54296a9b1516405a6a%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue"
+            },
+            "displayName": "Eloy Durán",
+            "active": true,
+            "timeZone": "Europe/Amsterdam"
+          },
+          "created": "2018-07-02T12:00:57.690-0400",
+          "updated": "2018-07-02T12:01:46.113-0400",
+          "jsdPublic": true
+        }
+      ],
+      "maxResults": 1,
+      "total": 1,
+      "startAt": 0
+    },
+    "worklog": {
+      "startAt": 0,
+      "maxResults": 20,
+      "total": 0,
+      "worklogs": []
+    }
+  }
+}
