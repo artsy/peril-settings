@@ -1,7 +1,7 @@
 jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
-import { getJiraTicketIDsFromText, getJiraTicketIDsFromCommits } from "../org/jira/pr-updated"
+import { getJiraTicketIDsFromText, getJiraTicketIDsFromCommits } from "../org/jira/utils"
 
 describe("grabbing links", () => {
   it("handles small references aka ABC-123", () => {

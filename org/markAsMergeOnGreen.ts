@@ -50,25 +50,19 @@ export const rfc10 = async (issueComment: IssueComment) => {
     return console.log("Sender does not have permission to merge")
   }
 
-  // Create or re-use an existing label
-  const owner = org
-  const repo = issueComment.repository.name
-  const existingLabels = await api.issues.getLabels({ owner, repo })
-  const mergeOnGreen = existingLabels.data.find((l: Label) => l.name == "Merge On Green")
-
-  // Create the label if it doesn't exist yet
-  if (!mergeOnGreen) {
-    const newLabel = await api.issues.createLabel({
-      owner,
-      repo,
-      name: "Merge On Green",
-      color: "247A38",
-      description: "A label to indicate that Peril should merge this PR when all statuses are green",
-    } as any)
+  // Let's people know that it will be merged
+  const label = {
+    name: "Merge On Green",
+    color: "247A38",
+    description: "A label to indicate that Peril should merge this PR when all statuses are green",
+  }
+  const repo = {
+    owner: org,
+    repo: issueComment.repository.name,
+    id: issue.number,
   }
 
-  // Then add the label
-  await api.issues.addLabels({ owner, repo, number: issue.number, labels: ["Merge On Green"] })
+  await danger.github.utils.createOrAddLabel(label, repo)
   console.log("Updated the PR with a Merge on Green label")
 }
 
