@@ -8,7 +8,7 @@
   },
   "rules": {
     "create (ref_type == tag)": "artsy/peril-settings@org/new-release.ts",
-    "pull_request": "artsy/peril-settings@org/all-prs.ts",
+    "pull_request": ["artsy/peril-settings@org/all-prs.ts", "artsy/peril-settings@org/jira/pr.ts],
     "pull_request.closed": "artsy/peril-settings@org/closed-prs.ts",
     "issues.opened": "artsy/peril-settings@danger/new-rfc.ts",
     "issue_comment": "artsy/peril-settings@org/markAsMergeOnGreen.ts",
