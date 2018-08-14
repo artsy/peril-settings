@@ -6,7 +6,7 @@ const mergedLabels = ["merged", "monitor/qa"]
 
 import { danger } from "danger"
 import { PullRequest } from "github-webhook-event-types"
-import JiraApi from "jira-client"
+import * as JiraApi from "jira-client"
 
 export default async (webhook: PullRequest) => {
   // Grab some util functions for Jira manipulation
@@ -26,9 +26,9 @@ export default async (webhook: PullRequest) => {
   const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
 
   // We know we have something to work with now
-  const jira = new JiraApi({
+  const jira = new (JiraApi as any)({
     protocol: "https",
-    host: `https://${companyPrefix}.atlassian.net`,
+    host: `${companyPrefix}.atlassian.net`,
     apiVersion: "2",
     strictSSL: true,
   })
@@ -65,9 +65,16 @@ export default async (webhook: PullRequest) => {
   })
 
   // Let's people know that Peril's done some work
-  await danger.github.utils.createOrAddLabel({
-    name: "Jira Synced",
-    color: "0366d6",
-    description: "Indicates that Peril has connected this PR to Jira",
-  })
+  await danger.github.utils.createOrAddLabel(
+    {
+      name: "Jira Synced",
+      color: "0366d6",
+      description: "Indicates that Peril has connected this PR to Jira",
+    },
+    {
+      owner: danger.github.pr.base.repo.owner.login,
+      repo: danger.github.pr.base.repo.name,
+      id: danger.github.pr.number,
+    }
+  )
 }
