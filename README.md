@@ -32,7 +32,7 @@ you auto-completion and types for Danger/Peril mainly.
 
 ### RFCs
 
-It's likely that any time you want to make a change here you should consult the [Artsy RFC process](https://github.com/artsy/guides/blob/master/guides/RFCs.md) and apply it to this repo.
+It's likely that any time you want to make a change here you should consult the [Artsy RFC process](https://github.com/artsy/README/blob/master/playbooks/rfcs.md#readme) and apply it on [artsy/README](https://github.com/artsy/README/).
 
 ### Implementing an RFC
 
