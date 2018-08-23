@@ -191,6 +191,8 @@
     "vars",
     "vscode",
     "webhook",
+    "tslint",
+    "camelcase",
     "webhooks",
     "webpack",
     "websocket",
