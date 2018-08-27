@@ -26,7 +26,7 @@ export const rfc10 = async (issueComment: IssueComment) => {
   const keywords = ["merge on green", "merge on ci green"]
   const match = keywords.find(k => comment.body.toLowerCase().includes(k))
   if (!match) {
-    return console.log(`Did not find any of the phrases in the comment: ${comment.body.toLocaleLowerCase()}`)
+    return console.log(`Did not find any of the merging phrases in the comment.`)
   }
 
   // Check to see if the label has already been set
