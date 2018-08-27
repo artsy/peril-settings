@@ -25,7 +25,7 @@ export default async (issues: Issues) => {
       {
         name: "RFC",
         color: "053a68",
-        description: "Indicates that this PR is a request for commentts",
+        description: "Indicates that this PR is a Request For Comments",
       },
       {
         owner: issues.repository.owner.login,
