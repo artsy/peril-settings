@@ -1,7 +1,7 @@
 jest.mock("danger", () => ({ peril: { runTask: jest.fn() } }))
 import { peril } from "danger"
 
-import check from "../danger/new-rfc"
+import check from "../danger/newRFC"
 
 it("ignores issues which aren't RFCs", async () => {
   const issues: any = {

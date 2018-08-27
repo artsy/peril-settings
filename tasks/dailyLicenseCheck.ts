@@ -11,7 +11,6 @@ export default async () => {
   const noThisYear: string[] = []
 
   for (const repo of repos) {
-    console.log(`Grabbing ${org}/${repo.name}'s license`)
     const slug = `${org}/${repo.name}`
     // Skip forks
     if (repo.fork) {

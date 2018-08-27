@@ -6,7 +6,7 @@ jest.mock("@slack/client", () => ({
 }))
 import { IncomingWebhook } from "@slack/client"
 
-import rfc53 from "../org/new-release"
+import rfc53 from "../org/newRelease"
 
 it("sends a webhook for creates which are tags", async () => {
   IncomingWebhook.prototype.send = jest.fn()

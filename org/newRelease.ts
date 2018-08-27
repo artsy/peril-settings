@@ -1,4 +1,4 @@
-import { schedule, danger, warn, fail, peril } from "danger"
+import { peril } from "danger"
 import { IncomingWebhook } from "@slack/client"
 import { Create } from "github-webhook-event-types"
 

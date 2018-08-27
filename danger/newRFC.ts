@@ -1,4 +1,4 @@
-import { danger, peril } from "danger"
+import { peril } from "danger"
 import { Issues } from "github-webhook-event-types"
 
 export default async (issues: Issues) => {

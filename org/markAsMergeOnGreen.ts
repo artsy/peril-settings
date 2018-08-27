@@ -19,22 +19,19 @@ export const rfc10 = async (issueComment: IssueComment) => {
 
   // Only look at PR issue comments, this isn't in the type system
   if (!(issue as any).pull_request) {
-    console.log("Not a Pull Request")
-    return
+    return console.log("Not a Pull Request")
   }
 
   // Don't do any work unless we have to
   const keywords = ["merge on green", "merge on ci green"]
   const match = keywords.find(k => comment.body.toLowerCase().includes(k))
   if (!match) {
-    console.log(`Did not find any of the phrases in the comment: ${comment.body.toLocaleLowerCase()}`)
-    return
+    return console.log(`Did not find any of the phrases in the comment: ${comment.body.toLocaleLowerCase()}`)
   }
 
   // Check to see if the label has already been set
   if (issue.labels.find(l => l.name === "Merge On Green")) {
-    console.log("Already has Merge on Green")
-    return
+    return console.log("Already has Merge on Green")
   }
 
   const sender = comment.user

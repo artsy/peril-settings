@@ -2,7 +2,7 @@ jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
 
-import { rfc5 } from "../org/all-prs"
+import { rfc5 } from "../org/allPRs"
 
 beforeEach(() => {
   dm.fail = jest.fn()

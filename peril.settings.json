@@ -3,17 +3,16 @@
 
   "settings": {
     "env_vars": ["SLACK_RFC_WEBHOOK_URL"],
-    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"],
-    "modules": ["danger-plugin-spellcheck", "danger-plugin-yarn", "@slack/client"]
+    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"]
   },
   "rules": {
-    "create (ref_type == tag)": "artsy/peril-settings@org/new-release.ts",
-  //  "pull_request": ["artsy/peril-settings@org/all-prs.ts", "artsy/peril-settings@org/jira/pr.ts"],
-    "pull_request": "artsy/peril-settings@org/all-prs.ts",
-    "pull_request.closed": "artsy/peril-settings@org/closed-prs.ts",
-    "issues.opened": "artsy/peril-settings@danger/new-rfc.ts",
-    "issue_comment": "artsy/peril-settings@org/markAsMergeOnGreen.ts",
-    "status.success": "artsy/peril-settings@org/mergeOnGreen.ts"
+    "create (ref_type == tag)": "org/new-release.ts",
+    //  "pull_request": ["org/all-prs.ts", "org/jira/pr.ts"],
+    "pull_request": "org/allPRs.ts",
+    "pull_request.closed": "org/closedPRs.ts",
+    "issues.opened": "danger/new-rfc.ts",
+    "issue_comment": "org/markAsMergeOnGreen.ts",
+    "status.success": "org/mergeOnGreen.ts"
   },
   "repos": {
     "artsy/reaction": {
@@ -30,8 +29,8 @@
     }
   },
   "tasks": {
-    "slack-dev-channel": "artsy/peril-settings@tasks/slack-dev-channel.ts",
-    "daily-license-check": "artsy/peril-settings@tasks/daily-license-check.ts"
+    "slack-dev-channel": "tasks/slackDevChannel.ts",
+    "daily-license-check": "tasks/dailyLicenseCheck.ts"
   },
   "scheduler": {
     "0 0 12 * * ?": "daily-license-check"
