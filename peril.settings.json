@@ -6,11 +6,11 @@
     "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"]
   },
   "rules": {
-    "create (ref_type == tag)": "org/new-release.ts",
+    "create (ref_type == tag)": "org/newRelease.ts",
     //  "pull_request": ["org/all-prs.ts", "org/jira/pr.ts"],
     "pull_request": "org/allPRs.ts",
     "pull_request.closed": "org/closedPRs.ts",
-    "issues.opened": "danger/new-rfc.ts",
+    "issues.opened": "danger/newRFCts",
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts"
   },
