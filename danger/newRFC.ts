@@ -1,4 +1,4 @@
-import { peril } from "danger"
+import { peril, danger } from "danger"
 import { Issues } from "github-webhook-event-types"
 
 export default async (issues: Issues) => {
@@ -19,8 +19,22 @@ export default async (issues: Issues) => {
   })
 
   if (issue.title.includes("RFC:") || issue.title.includes("[RFC]")) {
-    console.log("Triggering slack notifications")
+    // Marks it as an RFC
+    console.log("Adding label to the issue")
+    await danger.github.utils.createOrAddLabel(
+      {
+        name: "RFC",
+        color: "053a68",
+        description: "Indicates that this PR is a request for commentts",
+      },
+      {
+        owner: issues.repository.owner.login,
+        repo: issues.repository.name,
+        id: issue.number,
+      }
+    )
 
+    console.log("Triggering slack notifications")
     await peril.runTask("slack-dev-channel", "in 5 minutes", slackify("🎉: A new RFC has been published."))
     await peril.runTask("slack-dev-channel", "in 3 days", slackify("🕰: A new RFC was published 3 days ago."))
     await peril.runTask("slack-dev-channel", "in 7 days", slackify("🕰: A new RFC is ready to be resolved."))
