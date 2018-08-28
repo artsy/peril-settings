@@ -59,6 +59,7 @@ export const rfc10 = async (issueComment: IssueComment) => {
     id: issue.number,
   }
 
+  console.log("Adding the labelL:", repo)
   await danger.github.utils.createOrAddLabel(label, repo)
   console.log("Updated the PR with a Merge on Green label")
 }
