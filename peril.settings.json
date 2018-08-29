@@ -33,6 +33,6 @@
     "daily-license-check": "tasks/dailyLicenseCheck.ts"
   },
   "scheduler": {
-    "one day": "daily-license-check"
+    "daily": "daily-license-check"
   }
 }
