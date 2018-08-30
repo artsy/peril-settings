@@ -10,7 +10,7 @@
     //  "pull_request": ["org/all-prs.ts", "org/jira/pr.ts"],
     "pull_request": "org/allPRs.ts",
     "pull_request.closed": "org/closedPRs.ts",
-    "issues.opened": "danger/newRFCts",
+    "issues.opened": "danger/newRFC.ts",
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts"
   },
