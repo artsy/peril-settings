@@ -27,12 +27,13 @@ import { IncomingWebhook } from "@slack/client"
     peril.runTask("slack-dev-channel", "in 5 minutes", message)
  */
 
-export default (data: any) => {
+export default async (data: any) => {
   if (!data) {
     console.log("No data was passed to slack-dev-channel, so a message will not be sent.")
   } else {
     const url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
     const webhook = new IncomingWebhook(url)
-    webhook.send(data)
+    await webhook.send(data)
+    console.log("Sent webhook.")
   }
 }
