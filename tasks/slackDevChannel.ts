@@ -33,7 +33,7 @@ export default async (data: any) => {
   } else {
     const url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
     const webhook = new IncomingWebhook(url)
+    console.log("Sending webhook", data)
     await webhook.send(data)
-    console.log("Sent webhook.")
   }
 }
