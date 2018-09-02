@@ -30,9 +30,11 @@
   },
   "tasks": {
     "slack-dev-channel": "tasks/slackDevChannel.ts",
-    "daily-license-check": "tasks/dailyLicenseCheck.ts"
+    "daily-license-check": "tasks/dailyLicenseCheck.ts",
+    "rfc-summary": "tasks/weeklyRFCSummary.ts"
   },
   "scheduler": {
-    "one day": "daily-license-check"
+    "daily": "daily-license-check",
+    "monday-morning-est": "rfc-summary"
   }
 }
