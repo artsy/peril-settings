@@ -1,5 +1,4 @@
 import { danger } from "danger"
-import { realpathSync } from "fs"
 import { slackMessage, slackData } from "./slackDevChannel"
 
 const org = "artsy"
@@ -59,5 +58,6 @@ export default async () => {
   await slackData({
     text,
     attachments,
+    unfurl_links: false,
   })
 }
