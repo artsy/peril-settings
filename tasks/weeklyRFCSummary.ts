@@ -1,5 +1,4 @@
 import { danger } from "danger"
-import { slackMessage, slackData } from "./slackDevChannel"
 
 const org = "artsy"
 const label = "RFC"
@@ -32,6 +31,8 @@ export interface Result {
 // https://developer.github.com/v3/search/#search-issues
 
 export default async () => {
+  const { slackMessage, slackData } = await import("./slackDevChannel")
+
   const api = danger.github.api
   const rfcQuery = `org:${org} label:${label} state:open`
   const searchResponse = await api.search.issues({ q: rfcQuery })
