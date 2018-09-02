@@ -1,5 +1,5 @@
 import { peril } from "danger"
-import { IncomingWebhook } from "@slack/client"
+import { IncomingWebhook, IncomingWebhookSendArguments } from "@slack/client"
 
 /**
  * A task that accepts Slack incoming webhook data
@@ -27,13 +27,36 @@ import { IncomingWebhook } from "@slack/client"
     peril.runTask("slack-dev-channel", "in 5 minutes", message)
  */
 
-export default async (data: any) => {
-  if (!data.data) {
+/**
+ * The default, send a slack message with some data that's come in
+ * this is also usable as a task
+ */
+
+export const slackData = async (data: IncomingWebhookSendArguments) => {
+  if (!data) {
     console.log("No data was passed to slack-dev-channel, so a message will not be sent.")
   } else {
     const url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
     const webhook = new IncomingWebhook(url)
-    console.log("Sending webhook", data)
-    await webhook.send(data.data)
+    await webhook.send(data)
   }
 }
+
+/**
+ * Send a slack message to the dev channel in Artsy
+ * @param message the message to send to #dev
+ */
+export const slackMessage = async (message: string) => {
+  const data = {
+    unfurl_links: false,
+    attachments: [
+      {
+        color: "good",
+        title: message,
+      },
+    ],
+  }
+  await slackData(data)
+}
+
+export default slackData
