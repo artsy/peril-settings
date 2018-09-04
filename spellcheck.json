@@ -48,6 +48,7 @@
     "dangerfiles",
     "dangerjs",
     "danger-js",
+    "devtools",
     "datadog",
     "dataloader",
     "de-silo'd",
@@ -74,6 +75,7 @@
     "fastlane",
     "flexbox",
     "frp",
+    "frontend",
     "gil",
     "github",
     "gitlab",
@@ -200,7 +202,8 @@
     "xcode",
     "yayoi",
     "yuki",
-    "zwirner"
+    "zwirner",
+    "voila"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
