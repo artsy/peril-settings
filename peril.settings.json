@@ -18,14 +18,17 @@
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
     },
+    "artsy/force": {
+      "pull_request": "danger.ts"
+    },
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
     },
     "artsy/exchange": {
-      "pull_request": "artsy/exchange@dangerfile.ts"
+      "pull_request": "dangerfile.ts"
     },
     "artsy/volt": {
-      "pull_request": "artsy/volt@dangerfile.ts"
+      "pull_request": "dangerfile.ts"
     }
   },
   "tasks": {
