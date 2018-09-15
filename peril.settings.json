@@ -19,7 +19,7 @@
       "pull_request": "danger/pr.ts"
     },
     "artsy/force": {
-      "pull_request": "danger.ts"
+      "pull_request": "dangerfile.ts"
     },
     "artsy/positron": {
       "pull_request": "dangerfile.ts"
