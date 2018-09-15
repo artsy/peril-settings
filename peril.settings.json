@@ -2,7 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/danger/peril/master/peril-settings-json.schema",
 
   "settings": {
-    "env_vars": ["SLACK_RFC_WEBHOOK_URL"],
     "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"]
   },
   "rules": {
