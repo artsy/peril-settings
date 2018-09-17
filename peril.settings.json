@@ -6,11 +6,16 @@
     "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"]
   },
   "rules": {
+    // Keep a list of all deployments in slack
     "create (ref_type == tag)": "org/newRelease.ts",
+    // Jira integration
     //  "pull_request": ["org/all-prs.ts", "org/jira/pr.ts"],
     "pull_request": "org/allPRs.ts",
     "pull_request.closed": "org/closedPRs.ts",
-    "issues.opened": "danger/newRFC.ts",
+    // The RFC process
+    "issues.opened": "rfc/addRFCToNewIssues.ts",
+    "issues.labeled": "rfc/scheduleRFCsForLabels.ts",
+    // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts"
   },
