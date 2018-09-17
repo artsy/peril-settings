@@ -12,8 +12,8 @@
     "pull_request": "org/allPRs.ts",
     "pull_request.closed": "org/closedPRs.ts",
     // The RFC process
-    "issues.opened": "rfc/addRFCToNewIssues.ts",
-    "issues.labeled": "rfc/scheduleRFCsForLabels.ts",
+    "issues.opened": "org/rfc/addRFCToNewIssues.ts",
+    "issues.labeled": "org/rfc/scheduleRFCsForLabels.ts",
     // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts"
