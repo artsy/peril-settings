@@ -229,7 +229,8 @@
     "xcode",
     "yayoi",
     "yuki",
-    "zwirner"
+    "zwirner",
+    "zeplin"
   ],
   "whitelistFiles": ["CHANGELOG.md"]
 }
