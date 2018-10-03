@@ -85,6 +85,13 @@ it("Triggers tasks when RFC is in the labels", async () => {
   expect(peril.runTask).toHaveBeenCalledWith("slack-dev-channel", "in 5 minutes", expect.anything())
   expect(peril.runTask).toHaveBeenCalledWith("slack-dev-channel", "in 3 days", expect.anything())
   expect(peril.runTask).toHaveBeenCalledWith("slack-dev-channel", "in 7 days", expect.anything())
+
+  // Also checks that the last
+  const mockRunTask = peril.runTask as jest.Mock
+  expect(mockRunTask.mock.calls[2][2].attachments[1]).toEqual({
+    title: "How to resolve an RFC",
+    title_link: "https://github.com/artsy/README/blob/master/playbooks/rfcs.md#resolution",
+  })
 })
 
 it("does not trigger tasks when RFC is not the labels", async () => {

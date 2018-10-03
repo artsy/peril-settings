@@ -1,5 +1,6 @@
 import { peril } from "danger"
 import { Issues } from "github-webhook-event-types"
+import { IncomingWebhookSendArguments, MessageAttachment } from "@slack/client"
 
 /**
  * When an issue has been labelled RFC, then trigger the scheduler
@@ -9,7 +10,7 @@ import { Issues } from "github-webhook-event-types"
 export default async (issues: Issues) => {
   const issue = issues.issue
 
-  const slackify = (text: string) => ({
+  const slackify = (text: string, attachment: MessageAttachment = {}): IncomingWebhookSendArguments => ({
     unfurl_links: false,
     attachments: [
       {
@@ -20,6 +21,7 @@ export default async (issues: Issues) => {
         author_name: issue.user.login,
         author_icon: issue.user.avatar_url,
       },
+      attachment,
     ],
   })
 
@@ -29,7 +31,19 @@ export default async (issues: Issues) => {
 
     await peril.runTask("slack-dev-channel", "in 5 minutes", slackify("🎉: A new RFC has been published."))
     await peril.runTask("slack-dev-channel", "in 3 days", slackify("🕰: A new RFC was published 3 days ago."))
-    await peril.runTask("slack-dev-channel", "in 7 days", slackify("🕰: A new RFC is ready to be resolved."))
+
+    // When someone is resolving, you nearly always need the template, so add that incase
+    const urlForDocumentationAttachment: MessageAttachment = {
+      title: "How to resolve an RFC",
+      title_link: "https://github.com/artsy/README/blob/master/playbooks/rfcs.md#resolution",
+    }
+
+    // Send the final message
+    await peril.runTask(
+      "slack-dev-channel",
+      "in 7 days",
+      slackify("🕰: A new RFC is ready to be resolved.", urlForDocumentationAttachment)
+    )
 
     console.log("Triggered slack notifications")
   }
