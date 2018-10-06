@@ -41,7 +41,9 @@ export const rfc10 = async (issueComment: IssueComment) => {
   // Check for org access, so that some rando doesn't
   // try to merge something without permission
   try {
-    await api.orgs.checkMembership({ org, username })
+    if (username !== org) {    
+      await api.orgs.checkMembership({ org, username })
+    }
   } catch (error) {
     // Someone does not have permission to force a merge
     return console.log("Sender does not have permission to merge")
