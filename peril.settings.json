@@ -8,7 +8,7 @@
     // Keep a list of all deployments in slack
     "create (ref_type == tag)": "org/newRelease.ts",
     // Jira integration
-    "pull_request": ["org/all-prs.ts", "org/jira/pr.ts"],
+    "pull_request": ["org/allPRs.ts", "org/jira/pr.ts"],
     "pull_request.closed": "org/closedPRs.ts",
     // The RFC process
     "issues.opened": "org/rfc/addRFCToNewIssues.ts",
