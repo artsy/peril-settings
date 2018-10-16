@@ -31,6 +31,7 @@ export default async (webhook: PullRequest) => {
     host: `${companyPrefix}.atlassian.net`,
     apiVersion: "2",
     strictSSL: true,
+    bearer: process.env.JIRA_ACCESS_TOKEN,
   })
 
   tickets.forEach(async ticketID => {
