@@ -11,6 +11,7 @@ export default async () => {
   const labelsMap = {
     consignments: "C52403S10",
     auctions: "C0C4AJ1PF",
+    analytics: "C0KEQD4B0"
   } as any
 
   // Find the labels in both the map above, and in the PR's labels
