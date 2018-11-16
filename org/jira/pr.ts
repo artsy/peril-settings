@@ -25,16 +25,14 @@ export default async (webhook: PullRequest) => {
   // Figure out what we want to move it to
   const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
 
-  console.log(">>>")
-  console.log(Object.keys(process.env))
-
   // We know we have something to work with now
   const jira = new (JiraApi as any)({
     protocol: "https",
     host: `${companyPrefix}.atlassian.net`,
     apiVersion: "2",
     strictSSL: true,
-    bearer: process.env.JIRA_ACCESS_TOKEN,
+    username: process.env.JIRA_EMAIL,
+    password: process.env.JIRA_ACCESS_TOKEN,
   })
 
   tickets.forEach(async ticketID => {
