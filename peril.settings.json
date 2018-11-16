@@ -11,7 +11,7 @@
     "pull_request": ["org/allPRs.ts", "org/jira/pr.ts"],
     "pull_request.closed": "org/closedPRs.ts",
     // The RFC process
-    "issues.opened": "org/rfc/addRFCToNewIssues.ts",
+    "issues": "org/rfc/addRFCToNewIssues.ts",
     "issues.labeled": "org/rfc/scheduleRFCsForLabels.ts",
     // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
