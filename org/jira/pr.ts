@@ -11,6 +11,9 @@ import * as JiraApi from "jira-client"
 import * as IssueJSON from "../../fixtures/jira_issue_example.json"
 type Issue = typeof IssueJSON
 
+import * as TransitionsJSON from "../../fixtures/jira_examples_transitions.json"
+type Transition = typeof TransitionsJSON
+
 export default async (webhook: PullRequest) => {
   // Grab some util functions for Jira manipulation
   const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } = await import("./utils")
@@ -25,9 +28,6 @@ export default async (webhook: PullRequest) => {
     return
   }
 
-  // Figure out what we want to move it to
-  const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
-
   // We know we have something to work with now
   const jira: JiraApi.default = new (JiraApi as any)({
     protocol: "https",
@@ -38,6 +38,7 @@ export default async (webhook: PullRequest) => {
     password: process.env.JIRA_ACCESS_TOKEN,
   })
 
+  console.log(`Looking at ${danger.utils.sentence(tickets)}.`)
   tickets.forEach(async ticketID => {
     try {
       // So we have ticket references, will need to check each ticket
@@ -46,27 +47,35 @@ export default async (webhook: PullRequest) => {
       // https://developer.atlassian.com/cloud/jira/platform/rest/#api-api-2-issue-issueIdOrKey-get
 
       const issue: Issue = (await jira.findIssue(ticketID)) as any
-      console.log(`issue: ${JSON.stringify(issue)}`)
 
-      // Bail if already set to what we want
-      if (labelsToLookFor.includes(issue.fields.status.name.toLowerCase())) {
-        console.log("The issue is already set")
+      // Figure out what we want to move it to
+      const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
+
+      // Get all the potential statuses, see if any are in our list
+      const transitions: Transition = (await jira.listTransitions(issue.id)) as any
+
+      const newStatus = transitions.transitions.find((t: any) => labelsToLookFor.includes(t.name.toLowerCase()))
+      if (!newStatus) {
+        const labels = danger.utils.sentence(labelsToLookFor)
+        console.log(`Could not find a transition status with one of these names: ${labels}`)
         return
       }
 
-      // Get all the potential statuses, see if any are in our list
-      const statuses = await jira.getDevStatusSummary(ticketID)
-      console.log("Found potential statuses: " + statuses.join(", "))
-      const newStatus = statuses.transitions.find((t: any) => labelsToLookFor.includes(t.name.toLowerCase()))
+      // Bail if already set to what we want
+      if (issue.fields.status.id === newStatus.id) {
+        console.log(`The issue is already set at ${labelsToLookFor}`)
+        return
+      }
 
       // Switch to the new status, e.g. Ready - and leave a comment
       const type = danger.github.pr.merged ? "submitted" : "merged"
       const message = `PR has been ${type}: ${(danger.github.pr as any).html_url}`
-
       console.log(`Converting ${ticketID} to ${newStatus}`)
-      await jira.transitionIssue(ticketID, makeJiraTransition(message, newStatus))
+      console.log(`Looking at: ${issue.id}`)
+      await jira.transitionIssue(issue.id, makeJiraTransition(message, newStatus))
     } catch (err) {
       console.log(`Had an issue changing the status of ${ticketID}`)
+      console.log(err.message)
       console.log(err)
     }
   })
