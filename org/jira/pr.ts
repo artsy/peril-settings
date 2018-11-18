@@ -8,6 +8,9 @@ import { danger } from "danger"
 import { PullRequest } from "github-webhook-event-types"
 import * as JiraApi from "jira-client"
 
+import * as IssueJSON from "../../fixtures/jira_issue_example.json"
+type Issue = typeof IssueJSON
+
 export default async (webhook: PullRequest) => {
   // Grab some util functions for Jira manipulation
   const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } = await import("./utils")
@@ -42,11 +45,11 @@ export default async (webhook: PullRequest) => {
       //
       // https://developer.atlassian.com/cloud/jira/platform/rest/#api-api-2-issue-issueIdOrKey-get
 
-      const issue = await jira.findIssue(ticketID)
+      const issue: Issue = (await jira.findIssue(ticketID)) as any
       console.log(`issue: ${JSON.stringify(issue)}`)
 
       // Bail if already set to what we want
-      if (labelsToLookFor.includes(issue.status.name.toLowerCase())) {
+      if (labelsToLookFor.includes(issue.fields.status.name.toLowerCase())) {
         console.log("The issue is already set")
         return
       }
