@@ -26,7 +26,7 @@ export default async (webhook: PullRequest) => {
   const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
 
   // We know we have something to work with now
-  const jira = new (JiraApi as any)({
+  const jira: JiraApi.default = new (JiraApi as any)({
     protocol: "https",
     host: `${companyPrefix}.atlassian.net`,
     apiVersion: "2",
@@ -44,7 +44,8 @@ export default async (webhook: PullRequest) => {
 
       const issue = await jira.findIssue(ticketID)
       console.log(`Status: ${issue.fields.status.name}`)
-      console.log(`Type: ${issue.fields.status.name}`)
+      console.log(`Description: ${issue.fields.description}`)
+      console.log(`url: ${issue.self}`)
 
       // Bail if already set to what we want
       if (labelsToLookFor.includes(issue.status.name.toLowerCase())) {
@@ -54,11 +55,14 @@ export default async (webhook: PullRequest) => {
 
       // Get all the potential statuses, see if any are in our list
       const statuses = await jira.getDevStatusSummary(ticketID)
+      console.log("Found potential statuses: " + statuses.join(", "))
       const newStatus = statuses.transitions.find((t: any) => labelsToLookFor.includes(t.name.toLowerCase()))
 
       // Switch to the new status, e.g. Ready - and leave a comment
       const type = danger.github.pr.merged ? "submitted" : "merged"
-      const message = `PR been ${type}: ${(danger.github.pr as any).html_url}`
+      const message = `PR has been ${type}: ${(danger.github.pr as any).html_url}`
+
+      console.log(`Converting ${ticketID} to ${newStatus}`)
       await jira.transitionIssue(ticketID, makeJiraTransition(message, newStatus))
     } catch (err) {
       console.log(`Had an issue changing the status of ${ticketID}`)
