@@ -53,17 +53,29 @@ export default async (webhook: PullRequest) => {
 
       // Get all the potential statuses, see if any are in our list
       const transitions: Transition = (await jira.listTransitions(issue.id)) as any
+      console.log(`Found: ${danger.utils.sentence(transitions.transitions.map(t => t.name))}`)
 
-      const newStatus = transitions.transitions.find((t: any) => labelsToLookFor.includes(t.name.toLowerCase()))
+      const newStatus = transitions.transitions.find(t => labelsToLookFor.includes(t.name.toLowerCase()))
+      const currentStatus = transitions.transitions.find(t => issue.fields.status.id === t.id)
       if (!newStatus) {
         const labels = danger.utils.sentence(labelsToLookFor)
         console.log(`Could not find a transition status with one of these names: ${labels}`)
         return
       }
 
-      // Bail if already set to what we want
-      if (issue.fields.status.id === newStatus.id) {
-        console.log(`The issue is already set at ${labelsToLookFor}`)
+      if (!currentStatus) {
+        console.log(`Could not find a transition status for the current one: ${issue.fields.status.name}`)
+        return
+      }
+
+      // Get the order of their indexes, our status options usually look like
+      // Define, Ready, In Progress, Merged, Monitoring/QA, Done, Closed and In Review
+      //
+      const newStatusOrder = transitions.transitions.indexOf(newStatus)
+      const currentStatusOrder = transitions.transitions.indexOf(currentStatus)
+
+      if (newStatusOrder <= currentStatusOrder) {
+        console.log(`Skipping making a transition because issue is already at the same state or further along`)
         return
       }
 
@@ -72,6 +84,9 @@ export default async (webhook: PullRequest) => {
       const message = `PR has been ${type}: ${(danger.github.pr as any).html_url}`
       console.log(`Converting ${ticketID} to ${newStatus.name}`)
       await jira.transitionIssue(issue.id, makeJiraTransition(message, newStatus))
+
+      console.log("Leaving a comment")
+      await jira.addComment(issue.id, message)
     } catch (err) {
       console.log(`Had an issue changing the status of ${ticketID}`)
       console.log(err.message)
