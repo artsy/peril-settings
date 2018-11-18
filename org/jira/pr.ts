@@ -43,9 +43,7 @@ export default async (webhook: PullRequest) => {
       // https://developer.atlassian.com/cloud/jira/platform/rest/#api-api-2-issue-issueIdOrKey-get
 
       const issue = await jira.findIssue(ticketID)
-      console.log(`Status: ${issue.fields.status}`)
-      console.log(`Description: ${issue.fields.description}`)
-      console.log(`url: ${issue.self}`)
+      console.log(`issue: ${JSON.stringify(issue)}`)
 
       // Bail if already set to what we want
       if (labelsToLookFor.includes(issue.status.name.toLowerCase())) {
