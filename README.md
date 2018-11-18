@@ -5,14 +5,16 @@
 This is the configuration repo for Peril on the Artsy org. There is a [settings file](settings.json) and org-wide
 dangerfiles which are inside the [org folder](org/).
 
-Here's some links to the key things
+Here's some links to the key concepts:
 
-* [Peril](https://github.com/danger/peril)
-* [Danger JS](http://danger.systems/js/)
-* [Peril for Orgs](https://github.com/danger/peril/blob/master/docs/setup_for_org.md)
-* [Peril on the Artsy Heroku team](https://dashboard.heroku.com/apps/artsy-peril)
+- [Peril](https://github.com/danger/peril)
+- [Danger JS](http://danger.systems/js/)
+- [Peril for Orgs](https://github.com/danger/peril/blob/master/docs/setup_for_org.md)
+- [Introducing Peril to the Artsy org](http://artsy.github.io/blog/2017/09/04/Introducing-Peril/)
 
-### TLDR on this Repo?
+An overview of what Peril does for Artsy is available in the README repo at [`/culture/peril.md`][docs].
+
+### TL:DR on this Repo?
 
 Peril is Danger running on a web-server, this repo is the configuration for that, currently the dangerfiles in [org](org/)
 run on every issue and pull request for all our repos.
@@ -91,3 +93,5 @@ We use Jest to test our Dangerfiles. It uses the same techniques as testing a
     ```
 
 4.  Validate that the `fail`/`warn`/`message`/`markdown` is called.
+
+[docs]: https://github.com/artsy/README/blob/master/culture/peril.md
