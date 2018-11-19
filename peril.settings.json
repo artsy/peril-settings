@@ -36,13 +36,12 @@
     }
   },
   "tasks": {
+    "monday-informationals": ["tasks/weeklyRFCSummary.ts", "tasks/compareSchemas.ts"],
     "slack-dev-channel": "tasks/slackDevChannel.ts",
-    "daily-license-check": "tasks/dailyLicenseCheck.ts",
-    "rfc-summary": "tasks/weeklyRFCSummary.ts",
-    "weekly-graphql-update": "tasks/compareSchemas.ts"
+    "daily-license-check": "tasks/dailyLicenseCheck.ts"
   },
   "scheduler": {
     "daily": "daily-license-check",
-    "monday-morning-est": "rfc-summary"
+    "monday-morning-est": "monday-informationals"
   }
 }
