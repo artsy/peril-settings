@@ -120,7 +120,7 @@ export default async () => {
 
     const addedTypeMessages = diffs.filter(d => d.diffType == "TypeMissing" && d.otherType).map(d => d.otherType.name)
     if (addedTypeMessages.length) {
-      messages.push({ color: "green", text: "Added:" + codeJoin(addedTypeMessages) })
+      messages.push({ color: "good", text: "Added:" + codeJoin(addedTypeMessages) })
     }
 
     const removedTypesMessages = diffs.filter(d => d.diffType == "TypeMissing" && d.thisType).map(d => d.thisType.name)
@@ -135,17 +135,19 @@ export default async () => {
       const newFields = Object.keys(newQuery.getFields())
       const oldFields = Object.keys(oldQuery.getFields())
       const diff = newFields.filter(f => !oldFields.includes(f))
-      messages.push({ color: "green", text: "New root query fields: " + codeJoin(diff) })
+      messages.push({ color: "good", text: "New root query fields: " + codeJoin(diff) })
     }
 
+    // If there are any messages to send, wrap them up in a slack message with a link to the full compare url.
     if (messages.length) {
       var url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
       var webhook = new IncomingWebhook(url)
 
+      const compareURL = `https://github.com/${org}/${repoName}/compare/${lastCommit.sha}...master`
       await webhook.send({
         unfurl_links: false,
         text: `GraphQL Schema changes on \`${repoName}\``,
-        attachments: messages,
+        attachments: [...messages, { title: "Diff for last week", title_link: compareURL }],
       })
     }
   })
