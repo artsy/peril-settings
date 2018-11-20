@@ -1,6 +1,5 @@
 {
   "$schema": "https://raw.githubusercontent.com/danger/peril/master/peril-settings-json.schema",
-
   "settings": {
     "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"],
     "disable_github_check": true
@@ -16,7 +15,8 @@
     "issues.labeled": "org/rfc/scheduleRFCsForLabels.ts",
     // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
-    "status.success": "org/mergeOnGreen.ts"
+    "status.success": "org/mergeOnGreen.ts",
+    "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
     "artsy/reaction": {

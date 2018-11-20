@@ -38,23 +38,66 @@ beforeEach(() => {
   }
 })
 
+const repo = { repository: { owner: { login: "danger" } } }
+
 describe("for adding the label", () => {
-  it("bails when the comment is not on a pr", async () => {
-    await markAsMergeOnGreen({ issue: {} } as any)
-    expect(console.log).toBeCalledWith("Not a Pull Request")
+  describe("in response to an issue comment", () => {
+    it("bails when the comment is not on a pr", async () => {
+      await markAsMergeOnGreen({
+        comment: { body: "Hi", user: { login: "danger" } },
+        issue: {},
+        ...repo,
+      } as any)
+      expect(console.log).toBeCalledWith("Not a Pull Request")
+    })
+
+    it("bails when the issue body doesn't contain the key words", async () => {
+      await markAsMergeOnGreen({
+        comment: { body: "Hi", user: { login: "danger" } },
+        issue: { pull_request: {} },
+        ...repo,
+      } as any)
+
+      expect(console.log).toBeCalledWith(expect.stringMatching("Did not find"))
+    })
+
+    it("bails when the issue already has merge on green", async () => {
+      await markAsMergeOnGreen({
+        comment: { body: "Merge on green", user: { login: "danger" } },
+        issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
+        ...repo,
+      } as any)
+      expect(console.log).toBeCalledWith("Already has Merge on Green")
+    })
   })
 
-  it("bails when the issue body doesn't contain the key words", async () => {
-    await markAsMergeOnGreen({ comment: { body: "Hi" }, issue: { pull_request: {} } } as any)
-    expect(console.log).toBeCalledWith(expect.stringMatching("Did not find"))
-  })
+  describe("in response to a review", () => {
+    const pull_request = { number: 1 }
 
-  it("bails when the issue already has merge on green", async () => {
-    await markAsMergeOnGreen({
-      comment: { body: "Merge on green" },
-      issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
-    } as any)
-    expect(console.log).toBeCalledWith("Already has Merge on Green")
+    it("bails when the issue body doesn't contain the key words", async () => {
+      dm.danger.github.api.issues.get.mockReturnValueOnce(Promise.resolve({ data: { labels: [] } }))
+
+      await markAsMergeOnGreen({
+        review: { body: "Hi", user: { login: "danger" } },
+        pull_request: pull_request,
+        ...repo,
+      } as any)
+
+      expect(console.log).toBeCalledWith(expect.stringMatching("Did not find"))
+    })
+
+    it("bails when the issue already has merge on green", async () => {
+      dm.danger.github.api.issues.get.mockReturnValueOnce(
+        Promise.resolve({ data: { labels: [{ name: "Merge On Green" }] } })
+      )
+
+      await markAsMergeOnGreen({
+        review: { body: "Merge on green!", user: { login: "danger" } },
+        pull_request: pull_request,
+        ...repo,
+      } as any)
+      expect(console.log).toBeCalledWith("Already has Merge on Green")
+    })
   })
 
   it("creates the label when the label doesn't exist on the repo", async () => {
@@ -67,7 +110,7 @@ describe("for adding the label", () => {
         user: { sender: { login: "orta" } },
       },
       issue: { labels: [], pull_request: {} },
-      repository: { owner: { login: "danger" } },
+      ...repo,
     } as any)
 
     expect(dm.danger.github.utils.createOrAddLabel).toBeCalled()

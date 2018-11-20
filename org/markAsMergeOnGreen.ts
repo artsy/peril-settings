@@ -1,5 +1,6 @@
 import { danger } from "danger"
-import { IssueComment } from "github-webhook-event-types"
+import { IssueComment, PullRequestReview } from "github-webhook-event-types"
+import { IssueCommentIssue } from "github-webhook-event-types/source/IssueComment"
 
 // The shape of a label
 interface Label {
@@ -12,19 +13,47 @@ interface Label {
 }
 
 /** If a comment to an issue contains "Merge on Green", apply a label for it to be merged when green. */
-export const rfc10 = async (issueComment: IssueComment) => {
-  const issue = issueComment.issue
-  const comment = issueComment.comment
+export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestReview) => {
   const api = danger.github.api
+  const org = issueCommentOrPrReview.repository.owner.login
 
-  // Only look at PR issue comments, this isn't in the type system
-  if (!(issue as any).pull_request) {
-    return console.log("Not a Pull Request")
+  let issue: IssueCommentIssue = null!
+  let text: string = null!
+  let userLogin: string = ""
+
+  if ("issue" in issueCommentOrPrReview) {
+    issue = issueCommentOrPrReview.issue
+    text = issueCommentOrPrReview.comment.body
+    userLogin = issueCommentOrPrReview.comment.user.login
+
+    // Only look at PR issue comments, this isn't in the type system
+    if (!(issue as any).pull_request) {
+      return console.log("Not a Pull Request")
+    }
+  }
+
+  if ("review" in issueCommentOrPrReview) {
+    const repo = issueCommentOrPrReview.repository
+    const response = await api.issues.get({
+      owner: repo.owner.login,
+      repo: repo.name,
+      number: issueCommentOrPrReview.pull_request.number,
+    })
+
+    issue = response.data as any
+    text = issueCommentOrPrReview.review.body
+    userLogin = issueCommentOrPrReview.review.user.login
+  }
+
+  // Bail if there's no text from the review
+  if (!text) {
+    console.log("Could not find text for the webhook to look for the merge on green message")
+    return
   }
 
   // Don't do any work unless we have to
   const keywords = ["merge on green", "merge on ci green"]
-  const match = keywords.find(k => comment.body.toLowerCase().includes(k))
+  const match = keywords.find(k => text.toLowerCase().includes(k))
   if (!match) {
     return console.log(`Did not find any of the merging phrases in the comment.`)
   }
@@ -34,15 +63,11 @@ export const rfc10 = async (issueComment: IssueComment) => {
     return console.log("Already has Merge on Green")
   }
 
-  const sender = comment.user
-  const username = sender.login
-  const org = issueComment.repository.owner.login
-
   // Check for org access, so that some rando doesn't
   // try to merge something without permission
   try {
-    if (username !== org) {    
-      await api.orgs.checkMembership({ org, username })
+    if (userLogin !== org) {
+      await api.orgs.checkMembership({ org, username: userLogin })
     }
   } catch (error) {
     // Someone does not have permission to force a merge
@@ -57,7 +82,7 @@ export const rfc10 = async (issueComment: IssueComment) => {
   }
   const repo = {
     owner: org,
-    repo: issueComment.repository.name,
+    repo: issueCommentOrPrReview.repository.owner.login,
     id: issue.number,
   }
 
