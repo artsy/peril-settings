@@ -84,7 +84,7 @@ export default async (webhook: PullRequest) => {
       }
 
       // Switch to the new status, e.g. Ready - and leave a comment
-      const type = danger.github.pr.merged ? "submitted" : "merged"
+      const type = danger.github.pr.merged ? "merged" : "submitted"
       const message = `PR has been ${type}: ${(danger.github.pr as any).html_url}`
       console.log(`Converting ${ticketID} to ${newStatus.name}`)
       await jira.transitionIssue(issue.id, makeJiraTransition(message, newStatus))
