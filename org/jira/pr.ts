@@ -14,6 +14,8 @@ type Issue = typeof IssueJSON
 import * as TransitionsJSON from "../../fixtures/jira_examples_transitions.json"
 type Transition = typeof TransitionsJSON
 
+const { sentence } = danger.utils
+
 export default async (webhook: PullRequest) => {
   // Grab some util functions for Jira manipulation
   const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } = await import("./utils")
@@ -38,7 +40,7 @@ export default async (webhook: PullRequest) => {
     password: process.env.JIRA_ACCESS_TOKEN,
   })
 
-  console.log(`Looking at ${danger.utils.sentence(tickets)}.`)
+  console.log(`Looking at ${sentence(tickets)}.`)
   tickets.forEach(async ticketID => {
     try {
       // So we have ticket references, will need to check each ticket
@@ -53,18 +55,20 @@ export default async (webhook: PullRequest) => {
 
       // Get all the potential statuses, see if any are in our list
       const transitions: Transition = (await jira.listTransitions(issue.id)) as any
-      console.log(`Found: ${danger.utils.sentence(transitions.transitions.map(t => t.name))}`)
+      console.log(`Found: ${sentence(transitions.transitions.map(t => t.name))}`)
 
       const newStatus = transitions.transitions.find(t => labelsToLookFor.includes(t.name.toLowerCase()))
-      const currentStatus = transitions.transitions.find(t => issue.fields.status.id === t.id)
+      const currentStatus = transitions.transitions.find(t => issue.fields.status.name === t.name)
       if (!newStatus) {
-        const labels = danger.utils.sentence(labelsToLookFor)
+        const labels = sentence(labelsToLookFor)
         console.log(`Could not find a transition status with one of these names: ${labels}`)
         return
       }
 
       if (!currentStatus) {
-        console.log(`Could not find a transition status for the current one: ${issue.fields.status.name}`)
+        const status = issue.fields.status.name
+        const foundTransitions = sentence(transitions.transitions.map(t => t.name))
+        console.log(`Could not find a transition status for the current status: ${status}, found ${foundTransitions}`)
         return
       }
 
