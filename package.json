@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/graphql": "^14.0.3",
+    "googleapis": "^36.0.0",
     "graphql-schema-utils": "^0.6.5",
     "graphql-tools": "^4.0.3",
     "node-fetch": "^2.2.0"
