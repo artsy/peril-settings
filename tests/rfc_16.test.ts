@@ -58,6 +58,30 @@ it("does nothing when there is no changelog file", () => {
   })
 })
 
+it("does nothing when there is a .autorc file in the root of the repo", async () => {
+  const paths = ["code.js", ".autorc", "CHANGELOG.md"]
+  const data = {
+    tree: paths.map(path => ({ path })),
+  }
+
+  dm.danger.github = {
+    api: {
+      gitdata: {
+        getTree: () => Promise.resolve({ data }),
+      },
+    },
+    pr,
+  }
+
+  dm.danger.git = {
+    modified_files: ["src/index.html"],
+    created_files: [],
+  }
+
+  await rfc16()
+  expect(dm.warn).not.toBeCalled()
+})
+
 it("does nothing when only `test` files were changed", () => {
   dm.danger.github = {
     api: {
