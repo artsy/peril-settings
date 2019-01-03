@@ -1,6 +1,17 @@
 jest.mock("danger", () => ({
   danger: {
     github: {
+      pr: {
+        number: 12,
+        base: {
+          user: {
+            login: "artsy",
+          },
+          repo: {
+            name: "reaction",
+          },
+        },
+      },
       api: {
         issues: {
           getLabels: jest.fn(),
@@ -29,20 +40,10 @@ afterEach(() => {
   mockAddLabels.mockReset()
 })
 
-const pr = {
-  pull_request: {
-    number: 12,
-  },
-  repository: {
-    owner: "artsy",
-    name: "reaction",
-  },
-} as any
-
 it("Does nothing if there's already a release label", async () => {
   danger.github.issue.labels = [{ name: "Version: Major" } as any]
 
-  await addPatchLabel(pr)
+  await addPatchLabel()
 
   expect(danger.github.api.issues.getLabels).not.toBeCalled()
 })
@@ -53,7 +54,7 @@ it("Creates labels for this repo if there are no labels yet", async () => {
   // nothing set up in the repo yet
   mockGetLabels.mockResolvedValueOnce({ data: [] })
 
-  await addPatchLabel(pr)
+  await addPatchLabel()
 
   // adds the labels to the repo
   expect(mockCreateLabel).toBeCalledTimes(Object.keys(labels).length)
@@ -67,7 +68,7 @@ it("Posts a patch label if there are no labels already added", async () => {
   // the repo already has labels set up
   mockGetLabels.mockResolvedValueOnce({ data: [{ name: "Version: Patch" } as any] })
 
-  await addPatchLabel(pr)
+  await addPatchLabel()
 
   expect(mockCreateLabel).not.toBeCalled()
   expect(mockAddLabels).toBeCalled()

@@ -1,5 +1,4 @@
 import { danger } from "danger"
-import { PullRequest } from "github-webhook-event-types"
 
 export const labels = {
   Patch: {
@@ -23,7 +22,9 @@ export const labels = {
 // Adds a patch label to PRs that don't already have a version indicator
 // https://github.com/artsy/reaction/issues/1095
 //
-export default async (pr: PullRequest) => {
+export default async () => {
+  const pr = danger.github.pr
+
   const patchLabelName = "Version: Patch"
   const requiredPrefix = "Version: "
 
@@ -35,8 +36,8 @@ export default async (pr: PullRequest) => {
   }
 
   const config = {
-    owner: pr.repository.owner.login,
-    repo: pr.repository.name,
+    owner: pr.base.user.login,
+    repo: pr.base.repo.name,
   }
 
   const api = danger.github.api
@@ -58,7 +59,7 @@ export default async (pr: PullRequest) => {
   // Add the label
   console.log(`Adding the patch label to this PR`)
   await api.issues.addLabels({
-    number: pr.pull_request.number,
+    number: pr.number,
     ...config,
     labels: [patchLabelName],
   })
