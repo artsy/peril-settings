@@ -20,7 +20,8 @@
   },
   "repos": {
     "artsy/reaction": {
-      "pull_request": "danger/pr.ts"
+      "pull_request": "danger/pr.ts",
+      "pull_request.opened": "artsy/peril-settings@repos/reaction/addPatchLabel.ts"
     },
     "artsy/force": {
       "pull_request": "dangerfile.ts"
