@@ -3,7 +3,7 @@ import { danger } from "danger"
 export const labels = {
   Patch: {
     color: "E0E4CC",
-    description: "A deploy for bug fixes",
+    description: "A deploy for bug fixes or minor changes",
   },
   Minor: {
     color: "A7DBD8",
@@ -24,6 +24,12 @@ export const labels = {
 //
 export default async () => {
   const pr = danger.github.pr
+
+  const hasAutoRC = await danger.github.utils.fileContents(".autorc")
+  if (!hasAutoRC) {
+    console.log(`This repo not have an .autorc, so we're not adding a patch label .`)
+    return
+  }
 
   const patchLabelName = "Version: Patch"
   const requiredPrefix = "Version: "
