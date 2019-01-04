@@ -3,19 +3,19 @@ import { danger } from "danger"
 export const labels = {
   Patch: {
     color: "E0E4CC",
-    description: "Indicates that this PR should have a patch deploy, usually for bug fixes",
+    description: "A deploy for bug fixes",
   },
   Minor: {
     color: "A7DBD8",
-    description: "Indicates that this PR should have a minor deploy, usually for new features",
+    description: "A deploy for new features",
   },
   Major: {
     color: "FA6900",
-    description: "Indicates that this PR should have a major deploy, usually for larger-breaking changes for clients",
+    description: "A deploy for breaking changes to clients",
   },
   Trivial: {
     color: "A7DBD8",
-    description: "This indicates that the PR does not need a deploy",
+    description: "Skip a deploy for this PR",
   },
 }
 
