@@ -19,7 +19,7 @@ const run = async () => {
   try {
     await jwtClient.authorize()
     const events = await listEvents(jwtClient)
-    const today = new Date("2018-12-10") // TODO: Remove this testing date.
+    const today = new Date("2019-01-07") // TODO: Remove this testing date.
     const currentSupportEvents = events.filter(event => {
       const eventStart = new Date((event.start && event.start.date) || "")
       const eventEnd = new Date((event.end && event.end.date) || "")
@@ -32,11 +32,10 @@ const run = async () => {
       const end = event.end.dateTime || event.end.date
       console.log(`${start} - ${end}, ${event.summary}`)
     })
-    console.log(currentSupportEvents[0])
-    const onCallStaffEmails = currentSupportEvents.map(event => {
-      const attendee = event.attendees && event.attendees.length && event.attendees[0]
-      return attendee && attendee.email
-    })
+    // console.log(currentSupportEvents.length)
+    const onCallStaffEmails = currentSupportEvents
+      .reduce((acc, event) => acc.concat(event.attendees || []), [] as calendar_v3.Schema$EventAttendee[])
+      .map(attendee => attendee.email)
     console.log(onCallStaffEmails)
   } catch (error) {
     console.error(`Couldn't authorize: ${error}`)
