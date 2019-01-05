@@ -1,49 +1,66 @@
-import { danger } from "danger"
 import { google, calendar_v3 } from "googleapis"
 import { JWT } from "google-auth-library"
+import { WebClient } from "@slack/client"
 
-// TODO: Move this into an env var.
-let privatekey: any = require("../private_key.json")
-
+let googleKey: any = JSON.parse(process.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
-const CALENDAR_ID = "" // TODO: Reference fron env var.
+const CALENDAR_ID = process.env.ON_CALL_CALENDAR_ID || ""
 
-const run = async () => {
-  /*
-  Plan:
-  1. Look up Google Calendar somehow. [Done]
-  2. Somehow match the email addresses to Slack user IDs and construct a reminder message.
-  3. Post that message to #dev.
-  */
-  let jwtClient = new google.auth.JWT(privatekey.client_email, undefined, privatekey.private_key, SCOPES)
+export default async () => {
+  let jwtClient = new google.auth.JWT(googleKey.client_email, undefined, googleKey.private_key, SCOPES)
   try {
     await jwtClient.authorize()
-    const events = await listEvents(jwtClient)
-    const today = new Date("2019-01-07") // TODO: Remove this testing date.
-    const currentSupportEvents = events.filter(event => {
-      const eventStart = new Date((event.start && event.start.date) || "")
-      const eventEnd = new Date((event.end && event.end.date) || "")
-      const ongoingEvent = eventStart <= today
-      const extendsPastToday = eventEnd > new Date(today.getTime() + 3600 * 24 * 1000)
-      return ongoingEvent && extendsPastToday
-    })
-    currentSupportEvents.map((event: any, i: number) => {
-      const start = event.start.dateTime || event.start.date
-      const end = event.end.dateTime || event.end.date
-      console.log(`${start} - ${end}, ${event.summary}`)
-    })
-    // console.log(currentSupportEvents.length)
-    const onCallStaffEmails = currentSupportEvents
-      .reduce((acc, event) => acc.concat(event.attendees || []), [] as calendar_v3.Schema$EventAttendee[])
-      .map(attendee => attendee.email)
-    console.log(onCallStaffEmails)
   } catch (error) {
     console.error(`Couldn't authorize: ${error}`)
+    return
   }
-}
-export default run
+  const events = await listEvents(jwtClient)
+  const today = new Date()
+  const currentSupportEvents = events.filter(event => {
+    const eventStart = new Date((event.start && event.start.date) || "")
+    const eventEnd = new Date((event.end && event.end.date) || "")
+    const ongoingEvent = eventStart <= today
+    const extendsPastToday = eventEnd > new Date(today.getTime() + 3600 * 24 * 1000)
+    return ongoingEvent && extendsPastToday
+  })
+  console.log("Current support events:")
+  currentSupportEvents.forEach((event: any) => {
+    const start = event.start.dateTime || event.start.date
+    const end = event.end.dateTime || event.end.date
+    console.log(`  ${start} - ${end}, ${event.summary}`)
+  })
 
-// run()
+  const onCallStaffEmails = currentSupportEvents.reduce(
+    (acc, event) => {
+      const attendees = event.attendees || []
+      /*
+      We need to filter because Sarah, as the person who sets up the calendar 
+      events, is often an attendee _of_ those events. So we filter her out of 
+      the attendees iff there is more than one.
+      */
+      const filteredAttendees = attendees
+        .map(a => a.email)
+        .filter(filterUndefineds)
+        .filter(e => (e.startsWith("sarah@") ? attendees.length == 1 : true)) // Filter out Sarah if there are multiple attendees
+      return acc.concat(filteredAttendees)
+    },
+    [] as string[]
+  )
+  console.log(`The following emails are on call: ${onCallStaffEmails}. Now looking up Slack IDs.`)
+
+  const slackToken = process.env.SLACK_WEB_API_TOKEN
+  const web = new WebClient(slackToken)
+  const onCallStaffUsers = await Promise.all(onCallStaffEmails.map(email => web.users.lookupByEmail({ email })))
+  const onCallStaffMentions = onCallStaffUsers
+    .filter(r => r.ok) // Filter out any failed lookups.
+    .map((response: any) => response.user.id as string)
+    .map(id => `<@${id}>`) // See: https://api.slack.com/docs/message-formatting#linking_to_channels_and_users
+    .join(", ")
+  const { slackMessage } = await import("./slackDevChannel")
+  await slackMessage(
+    `${onCallStaffMentions} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
+  )
+}
 
 const listEvents = async (auth: JWT): Promise<calendar_v3.Schema$Event[]> => {
   const cal = google.calendar({ version: "v3", auth })
@@ -60,4 +77,8 @@ const listEvents = async (auth: JWT): Promise<calendar_v3.Schema$Event[]> => {
     console.error("The API returned an error: " + error)
     return []
   }
+}
+
+function filterUndefineds<T>(t: T | undefined): t is T {
+  return t !== undefined
 }
