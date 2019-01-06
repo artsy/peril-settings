@@ -1,21 +1,16 @@
 import { google, calendar_v3 } from "googleapis"
-import { JWT } from "google-auth-library"
 import { WebClient } from "@slack/client"
 
 let googleKey: any = JSON.parse(process.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 const CALENDAR_ID = process.env.ON_CALL_CALENDAR_ID || ""
 
-export default async () => {
-  let jwtClient = new google.auth.JWT(googleKey.client_email, undefined, googleKey.private_key, SCOPES)
-  try {
-    await jwtClient.authorize()
-  } catch (error) {
-    console.error(`Couldn't authorize: ${error}`)
-    return
-  }
-  const events = await listEvents(jwtClient)
-  const today = new Date()
+export default async (listEvents: () => Promise<calendar_v3.Schema$Event[]> = retrieveCalendarEvents) => {
+  const events = await listEvents()
+  await sendMessageForEvents(events)
+}
+
+export const sendMessageForEvents = async (events: calendar_v3.Schema$Event[], today = new Date()) => {
   const currentSupportEvents = events.filter(event => {
     const eventStart = new Date((event.start && event.start.date) || "")
     const eventEnd = new Date((event.end && event.end.date) || "")
@@ -62,8 +57,14 @@ export default async () => {
   )
 }
 
-const listEvents = async (auth: JWT): Promise<calendar_v3.Schema$Event[]> => {
-  const cal = google.calendar({ version: "v3", auth })
+const retrieveCalendarEvents = async (): Promise<calendar_v3.Schema$Event[]> => {
+  let jwtClient = new google.auth.JWT(googleKey.client_email, undefined, googleKey.private_key, SCOPES)
+  try {
+    await jwtClient.authorize()
+  } catch (error) {
+    console.error(`Couldn't authorize: ${error}`)
+  }
+  const cal = google.calendar({ version: "v3", auth: jwtClient })
   try {
     const response = await cal.events.list({
       calendarId: CALENDAR_ID,
