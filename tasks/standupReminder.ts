@@ -5,8 +5,8 @@ let googleKey: any = JSON.parse(process.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}"
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 const CALENDAR_ID = process.env.ON_CALL_CALENDAR_ID || ""
 
-export default async (listEvents: () => Promise<calendar_v3.Schema$Event[]> = retrieveCalendarEvents) => {
-  const events = await listEvents()
+export default async () => {
+  const events = await retrieveCalendarEvents()
   await sendMessageForEvents(events)
 }
 
