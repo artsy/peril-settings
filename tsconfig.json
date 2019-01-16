@@ -5,6 +5,8 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["es2017"],
-    "strict": true
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false
   }
 }
