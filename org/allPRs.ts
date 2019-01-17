@@ -47,11 +47,18 @@ export const rfc7 = async () => {
 
 // Always ensure we assign someone, so that our Slackbot work correctly
 // https://github.com/artsy/peril-settings/issues/13
-export const rfc13 = () => {
+export const rfc13 = async () => {
   const pr = danger.github.pr
   const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
   if (!wipPR && pr.assignee === null) {
-    warn("Please assign someone to merge this PR, and optionally include people who should review.")
+    // Validate they are in the org, before asking to assign
+    try {
+      await danger.github.api.orgs.checkMembership({ org: "artsy", username: danger.github.pr.user.login })
+      warn("Please assign someone to merge this PR, and optionally include people who should review.")
+    } catch (error) {
+      // They couldn't assign someone if they tried.
+      return console.log("Sender does not have permission to assign to this PR")
+    }
   }
 }
 
@@ -100,6 +107,6 @@ export default async () => {
   await rfc2()
   rfc5()
   await rfc7()
-  rfc13()
+  await rfc13()
   await rfc16()
 }
