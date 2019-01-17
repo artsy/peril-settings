@@ -1,7 +1,9 @@
 import { danger, warn } from "danger"
 import { ECR } from "aws-sdk"
 
-const resolveSHA1ForTag = (ecr: ECR, tag: string) => {
+const ecr = new ECR()
+
+const resolveSHA1ForTag = (tag: string) => {
   return new Promise((resolve, reject) => {
     const re = new RegExp("^[0-9a-f]{40}$")
     ecr.describeImages({repositoryName: 'metaphysics',
@@ -24,14 +26,10 @@ const resolveSHA1ForTag = (ecr: ECR, tag: string) => {
   })
 }
 
-export default async () => {
-  const ecr = new ECR()
-  let productionSHA1
-  try {
-    productionSHA1 = await resolveSHA1ForTag(ecr, 'production')
-    return await danger.github.utils.fileContents("_schema.graphql", `artsy/metaphysics`, productionSHA1)
-  } catch(err) {
-    console.log(err)
-    return null
-  }
+export const productionSHA1 = async () => {
+  return await resolveSHA1ForTag('production')
+}
+
+export const stagingSHA1 = async () => {
+  return await resolveSHA1ForTag('staging')
 }
