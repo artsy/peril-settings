@@ -1,4 +1,3 @@
-import { danger, warn } from "danger"
 import { ECR } from "aws-sdk"
 
 const ecr = new ECR()
