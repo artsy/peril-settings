@@ -36,21 +36,24 @@ describe("mobilePRsForbidForks", () => {
     })
 
     it("fails builds for Artsy staff on forks", async () => {
-      ;(dm.danger.github.api.orgs.checkMembership as jest.Mock).mockImplementation(() => Promise.resolve())
+      const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
+      mockCheckMembership.mockImplementation(() => Promise.resolve())
       dm.danger.github.pr.head.repo.fork = true
       await mobilePRsForbidForks()
       expect(dm.fail).toHaveBeenCalled()
     })
 
     it("warns builds for OSS contributors on forks", async () => {
-      ;(dm.danger.github.api.orgs.checkMembership as jest.Mock).mockRejectedValueOnce("some error")
+      const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
+      mockCheckMembership.mockRejectedValueOnce("some error")
       dm.danger.github.pr.head.repo.fork = true
       await mobilePRsForbidForks()
       expect(dm.warn).toHaveBeenCalled()
     })
 
     it("does nothing when submitted from a branch", async () => {
-      ;(dm.danger.github.api.orgs.checkMembership as jest.Mock).mockImplementation(() => Promise.resolve())
+      const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
+      mockCheckMembership.mockImplementation(() => Promise.resolve())
       await mobilePRsForbidForks()
       expect(dm.fail).not.toHaveBeenCalled()
     })
