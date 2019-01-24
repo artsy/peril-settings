@@ -35,8 +35,11 @@ export const rfc10 = async (status: Status) => {
       return console.log("PR does not have Merge on Green")
     }
 
+    // Strip any "@user =>" prefixes from the pr title
+    const prTitle = issue.data.title.replace(/@(\w|-)+\s+=>\s+/, "")
+
     // Merge the PR
-    await api.pullRequests.merge({ owner, repo, number, commit_title: `Merge pull request #${number} by Peril` })
+    await api.pullRequests.merge({ owner, repo, number, commit_title: `${prTitle} (#${number})` })
     console.log(`Merged Pull Request ${number}`)
   }
 }
