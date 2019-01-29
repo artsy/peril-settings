@@ -1,9 +1,9 @@
-import { peril } from "danger"
 import { Create } from "github-webhook-event-types"
 import { danger } from "danger"
 
 import * as semverSort from "semver-sort"
 import * as JiraApi from "jira-client"
+import { flatten } from "lodash"
 
 import * as IssueJSON from "../fixtures/jira_issue_example.json"
 type Issue = typeof IssueJSON
@@ -51,12 +51,7 @@ export default async (create: Create) => {
     .filter(pr => pr)
     .map((pr: any) => parseInt(pr))
 
-  const {
-    getJiraTicketIDsFromCommits,
-    getJiraTicketIDsFromText,
-    uniq,
-    makeJiraTransition,
-  } = await import("./jira/utils")
+  const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq } = await import("./jira/utils")
 
   // We know we have something to work with now
   const jira: JiraApi.default = new (JiraApi as any)({
@@ -68,34 +63,35 @@ export default async (create: Create) => {
     password: process.env.JIRA_ACCESS_TOKEN,
   })
 
-  for (const prID of prs) {
-    const prResponse = await api.pullRequests.get({ ...thisRepo, number: prID })
-    const prData = prResponse.data
-    const prBody = prData.body
-
-    // Grab tickets from the PR body, and the commit messages
-    const tickets = uniq([
-      ...getJiraTicketIDsFromText(prBody),
-      ...getJiraTicketIDsFromCommits(compareData.commits.map(c => c.commit)),
-    ])
-
-    // Bail if we have no work to do
-    if (!tickets.length) {
-      return console.log("No Jira ticket references found")
-    }
-
-    tickets.forEach(async ticketID => {
-      try {
-        const message = `Changes related to this issue have been released in the latest Eigen beta, ${tag}. You can download it in TestFlight; contact the #front-end-ios Slack channel for answers to any questions.`
-        console.log(`Leaving a comment on ${ticketID}`)
-        await jira.addComment(ticketID, message)
-      } catch (err) {
-        console.log(`Had an issue changing the status of ${ticketID}`)
-        console.log(err.message)
-        console.log(err)
-      }
+  const prBodies = await Promise.all(
+    prs.map(async pr => {
+      const prResponse = await api.pullRequests.get({ ...thisRepo, number: pr })
+      const prData = prResponse.data
+      return prData.body
     })
+  )
+
+  const tickets = uniq([
+    ...flatten(prBodies.map(b => getJiraTicketIDsFromText(b))),
+    ...getJiraTicketIDsFromCommits(compareData.commits.map(c => c.commit)),
+  ])
+
+  // Bail if we have no work to do
+  if (!tickets.length) {
+    return console.log("No Jira ticket references found")
   }
+
+  tickets.forEach(async ticketID => {
+    try {
+      const message = `Changes related to this issue have been released in the latest Eigen beta, ${tag}. You can download it in TestFlight; contact the #front-end-ios Slack channel for answers to any questions.`
+      console.log(`Leaving a comment on ${ticketID}`)
+      await jira.addComment(ticketID, message)
+    } catch (err) {
+      console.log(`Had an issue changing the status of ${ticketID}`)
+      console.log(err.message)
+      console.log(err)
+    }
+  })
 }
 
 interface Tag {
