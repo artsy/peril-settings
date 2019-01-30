@@ -15,6 +15,10 @@ export default async (create: Create) => {
   if (create.ref_type !== "tag") {
     return console.log("Skipping because it's not a tag")
   }
+  if (create.ref.endsWith("-submission")) {
+    return console.log("Skipping because it's not a beta")
+  }
+
   const api = danger.github.api
 
   const tag = create.ref
