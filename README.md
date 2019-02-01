@@ -11,6 +11,7 @@ Here's some links to the key concepts:
 - [Danger JS](http://danger.systems/js/)
 - [Peril for Orgs](https://github.com/danger/peril/blob/master/docs/setup_for_org.md)
 - [Introducing Peril to the Artsy org](http://artsy.github.io/blog/2017/09/04/Introducing-Peril/)
+- [Peril's Dashboard 🔐](https://staging-dashboard.peril.systems/)
 
 An overview of what Peril does for Artsy is available in the README repo at [`/culture/peril.md`][docs].
 
