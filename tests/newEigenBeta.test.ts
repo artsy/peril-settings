@@ -39,12 +39,12 @@ describe(subject, () => {
   })
 
   it("skips non-tag refs", async () => {
-    await subject(({ ref_type: "branch" } as any) as Create)
+    await subject(({ ...mockCreate, ref_type: "branch" } as any) as Create)
     expect(dm.danger.github.api.repos.getTags).not.toHaveBeenCalled()
   })
 
   it("skips app store submissions", async () => {
-    await subject(({ ref_type: "tag", ref: "1.0.0-2019.01.30-submission" } as any) as Create)
+    await subject(({ ...mockCreate, ref_type: "tag", ref: "1.0.0-2019.01.30-submission" } as any) as Create)
     expect(dm.danger.github.api.repos.getTags).not.toHaveBeenCalled()
   })
 

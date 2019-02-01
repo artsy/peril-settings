@@ -12,20 +12,30 @@ const companyPrefix = "artsyproduct"
 
 // Implementation borrowed from https://github.com/danger/peril-settings/blob/b306662628f1a4c5c4ebc5f0531e15561fe60fa5/org/new_tag.ts#L12-L64
 export default async (create: Create) => {
-  if (create.ref_type !== "tag") {
-    return console.log("Skipping because it's not a tag")
+  if (shouldSkip(create)) {
+    return
   }
-  if (create.ref.endsWith("-submission")) {
-    return console.log("Skipping because it's not a beta")
-  }
-
-  const api = danger.github.api
 
   const tag = create.ref
   const thisRepo = { owner: create.repository.owner.login, repo: create.repository.name }
 
+  const commits = await commitsForReleaseFromTag(tag, thisRepo)
+  const tickets = await ticketsFromCommits(commits, thisRepo)
+
+  // Bail if we have no work to do
+  if (!tickets.length) {
+    return console.log("No Jira ticket references found")
+  }
+
+  await updateTickets(tickets, tag)
+}
+
+// Returns the commits included in this tag since the last tag (semantically ordered).
+const commitsForReleaseFromTag = async (tag: string, repo: Repo): Promise<CompareResults> => {
+  const api = danger.github.api
+
   // Grab all tags, should be latest ~20
-  const allTagsResponse = await api.repos.getTags(thisRepo)
+  const allTagsResponse = await api.repos.getTags(repo)
   const allTags: Tag[] = allTagsResponse.data
 
   // Sort the tags in semver, so we can know specifically what range to
@@ -36,16 +46,21 @@ export default async (create: Create) => {
 
   // Bail if we can't find a release
   if (!releaseMinusOne) {
-    return console.log(`Couldn't locate release for ${tag} tag.`)
+    console.log(`Couldn't locate release for ${tag} tag.`)
+    return { commits: [] }
   }
   // Ask for the commits
-  const compareResults = await api.repos.compareCommits({ ...thisRepo, base: releaseMinusOne, head: tag })
+  const compareResults = await api.repos.compareCommits({ ...repo, base: releaseMinusOne, head: tag })
   compareResults.data
-  const compareData: CompareResults = compareResults.data
+  return compareResults.data
+}
+
+const ticketsFromCommits = async (commits: CompareResults, repo: Repo): Promise<string[]> => {
+  const api = danger.github.api
 
   // Pull out all the GH crafted merge commits on a repo
   const numberExtractor = /Merge pull request #(\d*)/
-  const commitMessages = compareData.commits.map(c => c.commit.message)
+  const commitMessages = commits.commits.map(c => c.commit.message)
   const prMerges = commitMessages.filter(message => message && message.startsWith("Merge pull request #"))
 
   // This is now a number array of PR ids
@@ -55,8 +70,23 @@ export default async (create: Create) => {
     .filter(pr => pr)
     .map((pr: any) => parseInt(pr))
 
-  const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq } = await import("./jira/utils")
+  const prBodies = await Promise.all(
+    prs.map(async pr => {
+      const prResponse = await api.pullRequests.get({ ...repo, number: pr })
+      const prData = prResponse.data
+      return prData.body
+    })
+  )
 
+  const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq } = await import("./jira/utils")
+  return uniq([
+    ...flatten(prBodies.map(b => getJiraTicketIDsFromText(b))),
+    ...getJiraTicketIDsFromCommits(commits.commits.map(c => c.commit)),
+  ])
+}
+
+// Update the tickets with a note about the new tag.
+const updateTickets = (tickets: string[], tag: string) => {
   // We know we have something to work with now
   const jira: JiraApi.default = new (JiraApi as any)({
     protocol: "https",
@@ -66,25 +96,6 @@ export default async (create: Create) => {
     username: process.env.JIRA_EMAIL,
     password: process.env.JIRA_ACCESS_TOKEN,
   })
-
-  const prBodies = await Promise.all(
-    prs.map(async pr => {
-      const prResponse = await api.pullRequests.get({ ...thisRepo, number: pr })
-      const prData = prResponse.data
-      return prData.body
-    })
-  )
-
-  const tickets = uniq([
-    ...flatten(prBodies.map(b => getJiraTicketIDsFromText(b))),
-    ...getJiraTicketIDsFromCommits(compareData.commits.map(c => c.commit)),
-  ])
-
-  // Bail if we have no work to do
-  if (!tickets.length) {
-    return console.log("No Jira ticket references found")
-  }
-
   tickets.forEach(async ticketID => {
     try {
       const message = `Changes related to this issue have been released in the latest Eigen beta, ${tag}. You can download it in TestFlight; contact the #front-end-ios Slack channel for answers to any questions.`
@@ -96,6 +107,18 @@ export default async (create: Create) => {
       console.log(err)
     }
   })
+}
+
+const shouldSkip = (create: Create): boolean => {
+  if (create.ref_type !== "tag") {
+    console.log("Skipping because it's not a tag")
+    return true
+  }
+  if (create.ref.endsWith("-submission")) {
+    console.log("Skipping because it's not a beta")
+    return true
+  }
+  return false
 }
 
 interface Tag {
@@ -114,4 +137,9 @@ interface Commit {
 
 interface CompareResults {
   commits: Commit[]
+}
+
+interface Repo {
+  owner: string
+  repo: string
 }
