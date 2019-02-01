@@ -66,9 +66,12 @@ const ticketsFromCommits = async (commits: CompareResults, repo: Repo): Promise<
   // This is now a number array of PR ids
   // e.g. [ 930, 934, 937, 932, 938 ]
   const prs = prMerges
-    .map(msg => msg.match(numberExtractor) && msg.match(numberExtractor)![1])
-    .filter(pr => pr)
-    .map((pr: any) => parseInt(pr))
+    .map(message => {
+      const matches = message.match(numberExtractor) || []
+      const capture = matches[1]
+      return parseInt(capture)
+    })
+    .filter(Boolean)
 
   const prBodies = await Promise.all(
     prs.map(async pr => {
