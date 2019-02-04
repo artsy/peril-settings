@@ -44,6 +44,5 @@ export default async () => {
   const invalidRepos = await getInvalidRepos(privateRepos)
   const issueURLs = await createIssuesFor(invalidRepos)
 
-  // what should i do with these things??
   console.log(issueURLs)
 }
