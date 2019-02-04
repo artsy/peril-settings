@@ -40,7 +40,12 @@
     }
   },
   "tasks": {
-    "monday-informationals": ["tasks/weeklyRFCSummary.ts", "tasks/compareSchemas.ts", "tasks/standupReminder.ts"],
+    "monday-informationals": [
+      "tasks/closedSourceRationaleCheck.ts",
+      "tasks/compareSchemas.ts",
+      "tasks/standupReminder.ts",
+      "tasks/weeklyRFCSummary.ts"
+    ],
     "slackup-reminder-tmp": "tasks/standupReminder.ts",
     "slack-dev-channel": "tasks/slackDevChannel.ts",
     "daily-license-check": "tasks/dailyLicenseCheck.ts"
