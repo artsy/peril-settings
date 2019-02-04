@@ -4,7 +4,7 @@ export const artsyOrg = "artsy"
 export const targetPath = "README.md"
 export const targetText = "Rationale for Closed Source"
 export const issueTitle = "Missing rationale for closed source"
-export const issueContent = "This repo is closed source but seems to be missing rationale in the README."
+export const issueContent = `This repo is closed source but seems to be missing rationale in the README. If this repo should remain closed, you can pass this test with something like this:\n\n${targetText}: This repo is closed source because <insert rationale here>.`
 
 interface Repo {
   name: string
