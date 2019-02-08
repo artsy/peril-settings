@@ -50,7 +50,7 @@ export default async () => {
   }
 
   const api = danger.github.api
-  const existingLabels = await api.issues.getLabels(config)
+  const existingLabels = await api.issues.listLabelsForRepo(config)
   const patchExists = existingLabels.data.find(l => l.name == labelName)
 
   // Check to see if the label exists for this repo, if not - make the full set

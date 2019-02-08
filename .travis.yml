@@ -1,4 +1,6 @@
 language: node_js
 node_js: "node"
 install: yarn install
-script: yarn jest
+script:
+  - yarn type-check
+  - yarn jest

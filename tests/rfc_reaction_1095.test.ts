@@ -18,7 +18,7 @@ jest.mock("danger", () => ({
       },
       api: {
         issues: {
-          getLabels: jest.fn(),
+          listLabelsForRepo: jest.fn(),
           createLabel: jest.fn(),
           addLabels: jest.fn(),
         },
@@ -32,7 +32,7 @@ jest.mock("danger", () => ({
 
 import { danger } from "danger"
 
-const mockGetLabels: jest.Mock = danger.github.api.issues.getLabels as any
+const mockGetLabels: jest.Mock = danger.github.api.issues.listLabelsForRepo as any
 const mockCreateLabel: jest.Mock = danger.github.api.issues.createLabel as any
 const mockAddLabels: jest.Mock = danger.github.api.issues.addLabels as any
 const mockfileContents: jest.Mock = danger.github.utils.fileContents as any
@@ -51,7 +51,7 @@ it("Does nothing if there is no autorc", async () => {
 
   await addPatchLabel()
 
-  expect(danger.github.api.issues.getLabels).not.toBeCalled()
+  expect(danger.github.api.issues.listLabelsForRepo).not.toBeCalled()
 })
 
 it("Does nothing if there's already a release label", async () => {
@@ -60,7 +60,7 @@ it("Does nothing if there's already a release label", async () => {
 
   await addPatchLabel()
 
-  expect(danger.github.api.issues.getLabels).not.toBeCalled()
+  expect(danger.github.api.issues.listLabelsForRepo).not.toBeCalled()
 })
 
 it("Creates labels for this repo if there are no labels yet", async () => {

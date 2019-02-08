@@ -25,7 +25,7 @@ const pr = {
 it("warns when code has changed but no changelog entry was made", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
@@ -43,7 +43,7 @@ it("warns when code has changed but no changelog entry was made", () => {
 it("does nothing when there is no changelog file", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }] } }),
       },
     },
@@ -66,7 +66,7 @@ it("does nothing when there is a .autorc file in the root of the repo", async ()
 
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data }),
       },
     },
@@ -85,7 +85,7 @@ it("does nothing when there is a .autorc file in the root of the repo", async ()
 it("does nothing when only `test` files were changed", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "CHANGELOG.md" }] } }),
       },
     },
@@ -103,7 +103,7 @@ it("does nothing when only `test` files were changed", () => {
 it("does nothing when the changelog was changed", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
@@ -121,7 +121,7 @@ it("does nothing when the changelog was changed", () => {
 it("does not warns with a closed PR", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },
@@ -139,7 +139,7 @@ it("does not warns with a closed PR", () => {
 it("is skipped via #trivial", () => {
   dm.danger.github = {
     api: {
-      gitdata: {
+      git: {
         getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
       },
     },

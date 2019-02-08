@@ -18,6 +18,7 @@ it("ignores issues which aren't RFCs", async () => {
   const issues: any = {
     issue: {
       title: "This awesome PR",
+      state: "open",
       html_url: "123",
       user: {
         login: "orta",
@@ -44,6 +45,7 @@ it("Triggers tasks when RFC is in the title", async () => {
       title: "[RFC] Let's make a change",
       html_url: "123",
       number: 123,
+      state: "open",
       user: {
         login: "orta",
         avatar_url: "https://123.com",
