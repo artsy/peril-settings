@@ -10,7 +10,7 @@ beforeEach(() => {
     github: {
       api: {
         issues: {
-          getLabels: jest.fn(),
+          listLabelsForRepo: jest.fn(),
           addLabels: jest.fn(),
         },
       },
@@ -27,7 +27,7 @@ beforeEach(() => {
 it("bails without commit labels", () => {
   dm.danger.git.commits = ["Implementing something", "Adding tests", "Changelog entry"].map(message => ({ message }))
   return rfc7().then(() => {
-    expect(dm.danger.github.api.issues.getLabels).not.toHaveBeenCalled()
+    expect(dm.danger.github.api.issues.listLabelsForRepo).not.toHaveBeenCalled()
   })
 })
 
@@ -41,9 +41,9 @@ describe("with commit labels", () => {
   })
 
   it("retrieves labels from the GitHub api", () => {
-    dm.danger.github.api.issues.getLabels.mockImplementationOnce(() => ({ data: [] }))
+    dm.danger.github.api.issues.listLabelsForRepo.mockImplementationOnce(() => ({ data: [] }))
     return rfc7().then(() => {
-      expect(dm.danger.github.api.issues.getLabels).toHaveBeenCalledWith({
+      expect(dm.danger.github.api.issues.listLabelsForRepo).toHaveBeenCalledWith({
         owner: "artsy",
         repo: "eigen",
       })
@@ -52,7 +52,7 @@ describe("with commit labels", () => {
 
   describe("with no matching GitHub labels", () => {
     it("does not add any labels", () => {
-      dm.danger.github.api.issues.getLabels.mockImplementationOnce(() => ({
+      dm.danger.github.api.issues.listLabelsForRepo.mockImplementationOnce(() => ({
         data: [{ name: "wontfix" }, { name: "Messaging" }],
       }))
       return rfc7().then(() => {
@@ -63,7 +63,7 @@ describe("with commit labels", () => {
 
   describe("with matching GitHub labels", () => {
     it("adds GitHub labels that match commit labels", () => {
-      dm.danger.github.api.issues.getLabels.mockImplementationOnce(() => ({
+      dm.danger.github.api.issues.listLabelsForRepo.mockImplementationOnce(() => ({
         data: [{ name: "wontfix" }, { name: "Messaging" }, { name: "Auctions" }],
       }))
       return rfc7().then(() => {
@@ -78,7 +78,7 @@ describe("with commit labels", () => {
 
     it("doesn't add existing GitHub labels on the issue", async () => {
       dm.danger.github.issue.labels = [{ name: "Auctions" }]
-      dm.danger.github.api.issues.getLabels.mockImplementationOnce(() => ({
+      dm.danger.github.api.issues.listLabelsForRepo.mockImplementationOnce(() => ({
         data: [{ name: "wontfix" }, { name: "Messaging" }, { name: "Auctions" }],
       }))
 

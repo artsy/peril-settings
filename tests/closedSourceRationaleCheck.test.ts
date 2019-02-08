@@ -31,7 +31,7 @@ describe("rationale checks", () => {
 
     const repo = { name: "private-repo" }
 
-    dm.danger.github.api.repos.getForOrg = () => Promise.resolve({ data: [repo] })
+    dm.danger.github.api.repos.listForOrg = () => Promise.resolve({ data: [repo] })
 
     const createUpdatedIssueWithID = dm.danger.github.utils.createUpdatedIssueWithID
     dm.danger.github.utils.fileContents = () => Promise.resolve(readme)
@@ -51,7 +51,7 @@ describe("rationale checks", () => {
 
     const repo = { name: "private-repo" }
 
-    dm.danger.github.api.repos.getForOrg = () => Promise.resolve({ data: [repo] })
+    dm.danger.github.api.repos.listForOrg = () => Promise.resolve({ data: [repo] })
     dm.danger.github.utils.fileContents = () => Promise.resolve(readme)
 
     const createUpdatedIssueWithID = dm.danger.github.utils.createUpdatedIssueWithID

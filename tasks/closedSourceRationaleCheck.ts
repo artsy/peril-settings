@@ -12,7 +12,7 @@ interface Repo {
 }
 
 const getPrivateRepos = async (): Promise<Repo[]> => {
-  const { data: repos } = await danger.github.api.repos.getForOrg({ org: artsyOrg, type: "private", per_page: 100 })
+  const { data: repos } = await danger.github.api.repos.listForOrg({ org: artsyOrg, type: "private", per_page: 100 })
   return repos.map(repo => ({ name: repo.name, readme: "" }))
 }
 
