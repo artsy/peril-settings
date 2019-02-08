@@ -4,7 +4,7 @@ export default async () => {
   const api = danger.github.api
   const org = "artsy"
   const year = new Date().getFullYear().toString()
-  const { data: repos } = await api.repos.getForOrg({ org, type: "public", per_page: 100 })
+  const { data: repos } = await api.repos.listForOrg({ org, type: "public", per_page: 100 })
   console.log(`Found ${repos.length} repos`)
 
   const noLicense: string[] = []
@@ -18,7 +18,7 @@ export default async () => {
     }
 
     try {
-      const { data: contents } = await api.repos.getContent({ owner: org, repo: repo.name, path: "LICENSE" })
+      const { data: contents } = await api.repos.getContents({ owner: org, repo: repo.name, path: "LICENSE" })
       const license = Buffer.from(contents.content, "base64").toString("utf8")
 
       // Skip repos that haven't been updated this year

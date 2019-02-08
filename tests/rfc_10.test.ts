@@ -21,7 +21,7 @@ beforeEach(() => {
           createLabel: jest.fn(),
           addLabels: jest.fn(),
         },
-        pullRequests: {
+        pulls: {
           merge: jest.fn(),
         },
         orgs: {
@@ -180,7 +180,7 @@ describe("for handling merging when green", () => {
       commit: { sha: "123abc" },
     } as any)
 
-    expect(dm.danger.github.api.pullRequests.merge).toBeCalledWith({
+    expect(dm.danger.github.api.pulls.merge).toBeCalledWith({
       commit_title: "Merge pull request #1 by Peril",
       number: 1,
       owner: "danger",

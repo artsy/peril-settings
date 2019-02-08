@@ -30,7 +30,7 @@ export default async () => {
 
     // Grab the commits that are on the graphql schema in the last week, so we can get the last
     // if there's over 100 commits _to the schema_ in a week, I'd be impressed.
-    const commitsSinceLastWeek = await api.repos.getCommits({
+    const commitsSinceLastWeek = await api.repos.listCommits({
       owner: org,
       repo: repoName,
       per_page: 100,
