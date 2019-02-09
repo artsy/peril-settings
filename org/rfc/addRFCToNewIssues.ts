@@ -8,7 +8,7 @@ import { Issues } from "github-webhook-event-types"
 export default async (issues: Issues) => {
   const issue = issues.issue
 
-  if (issue.title.includes("RFC:") || issue.title.includes("[RFC]")) {
+  if (issue.state === "open" && (issue.title.includes("RFC:") || issue.title.includes("[RFC]"))) {
     // Marks it as an RFC
     console.log("Adding label to the issue")
     await danger.github.utils.createOrAddLabel(
