@@ -37,6 +37,9 @@
     },
     "artsy/peril-settings": {
       "pull_request": "dangerfile.ts"
+    },
+    "artsy/eigen": {
+      "create (ref_type == tag)": "org/newEigenBeta.ts"
     }
   },
   "tasks": {
