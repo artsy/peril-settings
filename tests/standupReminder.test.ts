@@ -1,9 +1,16 @@
 import { calendar_v3 } from "googleapis"
 
+jest.mock("danger", () => ({
+  peril: {
+    env: {},
+  },
+}))
+
 const mockSlackDevChannel = jest.fn()
 jest.mock("../tasks/slackDevChannel", () => ({
   slackMessage: mockSlackDevChannel,
 }))
+
 const mockLookupByEmail = jest.fn()
 jest.mock("@slack/client", () => ({
   WebClient: jest.fn().mockImplementation(() => ({
