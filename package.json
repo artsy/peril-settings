@@ -14,10 +14,7 @@
     "googleapis": "^36.0.0",
     "graphql-schema-utils": "^0.6.5",
     "graphql-tools": "^4.0.3",
-    "lodash": "^4.17.10",
-    "node-fetch": "^2.2.0",
-    "semver": "^5.4.1",
-    "semver-sort": "^0.0.4"
+    "node-fetch": "^2.2.0"
   },
   "devDependencies": {
     "@slack/client": "^4.8.0",
@@ -35,7 +32,6 @@
     "lint-staged": "^7.2.2",
     "prettier": "^1.15.2",
     "ts-jest": "^23.1.4",
-    "@types/lodash": "^4.14.116",
     "ts-node": "^7.0.1",
     "typescript": "^3.1.6"
   },
