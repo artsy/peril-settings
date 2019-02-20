@@ -48,10 +48,12 @@
     ],
     "slackup-reminder-tmp": "tasks/standupReminder.ts",
     "slack-dev-channel": "tasks/slackDevChannel.ts",
-    "daily-license-check": "tasks/dailyLicenseCheck.ts"
+    "daily-license-check": "tasks/dailyLicenseCheck.ts",
+    "simple-sups": ["tasks/supGP.js"]
   },
   "scheduler": {
     "daily": "daily-license-check",
-    "monday-morning-est": "monday-informationals"
+    "monday-morning-est": "monday-informationals",
+    "thursday-morning-est": "simple-sups"
   }
 }
