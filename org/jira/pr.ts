@@ -4,7 +4,7 @@ const companyPrefix = "artsyproduct"
 const wipLabels = ["in review", "in progress"]
 const mergedLabels = ["merged", "monitor/qa"]
 
-import { danger } from "danger"
+import { danger, peril } from "danger"
 import { PullRequest } from "github-webhook-event-types"
 import * as JiraApi from "jira-client"
 
@@ -36,8 +36,8 @@ export default async (webhook: PullRequest) => {
     host: `${companyPrefix}.atlassian.net`,
     apiVersion: "2",
     strictSSL: true,
-    username: process.env.JIRA_EMAIL,
-    password: process.env.JIRA_ACCESS_TOKEN,
+    username: peril.env.JIRA_EMAIL,
+    password: peril.env.JIRA_ACCESS_TOKEN,
   })
 
   console.log(`Looking at ${sentence(tickets)}.`)

@@ -1,9 +1,10 @@
 import { google, calendar_v3 } from "googleapis"
 import { WebClient } from "@slack/client"
+import { peril } from "danger"
 
-let googleKey: any = JSON.parse(process.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
+let googleKey: any = JSON.parse(peril.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
-const CALENDAR_ID = process.env.ON_CALL_CALENDAR_ID || ""
+const CALENDAR_ID = peril.env.ON_CALL_CALENDAR_ID || ""
 
 export default async () => {
   const events = await retrieveCalendarEvents()
@@ -43,7 +44,7 @@ export const sendMessageForEvents = async (events: calendar_v3.Schema$Event[], t
   )
   console.log(`The following emails are on call: ${onCallStaffEmails}. Now looking up Slack IDs.`)
 
-  const slackToken = process.env.SLACK_WEB_API_TOKEN
+  const slackToken = peril.env.SLACK_WEB_API_TOKEN
   const web = new WebClient(slackToken)
   const onCallStaffUsers = await Promise.all(onCallStaffEmails.map(email => web.users.lookupByEmail({ email })))
   const onCallStaffMentions = onCallStaffUsers
