@@ -31,6 +31,7 @@ export default async () => {
   })
 
   const data = await req.json()
+  console.log(data)
   const members = data.members as Member[]
   const chunkedMembers = chunk(shuffle(members))
   chunkedMembers.forEach(supGroup => {
