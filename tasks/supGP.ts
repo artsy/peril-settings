@@ -26,7 +26,11 @@ interface Member {
 export default async () => {
   const req = await fetch("https://team.artsy.net/api", {
     method: "POST",
-    headers: { secret: peril.env.TEAM_NAV_SECRET },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      secret: peril.env.TEAM_NAV_SECRET,
+    },
     body: JSON.stringify({ query }),
   })
 
