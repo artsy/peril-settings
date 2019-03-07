@@ -1,8 +1,8 @@
 // This is RFC 74
 
 const companyPrefix = "artsyproduct"
-const wipLabels = ["in review", "in progress"]
-const mergedLabels = ["merged", "monitor/qa"]
+const wipLabels = ["in review", "in progress", "review"]
+const mergedLabels = ["merged", "monitor/qa", "monitoring/qa"]
 
 import { danger, peril } from "danger"
 import { PullRequest } from "github-webhook-event-types"
