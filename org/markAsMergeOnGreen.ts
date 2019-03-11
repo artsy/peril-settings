@@ -2,16 +2,6 @@ import { danger } from "danger"
 import { IssueComment, PullRequestReview } from "github-webhook-event-types"
 import { IssueCommentIssue } from "github-webhook-event-types/source/IssueComment"
 
-// The shape of a label
-interface Label {
-  id: number
-  url: string
-  name: string
-  description: string
-  color: string
-  default: boolean
-}
-
 /** If a comment to an issue contains "Merge on Green", apply a label for it to be merged when green. */
 export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestReview) => {
   const api = danger.github.api
@@ -55,7 +45,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
   const keywords = ["merge on green", "merge on ci green"]
   const match = keywords.find(k => text.toLowerCase().includes(k))
   if (!match) {
-    return console.log(`Did not find any of the merging phrases in the comment.`)
+    return console.log(`Did not find any of the merging phrases in the comment beginning ${text.substring(0, 12)}.`)
   }
 
   // Check to see if the label has already been set
