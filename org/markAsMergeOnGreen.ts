@@ -72,7 +72,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
   }
   const repo = {
     owner: org,
-    repo: issueCommentOrPrReview.repository.owner.login,
+    repo: issueCommentOrPrReview.repository.name,
     id: issue.number,
   }
 
