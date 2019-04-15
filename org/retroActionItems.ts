@@ -3,8 +3,8 @@ import { Issues } from "github-webhook-event-types"
 import { IncomingWebhookSendArguments, MessageAttachment } from "@slack/client"
 
 /**
- * When an issue has been labelled RFC, then trigger the scheduler
- * to send reminders about the issue into our slack.
+ * When an issue has been labelled Retro Action Item, then trigger the scheduler
+ * to send slack message about this action item.
  */
 
 export default async (issues: Issues) => {
