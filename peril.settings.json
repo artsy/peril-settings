@@ -13,16 +13,16 @@
     "pull_request.opened": "org/addPatchLabel.ts",
     // The RFC process
     "issues": "org/rfc/addRFCToNewIssues.ts",
-    "issues.labeled": "org/rfc/scheduleRFCsForLabels.ts",
+    "issues.labeled": ["org/rfc/scheduleRFCsForLabels.ts", "org/retroActionItems.ts"],
     // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts",
     "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
-//    "artsy/metaphysics": {
-//    "pull_request": "peril/upstreamSchemaValidator.ts"
-//    },
+    //    "artsy/metaphysics": {
+    //    "pull_request": "peril/upstreamSchemaValidator.ts"
+    //    },
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
     },
