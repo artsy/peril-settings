@@ -1,17 +1,48 @@
 import { google, calendar_v3 } from "googleapis"
 import { WebClient } from "@slack/client"
 import { peril } from "danger"
+import fetch from "node-fetch"
+import querystring from "querystring"
 
 let googleKey: any = JSON.parse(peril.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 const CALENDAR_ID = peril.env.ON_CALL_CALENDAR_ID || ""
 
 export default async () => {
+  // Backed by Google Calendar
   const events = await retrieveCalendarEvents()
-  await sendMessageForEvents(events)
+  const calendarOnCallStaffEmails = emailsForCalendarEvents(events)
+  await sendMessageForEmails(calendarOnCallStaffEmails)
+
+  // Backed by OpsGenie
+  const opsGenieOnCallStaffEmails = await emailsFromOpsGenie()
+  await sendMessageForEmails(opsGenieOnCallStaffEmails)
 }
 
-export const sendMessageForEvents = async (events: calendar_v3.Schema$Event[], today = new Date()) => {
+const retrieveCalendarEvents = async (): Promise<calendar_v3.Schema$Event[]> => {
+  let jwtClient = new google.auth.JWT(googleKey.client_email, undefined, googleKey.private_key, SCOPES)
+  try {
+    await jwtClient.authorize()
+  } catch (error) {
+    console.error(`Couldn't authorize: ${error}`)
+  }
+  const cal = google.calendar({ version: "v3", auth: jwtClient })
+  try {
+    const response = await cal.events.list({
+      calendarId: CALENDAR_ID,
+      timeMin: new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(), // Look a week ago.
+      maxResults: 10,
+      singleEvents: true,
+      orderBy: "startTime",
+    })
+    return response.data.items || []
+  } catch (error) {
+    console.error("The API returned an error: " + error)
+    return []
+  }
+}
+
+const emailsForCalendarEvents = (events: calendar_v3.Schema$Event[], today = new Date()) => {
   const currentSupportEvents = events.filter(event => {
     const eventStart = new Date((event.start && event.start.date) || "")
     const eventEnd = new Date((event.end && event.end.date) || "")
@@ -42,42 +73,49 @@ export const sendMessageForEvents = async (events: calendar_v3.Schema$Event[], t
     },
     [] as string[]
   )
-  console.log(`The following emails are on call: ${onCallStaffEmails}. Now looking up Slack IDs.`)
+
+  return onCallStaffEmails
+}
+
+const emailsFromOpsGenie = async (today = new Date()) => {
+  const targetDate = new Date(today.getTime() + 3600 * 24 * 1000)
+  const qs = querystring.stringify({ date: targetDate.toISOString() })
+  const url = `https://api.opsgenie.com/v2/schedules/${peril.env.OPSGENIE_SCHEDULE_ID}/on-calls?${qs}`
+  const req = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `GenieKey ${peril.env.OPSGENIE_API_KEY}`,
+    },
+  })
+
+  const body = await req.json()
+  return body.data.onCallParticipants.reduce((participant: any) => {
+    return participant.name
+  })
+}
+
+const sendMessageForEmails = async (emails: string[]) => {
+  console.log(`The following emails are on call: ${emails}. Now looking up Slack IDs.`)
 
   const slackToken = peril.env.SLACK_WEB_API_TOKEN
   const web = new WebClient(slackToken)
-  const onCallStaffUsers = await Promise.all(onCallStaffEmails.map(email => web.users.lookupByEmail({ email })))
+  const onCallStaffUsers = await Promise.all(emails.map(email => web.users.lookupByEmail({ email })))
+
   const onCallStaffMentions = onCallStaffUsers
     .filter(r => r.ok) // Filter out any failed lookups.
     .map((response: any) => response.user.id as string)
     .map(id => `<@${id}>`) // See: https://api.slack.com/docs/message-formatting#linking_to_channels_and_users
-    .join(", ")
-  const { slackMessage } = await import("./slackDevChannel")
-  await slackMessage(
-    `${onCallStaffMentions} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
-  )
-}
 
-const retrieveCalendarEvents = async (): Promise<calendar_v3.Schema$Event[]> => {
-  let jwtClient = new google.auth.JWT(googleKey.client_email, undefined, googleKey.private_key, SCOPES)
-  try {
-    await jwtClient.authorize()
-  } catch (error) {
-    console.error(`Couldn't authorize: ${error}`)
-  }
-  const cal = google.calendar({ version: "v3", auth: jwtClient })
-  try {
-    const response = await cal.events.list({
-      calendarId: CALENDAR_ID,
-      timeMin: new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(), // Look a week ago.
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: "startTime",
-    })
-    return response.data.items || []
-  } catch (error) {
-    console.error("The API returned an error: " + error)
-    return []
+  const { slackMessage } = await import("./slackDevChannel")
+
+  if (onCallStaffMentions.length > 0) {
+    await slackMessage(
+      `${onCallStaffMentions.join(
+        ", "
+      )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
+    )
   }
 }
 
