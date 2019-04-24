@@ -42,7 +42,7 @@ const retrieveCalendarEvents = async (): Promise<calendar_v3.Schema$Event[]> => 
   }
 }
 
-const emailsForCalendarEvents = (events: calendar_v3.Schema$Event[], today = new Date()) => {
+export const emailsForCalendarEvents = (events: calendar_v3.Schema$Event[], today = new Date()) => {
   const currentSupportEvents = events.filter(event => {
     const eventStart = new Date((event.start && event.start.date) || "")
     const eventEnd = new Date((event.end && event.end.date) || "")
@@ -96,7 +96,7 @@ const emailsFromOpsGenie = async (today = new Date()) => {
   })
 }
 
-const sendMessageForEmails = async (emails: string[]) => {
+export const sendMessageForEmails = async (emails: string[]) => {
   console.log(`The following emails are on call: ${emails}. Now looking up Slack IDs.`)
 
   const slackToken = peril.env.SLACK_WEB_API_TOKEN
@@ -110,13 +110,11 @@ const sendMessageForEmails = async (emails: string[]) => {
 
   const { slackMessage } = await import("./slackDevChannel")
 
-  if (onCallStaffMentions.length > 0) {
-    await slackMessage(
-      `${onCallStaffMentions.join(
-        ", "
-      )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
-    )
-  }
+  await slackMessage(
+    `${onCallStaffMentions.join(
+      ", "
+    )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
+  )
 }
 
 function filterUndefineds<T>(t: T | undefined): t is T {

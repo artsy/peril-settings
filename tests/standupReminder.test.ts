@@ -20,7 +20,7 @@ jest.mock("@slack/client", () => ({
   })),
 }))
 
-import { sendMessageForEvents } from "../tasks/standupReminder"
+import { sendMessageForEmails, emailsForCalendarEvents } from "../tasks/standupReminder"
 
 const today = "2019-01-07"
 const events = [
@@ -50,7 +50,7 @@ describe("Monday standup reminders", () => {
   })
 
   it("sends a message", async () => {
-    await sendMessageForEvents([])
+    await sendMessageForEmails([])
     expect(mockSlackDevChannel).toHaveBeenCalled()
   })
 
@@ -70,7 +70,8 @@ describe("Monday standup reminders", () => {
     it("looks up attendees on slack and mentions them", async () => {
       var receivedMessage
       mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
-      await sendMessageForEvents(events, new Date(today))
+      const emails = emailsForCalendarEvents(events, new Date(today))
+      await sendMessageForEmails(emails)
       expect(receivedMessage).toEqual(
         "<@ASHID>, <@ORTAID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
       )
@@ -80,7 +81,9 @@ describe("Monday standup reminders", () => {
       events[1].attendees = [{ email: "unknown@user.com" }]
       var receivedMessage
       mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
-      await sendMessageForEvents(events, new Date(today))
+      const emails = emailsForCalendarEvents(events, new Date(today))
+
+      await sendMessageForEmails(emails)
       expect(receivedMessage).toEqual(
         "<@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
       )
