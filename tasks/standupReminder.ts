@@ -3,6 +3,7 @@ import { WebClient } from "@slack/client"
 import { peril } from "danger"
 import fetch from "node-fetch"
 import querystring from "querystring"
+import { concat, uniq } from "lodash"
 
 let googleKey: any = JSON.parse(peril.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
@@ -12,11 +13,11 @@ export default async () => {
   // Backed by Google Calendar
   const events = await retrieveCalendarEvents()
   const calendarOnCallStaffEmails = emailsForCalendarEvents(events)
-  await sendMessageForEmails(calendarOnCallStaffEmails)
 
   // Backed by OpsGenie
   const opsGenieOnCallStaffEmails = await emailsFromOpsGenie()
-  await sendMessageForEmails(opsGenieOnCallStaffEmails)
+
+  await sendMessageForEmails(uniq(concat(calendarOnCallStaffEmails, opsGenieOnCallStaffEmails)))
 }
 
 const retrieveCalendarEvents = async (): Promise<calendar_v3.Schema$Event[]> => {
