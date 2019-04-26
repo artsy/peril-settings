@@ -20,7 +20,30 @@ jest.mock("@slack/client", () => ({
   })),
 }))
 
-import { sendMessageForEmails, emailsForCalendarEvents } from "../tasks/standupReminder"
+const mockSuccessResponse = {
+  data: {
+    onCallParticipants: [
+      {
+        name: "orta@example.com",
+      },
+      {
+        name: "ash@example.com",
+      },
+    ],
+  },
+}
+const mockJsonPromise = Promise.resolve(mockSuccessResponse)
+const mockFetchPromise = Promise.resolve({
+  json: () => mockJsonPromise,
+})
+
+jest.mock("node-fetch", () => {
+  return {
+    default: () => mockFetchPromise,
+  }
+})
+
+import { sendMessageForEmails, emailsForCalendarEvents, emailsFromOpsGenie } from "../tasks/standupReminder"
 
 const today = "2019-01-07"
 const events = [
@@ -86,6 +109,18 @@ describe("Monday standup reminders", () => {
       await sendMessageForEmails(emails)
       expect(receivedMessage).toEqual(
         "<@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
+      )
+    })
+
+    it("fetches on-call participants from OpsGenie", async () => {
+      var receivedMessage
+      mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
+
+      const emails = await emailsFromOpsGenie(new Date(today))
+
+      await sendMessageForEmails(emails)
+      expect(receivedMessage).toEqual(
+        "<@ORTAID>, <@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
       )
     })
   })

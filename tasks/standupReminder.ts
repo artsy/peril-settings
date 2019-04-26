@@ -2,7 +2,7 @@ import { google, calendar_v3 } from "googleapis"
 import { WebClient } from "@slack/client"
 import { peril } from "danger"
 import fetch from "node-fetch"
-import querystring from "querystring"
+import * as querystring from "querystring"
 import { concat, uniq } from "lodash"
 
 let googleKey: any = JSON.parse(peril.env.GOOGLE_APPS_PRIVATE_KEY_JSON || "{}")
@@ -78,7 +78,7 @@ export const emailsForCalendarEvents = (events: calendar_v3.Schema$Event[], toda
   return onCallStaffEmails
 }
 
-const emailsFromOpsGenie = async (today = new Date()) => {
+export const emailsFromOpsGenie = async (today = new Date()) => {
   const targetDate = new Date(today.getTime() + 3600 * 24 * 1000)
   const qs = querystring.stringify({ date: targetDate.toISOString() })
   const url = `https://api.opsgenie.com/v2/schedules/${peril.env.OPSGENIE_SCHEDULE_ID}/on-calls?${qs}`
@@ -92,7 +92,7 @@ const emailsFromOpsGenie = async (today = new Date()) => {
   })
 
   const body = await req.json()
-  return body.data.onCallParticipants.reduce((participant: any) => {
+  return body.data.onCallParticipants.map((participant: any) => {
     return participant.name
   })
 }
