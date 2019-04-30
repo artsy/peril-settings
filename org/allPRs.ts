@@ -49,8 +49,9 @@ export const rfc7 = async () => {
 // https://github.com/artsy/peril-settings/issues/13
 export const rfc13 = async () => {
   const pr = danger.github.pr
+  const isRenovate = pr.user.login.toLowerCase().includes("renovate")
   const wipPR = pr.title.includes("WIP ") || pr.title.includes("[WIP]")
-  if (!wipPR && pr.assignee === null) {
+  if (!isRenovate && !wipPR && pr.assignee === null) {
     // Validate they are in the org, before asking to assign
     try {
       await danger.github.api.orgs.checkMembership({ org: "artsy", username: danger.github.pr.user.login })
