@@ -116,29 +116,6 @@ export const rfc177 = async () => {
   }
 }
 
-// Remind reviewers if a review hasn't been received in 1 business day. Does not support teams, only individual users
-// https://github.com/artsy/README/issues/177
-export const rfc177_2 = async () => {
-  const reviewers = danger.github.requested_reviewers.users
-  const now = new Date()
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  const day = days[now.getDay()]
-
-  const runReviewReminder = async (time: string, reviewers: GitHubUser[]) => {
-    for (let i = 0; i < reviewers.length; i++) {
-      await peril.runTask("pr-review-reminder", time, reviewers[i])
-    }
-  }
-
-  if (day === "Friday") {
-    runReviewReminder("in 3 days", reviewers)
-  } else if (day === "Saturday") {
-    runReviewReminder("in 2 days", reviewers)
-  } else {
-    runReviewReminder("in 1 day", reviewers)
-  }
-}
-
 // The default run
 export default async () => {
   rfc1()
@@ -148,5 +125,4 @@ export default async () => {
   await rfc13()
   await rfc16()
   await rfc177()
-  await rfc177_2()
 }

@@ -16,7 +16,7 @@ it("warns when more than one person is assigned to a PR", async () => {
 })
 
 it("doesn't warn if one person is assigned to a PR", async () => {
-  dm.danger.github = { pr: { title: "A PR with one of assignee in an array", assignees: ["mdole"] } }
+  dm.danger.github = { pr: { title: "A PR with one assignee in an array", assignees: ["mdole"] } }
   await rfc177()
   expect(dm.warn).not.toHaveBeenCalled()
 })
