@@ -17,7 +17,7 @@ An overview of what Peril does for Artsy is available in the README repo at [`/c
 
 ### TL:DR on this Repo?
 
-Peril is Danger running on a web-server, this repo is the configuration for that, currently the dangerfiles in [org](org/)
+Peril is Danger running on a web-server. This repo is the configuration for that, and currently the dangerfiles in [org](org/)
 run on every issue and pull request for all our repos.
 
 ### To Develop
