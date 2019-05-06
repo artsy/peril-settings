@@ -1,4 +1,4 @@
-import { danger, peril } from "danger"
+import { danger, peril, GitHubUser } from "danger"
 import { PRReviewMetadata } from "../tasks/prReviewReminder"
 
 // Remind reviewers if a review hasn't been received in 1 business day. Does not support teams, only individual users
@@ -15,11 +15,13 @@ export const scheduleReviewReminders = (now: Date) => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const day = days[now.getDay()]
 
+  const pr = danger.github.pr
+
   const metadata: PRReviewMetadata = {
-    repoName: danger.github.pr.base.repo.name,
-    prNumber: danger.github.pr.number,
-    reviewers: danger.github.requested_reviewers.users.map(user => user.login),
-    owner: danger.github.pr.base.repo.owner.login,
+    repoName: pr.base.repo.name,
+    prNumber: pr.number,
+    reviewer: "me", // TODO: this should be the requested_reviewer associated with the pull_request.review_requested event
+    owner: pr.base.repo.owner.login,
   }
 
   // Runs the review reminder task on each user assigned to review a PR
