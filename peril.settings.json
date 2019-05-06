@@ -20,9 +20,9 @@
     "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
-    //    "artsy/metaphysics": {
-    //    "pull_request": "peril/upstreamSchemaValidator.ts"
-    //    },
+    "artsy/metaphysics": {
+      "pull_request": "peril/upstreamSchemaValidator.ts"
+    },
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
     },
