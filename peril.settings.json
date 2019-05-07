@@ -11,7 +11,6 @@
     "pull_request": ["org/allPRs.ts", "org/jira/pr.ts", "org/mobilePRsForbidForks.ts"],
     "pull_request.closed": ["org/closedPRs.ts", "org/jira/pr.ts"],
     "pull_request.opened": ["org/openedPR.ts", "org/addPatchLabel.ts"],
-    "pull_request.review_requested": "org/addReviewer.ts",
     // The RFC process
     "issues": "org/rfc/addRFCToNewIssues.ts",
     "issues.labeled": ["org/rfc/scheduleRFCsForLabels.ts", "org/retroActionItems.ts"],
@@ -21,6 +20,9 @@
     "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
+    "artsy/peril-settings": {
+      "pull_request.review_requested": "org/addReviewer.ts"
+    },
     //    "artsy/metaphysics": {
     //    "pull_request": "peril/upstreamSchemaValidator.ts"
     //    },

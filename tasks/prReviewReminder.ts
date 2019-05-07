@@ -13,16 +13,17 @@ export default async (metadata: PRReviewMetadata) => {
     repo: metadata.repoName,
     number: metadata.prNumber,
   }
-  // GH API to get to that PR
+  // Get the PR we want to add a comment to
   const pr = await danger.github.api.pulls.get(pullParams)
   const reviews = await danger.github.api.pulls.listReviews(pullParams)
   const currentReviewers: string[] = pr.data.requested_reviewers.map(user => user.login)
 
-  // Check all the reviewers against all the reviews
+  // Confirm that the PR is still open and the initially requested reviewer is still requested
   if (pr.data.state === "open" && currentReviewers.includes(metadata.reviewer)) {
-    for (let j = 0; j < reviews.data.length; j++) {
-      // If this reviewer has already reviewed, return
-      if (reviews.data[j].user.login === metadata.reviewer) {
+    // Loop through the reviews and see if this reviewer has already reviewed
+    for (let i = 0; i < reviews.data.length; i++) {
+      // If they have, just return
+      if (reviews.data[i].user.login === metadata.reviewer) {
         return
       }
       // If we've looped through all the reviews and didn't find one by our reviewer,
@@ -31,8 +32,9 @@ export default async (metadata: PRReviewMetadata) => {
         owner: metadata.owner,
         repo: metadata.repoName,
         number: metadata.prNumber,
-        body: `@${metadata.reviewer} it's been a full business day since your review was requested!\n
-              Please add your review.`,
+        body: `@${
+          metadata.reviewer
+        } it's been a full business day since your review was requested!\nPlease add your review.`,
       }
       danger.github.api.issues.createComment(commentParams)
     }

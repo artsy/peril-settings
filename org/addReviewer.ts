@@ -1,16 +1,25 @@
-import { danger, peril, GitHubUser } from "danger"
+import { danger, peril } from "danger"
 import { PRReviewMetadata } from "../tasks/prReviewReminder"
+import { PullRequest } from "github-webhook-event-types"
+import { PullRequestPullRequestPullRequestUser as User } from "github-webhook-event-types/source/PullRequest"
 
-// Remind reviewers if a review hasn't been received in 1 business day. Does not support teams, only individual users
+// This interface gets around the fact that github-webhook-event-types doesn't include a requested_reviewer field
+// on pull_request.review_requested event types (requested_reviewer only exists on certain events).
+// See the GitHub API documentation here: https://developer.github.com/v3/activity/events/types/#webhook-payload-example-28
+export interface RequestedReview extends PullRequest {
+  requested_reviewer: User
+}
+
+// Remind reviewers if a review hasn't been received in 1 business day
 // https://github.com/artsy/README/issues/177
-export const rfc177_2 = () => {
+export const rfc177_2 = (reviewRequestEvent: RequestedReview) => {
   const now = new Date()
-  if (danger.github.requested_reviewers.users && danger.github.requested_reviewers.users.length > 0) {
-    scheduleReviewReminders(now)
+  if (reviewRequestEvent.requested_reviewer) {
+    scheduleReviewReminders(now, reviewRequestEvent.requested_reviewer.login)
   }
 }
 
-export const scheduleReviewReminders = (now: Date) => {
+export const scheduleReviewReminders = (now: Date, reviewer: string) => {
   // Get the day of the week & make it more human-readable
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const day = days[now.getDay()]
@@ -20,11 +29,10 @@ export const scheduleReviewReminders = (now: Date) => {
   const metadata: PRReviewMetadata = {
     repoName: pr.base.repo.name,
     prNumber: pr.number,
-    reviewer: "me", // TODO: this should be the requested_reviewer associated with the pull_request.review_requested event
+    reviewer,
     owner: pr.base.repo.owner.login,
   }
 
-  // Runs the review reminder task on each user assigned to review a PR
   const runReviewReminder = (time: string, metadata: PRReviewMetadata) =>
     peril.runTask("pr-review-reminder", time, metadata)
 
@@ -37,3 +45,5 @@ export const scheduleReviewReminders = (now: Date) => {
     runReviewReminder("in 1 day", metadata)
   }
 }
+
+export default rfc177_2
