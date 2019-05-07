@@ -7,7 +7,6 @@ const mergedLabels = ["merged", "monitor/qa", "monitoring/qa"]
 import { danger, peril } from "danger"
 import { PullRequest } from "github-webhook-event-types"
 import * as JiraApi from "jira-client"
-import { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } from "./utils"
 
 import * as IssueJSON from "../../fixtures/jira_issue_example.json"
 type Issue = typeof IssueJSON
@@ -19,6 +18,7 @@ const { sentence } = danger.utils
 
 export default async (webhook: PullRequest) => {
   // Grab some util functions for Jira manipulation
+  const { getJiraTicketIDsFromCommits, getJiraTicketIDsFromText, uniq, makeJiraTransition } = await import("./utils")
   const prBody = danger.github.pr.body
 
   // Grab tickets from the PR body, and the commit messages
