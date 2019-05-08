@@ -20,6 +20,9 @@
     "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
+    "artsy/peril-settings": {
+      "pull_request.review_requested": "org/addReviewer.ts"
+    },
     //    "artsy/metaphysics": {
     //    "pull_request": "peril/upstreamSchemaValidator.ts"
     //    },
@@ -49,7 +52,8 @@
     "slackup-reminder-tmp": "tasks/standupReminder.ts",
     "slack-dev-channel": "tasks/slackDevChannel.ts",
     "daily-license-check": "tasks/dailyLicenseCheck.ts",
-    "simple-sups": ["tasks/supGP.ts"]
+    "simple-sups": ["tasks/supGP.ts"],
+    "pr-review-reminder": "tasks/prReviewReminder.ts"
   },
   "scheduler": {
     "daily": "daily-license-check",
