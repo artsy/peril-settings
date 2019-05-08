@@ -124,6 +124,7 @@ describe("reviewer checks", () => {
     await prReviewReminder(metadata)
     expect(createComment).not.toHaveBeenCalled()
   })
+
   it("does not add a comment when pr is closed", async () => {
     const createComment = dm.danger.github.api.issues.createComment
     const metadata = {

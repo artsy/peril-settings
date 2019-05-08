@@ -26,17 +26,17 @@ export default async (metadata: PRReviewMetadata) => {
       if (reviews.data[i].user.login === metadata.requestedReviewer) {
         return
       }
-      // If we've looped through all the reviews and didn't find one by our reviewer,
-      // post a message in the pr and @ them. See https://octokit.github.io/rest.js/#octokit-routes-pulls for documentation
-      const commentParams = {
-        owner: metadata.owner,
-        repo: metadata.repoName,
-        number: metadata.prNumber,
-        body: `@${
-          metadata.requestedReviewer
-        } it's been a full business day since your review was requested!\nPlease add your review.`,
-      }
-      danger.github.api.issues.createComment(commentParams)
     }
+    // If we've looped through all the reviews and didn't find one by our reviewer,
+    // post a message in the pr and @ them. See https://octokit.github.io/rest.js/#octokit-routes-pulls for documentation
+    const commentParams = {
+      owner: metadata.owner,
+      repo: metadata.repoName,
+      number: metadata.prNumber,
+      body: `@${
+        metadata.requestedReviewer
+      } it's been a full business day since your review was requested!\nPlease add your review.`,
+    }
+    danger.github.api.issues.createComment(commentParams)
   }
 }
