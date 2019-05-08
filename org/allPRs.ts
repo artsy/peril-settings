@@ -107,6 +107,15 @@ export const rfc16 = async () => {
   }
 }
 
+// Warn PR authors if they assign more than one person to a PR
+// https://github.com/artsy/README/issues/177
+export const rfc177 = async () => {
+  const pr = danger.github.pr
+  if (pr.assignees && pr.assignees.length > 1) {
+    warn("Please only assign one person to a PR")
+  }
+}
+
 // The default run
 export default async () => {
   rfc1()
@@ -115,4 +124,5 @@ export default async () => {
   await rfc7()
   await rfc13()
   await rfc16()
+  await rfc177()
 }

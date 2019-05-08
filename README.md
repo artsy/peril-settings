@@ -24,7 +24,6 @@ run on every issue and pull request for all our repos.
 
 ```sh
 git clone https://github.com/artsy/peril-settings.git
-cd peril-settings
 yarn install
 yarn jest
 code .
