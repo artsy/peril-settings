@@ -1,4 +1,4 @@
-import { schedule, danger, warn, fail, peril, GitHubUser } from "danger"
+import { danger, warn, fail } from "danger"
 
 import yarn from "danger-plugin-yarn"
 

@@ -3,7 +3,7 @@ import { danger } from "danger"
 export interface PRReviewMetadata {
   repoName: string
   prNumber: number
-  reviewer: string
+  requestedReviewer: string
   owner: string
 }
 
@@ -19,11 +19,11 @@ export default async (metadata: PRReviewMetadata) => {
   const currentReviewers: string[] = pr.data.requested_reviewers.map(user => user.login)
 
   // Confirm that the PR is still open and the initially requested reviewer is still requested
-  if (pr.data.state === "open" && currentReviewers.includes(metadata.reviewer)) {
+  if (pr.data.state === "open" && currentReviewers.includes(metadata.requestedReviewer)) {
     // Loop through the reviews and see if this reviewer has already reviewed
     for (let i = 0; i < reviews.data.length; i++) {
       // If they have, just return
-      if (reviews.data[i].user.login === metadata.reviewer) {
+      if (reviews.data[i].user.login === metadata.requestedReviewer) {
         return
       }
       // If we've looped through all the reviews and didn't find one by our reviewer,
@@ -33,7 +33,7 @@ export default async (metadata: PRReviewMetadata) => {
         repo: metadata.repoName,
         number: metadata.prNumber,
         body: `@${
-          metadata.reviewer
+          metadata.requestedReviewer
         } it's been a full business day since your review was requested!\nPlease add your review.`,
       }
       danger.github.api.issues.createComment(commentParams)

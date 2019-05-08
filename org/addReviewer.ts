@@ -19,7 +19,7 @@ export const rfc177_2 = (reviewRequestEvent: RequestedReview) => {
   }
 }
 
-export const scheduleReviewReminders = (now: Date, reviewer: string) => {
+export const scheduleReviewReminders = (now: Date, requestedReviewer: string) => {
   // Get the day of the week & make it more human-readable
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const day = days[now.getDay()]
@@ -29,7 +29,7 @@ export const scheduleReviewReminders = (now: Date, reviewer: string) => {
   const metadata: PRReviewMetadata = {
     repoName: pr.base.repo.name,
     prNumber: pr.number,
-    reviewer,
+    requestedReviewer,
     owner: pr.base.repo.owner.login,
   }
 

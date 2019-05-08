@@ -33,7 +33,11 @@ describe("scheduling reminder tasks", () => {
   it("calls runTask in 1 day when called on Monday", () => {
     const monday = new Date(2019, 3, 29)
     scheduleReviewReminders(monday, "you")
-    expect(pm.runTask).toBeCalledWith("pr-review-reminder", "in 1 day", expect.objectContaining({ reviewer: "you" }))
+    expect(pm.runTask).toBeCalledWith(
+      "pr-review-reminder",
+      "in 1 day",
+      expect.objectContaining({ requestedReviewer: "you" })
+    )
   })
 
   it("calls runTask in 2 days when called on Saturday", () => {
@@ -42,7 +46,7 @@ describe("scheduling reminder tasks", () => {
     expect(pm.runTask).toBeCalledWith(
       "pr-review-reminder",
       "in 2 days",
-      expect.objectContaining({ reviewer: "your cat" })
+      expect.objectContaining({ requestedReviewer: "your cat" })
     )
   })
 
@@ -52,7 +56,7 @@ describe("scheduling reminder tasks", () => {
     expect(pm.runTask).toBeCalledWith(
       "pr-review-reminder",
       "in 3 days",
-      expect.objectContaining({ reviewer: "your dog" })
+      expect.objectContaining({ requestedReviewer: "your dog" })
     )
   })
 

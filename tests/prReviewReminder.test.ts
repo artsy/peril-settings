@@ -44,7 +44,7 @@ describe("reviewer checks", () => {
     const metadata = {
       repoName: "artsy",
       prNumber: 1,
-      reviewer: "artsy",
+      requestedReviewer: "artsy",
       owner: "artsy",
     }
 
@@ -61,7 +61,7 @@ describe("reviewer checks", () => {
     const metadata = {
       repoName: "artsy",
       prNumber: 1,
-      reviewer: "artsy",
+      requestedReviewer: "artsy",
       owner: "artsy",
     }
 
@@ -92,7 +92,7 @@ describe("reviewer checks", () => {
     const metadata = {
       repoName: "artsy",
       prNumber: 1,
-      reviewer: "artsy",
+      requestedReviewer: "artsy",
       owner: "artsy",
     }
 
@@ -129,7 +129,7 @@ describe("reviewer checks", () => {
     const metadata = {
       repoName: "artsy",
       prNumber: 1,
-      reviewer: "artsy",
+      requestedReviewer: "artsy",
       owner: "artsy",
     }
 

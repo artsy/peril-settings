@@ -10,7 +10,7 @@
     // Jira integration
     "pull_request": ["org/allPRs.ts", "org/jira/pr.ts", "org/mobilePRsForbidForks.ts"],
     "pull_request.closed": ["org/closedPRs.ts", "org/jira/pr.ts"],
-    "pull_request.opened": ["org/openedPR.ts", "org/addPatchLabel.ts"],
+    "pull_request.opened": "org/addPatchLabel.ts",
     // The RFC process
     "issues": "org/rfc/addRFCToNewIssues.ts",
     "issues.labeled": ["org/rfc/scheduleRFCsForLabels.ts", "org/retroActionItems.ts"],
