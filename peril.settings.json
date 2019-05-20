@@ -20,9 +20,6 @@
     "pull_request_review": "org/markAsMergeOnGreen.ts"
   },
   "repos": {
-    "artsy/peril-settings": {
-      "pull_request.review_requested": "org/addReviewer.ts"
-    },
     //    "artsy/metaphysics": {
     //    "pull_request": "peril/upstreamSchemaValidator.ts"
     //    },
@@ -39,7 +36,8 @@
       "pull_request": "dangerfile.ts"
     },
     "artsy/peril-settings": {
-      "pull_request": "dangerfile.ts"
+      "pull_request": "dangerfile.ts",
+      "pull_request.review_requested": "org/addReviewer.ts"
     }
   },
   "tasks": {
