@@ -2,9 +2,9 @@ jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
 
-import mobilePRsForbidForks from "../org/mobilePRsForbidForks"
+import ossPRsForbidForks from "../org/ossPRsForbidForks"
 
-describe("mobilePRsForbidForks", () => {
+describe("ossPRsForbidForks", () => {
   beforeEach(() => {
     dm.danger = {
       github: {
@@ -30,7 +30,7 @@ describe("mobilePRsForbidForks", () => {
     dm.fail = jest.fn()
   })
 
-  describe("on mobile repos", () => {
+  describe("on oss repos", () => {
     beforeEach(() => {
       dm.danger.github.pr.base.repo.name = "eigen"
     })
@@ -39,7 +39,7 @@ describe("mobilePRsForbidForks", () => {
       const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
       mockCheckMembership.mockImplementation(() => Promise.resolve())
       dm.danger.github.pr.head.repo.fork = true
-      await mobilePRsForbidForks()
+      await ossPRsForbidForks()
       expect(dm.fail).toHaveBeenCalled()
     })
 
@@ -47,25 +47,25 @@ describe("mobilePRsForbidForks", () => {
       const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
       mockCheckMembership.mockRejectedValueOnce("some error")
       dm.danger.github.pr.head.repo.fork = true
-      await mobilePRsForbidForks()
+      await ossPRsForbidForks()
       expect(dm.warn).toHaveBeenCalled()
     })
 
     it("does nothing when submitted from a branch", async () => {
       const mockCheckMembership: jest.Mock = dm.danger.github.api.orgs.checkMembership as any
       mockCheckMembership.mockImplementation(() => Promise.resolve())
-      await mobilePRsForbidForks()
+      await ossPRsForbidForks()
       expect(dm.fail).not.toHaveBeenCalled()
     })
   })
 
-  describe("on non-mobile repos", () => {
+  describe("on non-oss repos", () => {
     beforeEach(() => {
-      dm.danger.github.pr.base.repo.name = "force"
+      dm.danger.github.pr.base.repo.name = "gravity"
     })
 
     it("does nothing", async () => {
-      await mobilePRsForbidForks()
+      await ossPRsForbidForks()
       expect(dm.fail).not.toHaveBeenCalled()
       expect(dm.warn).not.toHaveBeenCalled()
     })
