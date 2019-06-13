@@ -4,7 +4,7 @@ import { danger, warn, fail } from "danger"
 // instead of PRs from forks. Our tooling still relies on this; PRs from forks
 // won't even trigger CI builds on some of these projects, so we need to warn
 // the authors via Peril.
-const nonForkableRepos = ["eigen", "emission", "eidolon", "energy", "emergence"]
+const nonForkableRepos = ["eigen", "emission", "eidolon", "energy", "emergence", "rosalind"]
 
 export default async () => {
   const pr = danger.github.pr
