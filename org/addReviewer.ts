@@ -13,6 +13,15 @@ export interface RequestedReview extends PullRequest {
 // Remind reviewers if a review hasn't been received in 1 business day
 // https://github.com/artsy/README/issues/177
 export const rfc177_2 = (reviewRequestEvent: RequestedReview) => {
+  const pr = danger.github.pr
+
+  const commentParams = {
+    repo: pr.base.repo.name,
+    number: pr.number,
+    owner: pr.base.repo.owner.login,
+    body: "hello",
+  }
+  danger.github.api.issues.createComment(commentParams)
   const now = new Date()
   if (reviewRequestEvent.requested_reviewer) {
     scheduleReviewReminders(now, reviewRequestEvent.requested_reviewer.login)
