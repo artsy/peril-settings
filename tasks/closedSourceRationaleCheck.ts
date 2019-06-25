@@ -26,6 +26,12 @@ const getInvalidRepos = async (privateRepos: Repo[]): Promise<Repo[]> => {
   })
   await Promise.all(promises)
 
+  privateRepos.forEach(repo => {
+    if (repo.readme === "") {
+      console.error(`Repo has empty readme! ${repo.name}`)
+    }
+  })
+
   const missingRepos = privateRepos.filter(repo => !repo.readme.includes(targetText))
   return missingRepos
 }
