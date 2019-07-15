@@ -5,6 +5,8 @@
 This is the configuration repo for Peril on the Artsy org. There is a [settings file](peril.settings.json) and org-wide
 dangerfiles which are inside the [org folder](org/).
 
+The **Peril Dashboard** for modifying settings, manually running tasks, and setting environment variables, is [https://staging-dashboard.peril.systems](https://staging-dashboard.peril.systems).
+
 Here's some links to the key concepts:
 
 - [Peril](https://github.com/danger/peril)
