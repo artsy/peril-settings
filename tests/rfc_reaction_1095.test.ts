@@ -106,3 +106,17 @@ it("Uses the docs label if the PR was created by netlify cms", async () => {
   expect(mockAddLabels).toBeCalled()
   expect(mockAddLabels.mock.calls[0][0].labels).toEqual(["Docs"])
 })
+
+it("Uses the trivial label if it's a dependabot PR", async () => {
+  danger.github.issue.labels = [{ name: "dependencies" } as any]
+  mockGetLabels.mockResolvedValueOnce({
+    data: [{ name: "Version: Patch" }, { name: "Version: Trivial" }],
+  })
+  mockfileContents.mockResolvedValueOnce("{}")
+
+  await addPatchLabel()
+
+  expect(mockCreateLabel).not.toBeCalled()
+  expect(mockAddLabels).toBeCalled()
+  expect(mockAddLabels.mock.calls[0][0].labels).toEqual(["Version: Trivial"])
+})

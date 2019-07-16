@@ -70,6 +70,11 @@ export default async () => {
     labelName = "Docs"
   }
 
+  // If it's a dependabot PR, make sure it gets the trivial label
+  if (danger.github.issue.labels.find(l => l.name === "dependencies")) {
+    labelName = "Version: Trivial"
+  }
+
   // Add the label
   console.log(`Adding the patch label to this PR`)
   await api.issues.addLabels({
