@@ -42,7 +42,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
   }
 
   // Don't do any work unless we have to
-  const keywords = ["merge on green", "merge on ci green"]
+  const keywords = ["#mergeongreen"]
   const match = keywords.find(k => text.toLowerCase().includes(k))
   if (!match) {
     return console.log(`Did not find any of the merging phrases in the comment beginning ${text.substring(0, 12)}.`)
