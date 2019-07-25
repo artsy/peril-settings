@@ -1,5 +1,9 @@
 ## Artsy Peril Settings
 
+- **State**: production
+- **Point people**: [@zephraph](https://github.com/zephraph), [@ashfurrow](https://github.com/ashfurrow)
+- **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=master)](https://travis-ci.org/artsy/peril-settings)
+
 ### What is this project?
 
 This is the configuration repo for Peril on the Artsy org. There is a [settings file](peril.settings.json) and org-wide
