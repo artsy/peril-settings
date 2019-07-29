@@ -63,7 +63,7 @@ describe("for adding the label", () => {
 
     it("bails when the issue already has merge on green", async () => {
       await markAsMergeOnGreen({
-        comment: { body: "Merge on green", user: { login: "danger" } },
+        comment: { body: "#mergeongreen", user: { login: "danger" } },
         issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
         ...repo,
       } as any)
@@ -92,7 +92,7 @@ describe("for adding the label", () => {
       )
 
       await markAsMergeOnGreen({
-        review: { body: "Merge on green!", user: { login: "danger" } },
+        review: { body: "Looks great! #MergeOnGreen", user: { login: "danger" } },
         pull_request: pull_request,
         ...repo,
       } as any)
@@ -106,7 +106,7 @@ describe("for adding the label", () => {
 
     await markAsMergeOnGreen({
       comment: {
-        body: "Merge on green",
+        body: "#mergeongreen",
         user: { sender: { login: "orta" } },
       },
       issue: { labels: [], pull_request: {} },
@@ -137,7 +137,7 @@ describe("for handling merging when green", () => {
     expect(console.log).toBeCalledWith("Not all statuses are green")
   })
 
-  it("does nothing when the PR does not have merge on green ", async () => {
+  it("does nothing when the PR does not have merge on green", async () => {
     // Has the right status
     dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
       Promise.resolve({ data: { state: "success" } })
@@ -160,7 +160,7 @@ describe("for handling merging when green", () => {
     expect(console.log).toBeCalledWith("PR does not have Merge on Green")
   })
 
-  it("triggers a PR merge when there is a merge on green label ", async () => {
+  it("triggers a PR merge when there is a merge on green label", async () => {
     // Has the right status
     dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
       Promise.resolve({ data: { state: "success" } })
