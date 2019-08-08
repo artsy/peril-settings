@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/danger/peril/master/peril-settings-json.schema",
+  "settings": {},
+  "rules": {},
+  "repos": {
+    "artsy/peril-settings": {
+      "pull_request.opened": "org/testPRCreated.ts"
+    }
+  },
+  "tasks": {
+    "test-task": "tasks/testTask.ts"
+  },
+  "scheduler": {}
+}
