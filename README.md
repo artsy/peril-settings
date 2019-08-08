@@ -1,6 +1,6 @@
 ## Artsy Peril Settings
 
-- **State**: production
+- **State**: Production
 - **Point people**: [@zephraph](https://github.com/zephraph), [@ashfurrow](https://github.com/ashfurrow)
 - **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=master)](https://travis-ci.org/artsy/peril-settings)
 
