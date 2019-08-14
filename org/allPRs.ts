@@ -1,4 +1,5 @@
 import { danger, warn, fail } from "danger"
+import { deploySummary } from "./deploySummary"
 
 import yarn from "danger-plugin-yarn"
 
@@ -126,4 +127,5 @@ export default async () => {
   await rfc13()
   await rfc16()
   await rfc177()
+  await deploySummary()
 }
