@@ -1,5 +1,4 @@
-import { danger, warn, fail } from "danger"
-import { deploySummary } from "./deploySummary"
+import { danger, warn, fail, GitHubCommit, markdown } from "danger"
 
 import yarn from "danger-plugin-yarn"
 
@@ -116,6 +115,75 @@ export const rfc177 = () => {
   if (pr.assignees && pr.assignees.length > 1) {
     warn("Please only assign one person to a PR")
   }
+}
+
+// RFC 238: https://github.com/artsy/README/issues/238
+// Summarize deploy PR's with included PR's
+export const deploySummary = async () => {
+  // Returns `true` if this is a PR to the `release` branch.
+  const isRelease = () => {
+    return danger.github.pr.base.ref === "release"
+  }
+
+  // Map of PR's included in the deploy.
+  // (will be outputted as a comment)
+  interface PRInfoMap {
+    [prNumber: number]: PRInfo
+  }
+  // Info per PR that is included
+  interface PRInfo {
+    title: string
+    href: string
+  }
+  // Memoized map of PR's fetched, and their info.
+  const prMap: PRInfoMap = {}
+
+  // For a given commit, will attempt to retrieve the corresponding
+  // closed PR via the search API.
+  const dataForCommit = async (commit: GitHubCommit) => {
+    const sha = commit.sha
+    const repo = danger.github.thisPR.repo
+    const owner = danger.github.thisPR.owner
+    const searchResponse = await danger.github.api.search.issuesAndPullRequests({
+      q: `${sha} type:pr is:closed repo:${owner}/${repo}`,
+    })
+    const prsWithCommit = searchResponse.data.items.map((i: any) => i.number) as number[]
+
+    // Assume that the only PR containing the SHA is the corresponding PR.
+    const prNumber = prsWithCommit.length && prsWithCommit[0]
+    if (!prNumber) return
+
+    // Already fetched this PR info (from an earlier commit).
+    if (prMap[prNumber]) return
+
+    const issue = await danger.github.api.issues.get({
+      owner,
+      repo,
+      number: prNumber,
+    })
+
+    // Store memoized data.
+    prMap[prNumber] = {
+      title: issue.data.title,
+      href: `https://github.com/${owner}/${repo}/${prNumber}`,
+    }
+  }
+
+  if (!isRelease()) return
+
+  await Promise.all(danger.github.commits.map(c => dataForCommit(c)))
+
+  if (!Object.keys(prMap).length) return
+
+  const message =
+    "### This deploy contains the following PRs:\n\n" +
+    Object.entries(prMap)
+      .map(([_number, info]) => {
+        return `${info.title} (${info.href})\n`
+      })
+      .join("")
+
+  return markdown(message)
 }
 
 // The default run
