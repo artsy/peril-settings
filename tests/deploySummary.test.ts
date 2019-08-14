@@ -4,7 +4,7 @@ const dm = danger as any
 
 dm.markdown = (message: string) => message
 
-import { deploySummary } from "../org/deploySummary"
+import { deploySummary } from "../org/allPRs"
 
 it("outputs associated PR info", async () => {
   dm.danger = {
