@@ -57,5 +57,5 @@ it("outputs associated PR info", async () => {
   }
 
   const generatedSummary = await deploySummary()
-  expect(generatedSummary).toContain("PR to be deployed (https://github.com/artsy/force/1400)")
+  expect(generatedSummary).toContain("PR to be deployed (https://github.com/artsy/force/pull/1400)")
 })

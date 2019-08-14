@@ -165,7 +165,7 @@ export const deploySummary = async () => {
     // Store memoized data.
     prMap[prNumber] = {
       title: issue.data.title,
-      href: `https://github.com/${owner}/${repo}/${prNumber}`,
+      href: `https://github.com/${owner}/${repo}/pull/${prNumber}`,
     }
   }
 
