@@ -179,7 +179,7 @@ export const deploySummary = async () => {
     "### This deploy contains the following PRs:\n\n" +
     Object.entries(prMap)
       .map(([_number, info]) => {
-        return `${info.title} (${info.href})\n`
+        return `- ${info.title} (${info.href})\n`
       })
       .join("")
 
