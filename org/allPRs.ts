@@ -133,45 +133,72 @@ export const deploySummary = async () => {
   // Info per PR that is included
   interface PRInfo {
     title: string
-    href: string
+    url: string
   }
   // Memoized map of PR's fetched, and their info.
   const prMap: PRInfoMap = {}
 
-  // For a given commit, will attempt to retrieve the corresponding
-  // closed PR via the search API.
-  const dataForCommit = async (commit: GitHubCommit) => {
+  // For a given commit, will build a GraphQL fragment to retrieve
+  // the associated pull request.
+  // These be combined into one query.
+  const fragmentForCommit = (commit: GitHubCommit) => {
     const sha = commit.sha
-    const repo = danger.github.thisPR.repo
-    const owner = danger.github.thisPR.owner
-    const searchResponse = await danger.github.api.search.issuesAndPullRequests({
-      q: `${sha} type:pr is:closed repo:${owner}/${repo}`,
-    })
-    const prsWithCommit = searchResponse.data.items.map((i: any) => i.number) as number[]
 
-    // Assume that the only PR containing the SHA is the corresponding PR.
-    const prNumber = prsWithCommit.length && prsWithCommit[0]
-    if (!prNumber) return
-
-    // Already fetched this PR info (from an earlier commit).
-    if (prMap[prNumber]) return
-
-    const issue = await danger.github.api.issues.get({
-      owner,
-      repo,
-      number: prNumber,
-    })
-
-    // Store memoized data.
-    prMap[prNumber] = {
-      title: issue.data.title,
-      href: `https://github.com/${owner}/${repo}/pull/${prNumber}`,
-    }
+    const fragment = `
+      sha_${sha}: object(expression: "${sha}") {
+        ... on Commit {
+          associatedPullRequests(first:1) {
+            edges {
+              node {
+                title
+                url
+                number
+              }
+            }
+          }
+        }
+      }
+    `
+    return fragment
   }
 
   if (!isRelease()) return
 
-  await Promise.all(danger.github.commits.map(c => dataForCommit(c)))
+  const repo = danger.github.thisPR.repo
+  const owner = danger.github.thisPR.owner
+  const fragments = danger.github.commits.map(c => fragmentForCommit(c)).join("")
+  const query = `
+    {
+      repository(owner: "${owner}", name: "${repo}") {
+        ${fragments}
+      }
+    }
+  `
+
+  const resp = await danger.github.api.request({
+    method: "POST",
+    url: "/graphql",
+    query,
+  })
+
+  const { data } = resp
+  const info = data.data.repository
+  Object.entries(info).forEach(([_sha, pulls]: [string, any]) => {
+    if (
+      pulls.associatedPullRequests &&
+      pulls.associatedPullRequests.edges &&
+      pulls.associatedPullRequests.edges.length
+    ) {
+      const pull = pulls.associatedPullRequests.edges[0].node
+
+      if (prMap[pull.number]) return
+
+      prMap[pull.number] = {
+        title: pull.title,
+        url: pull.url,
+      }
+    }
+  })
 
   if (!Object.keys(prMap).length) return
 
@@ -179,7 +206,7 @@ export const deploySummary = async () => {
     "### This deploy contains the following PRs:\n\n" +
     Object.entries(prMap)
       .map(([_number, info]) => {
-        return `- ${info.title} (${info.href})\n`
+        return `- ${info.title} (${info.url})\n`
       })
       .join("")
 

@@ -36,21 +36,28 @@ it("outputs associated PR info", async () => {
         number: 23,
       },
       api: {
-        search: {
-          issuesAndPullRequests: () => {
-            return Promise.resolve({
+        request: () => {
+          return Promise.resolve({
+            data: {
               data: {
-                items: [{ number: 1400 }],
+                repository: {
+                  sha_sha: {
+                    associatedPullRequests: {
+                      edges: [
+                        {
+                          node: {
+                            title: "PR to be deployed",
+                            url: "https://github.com/artsy/force/pull/1400",
+                            number: 1400,
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
               },
-            })
-          },
-        },
-        issues: {
-          get: () => {
-            return Promise.resolve({
-              data: { title: "PR to be deployed" },
-            })
-          },
+            },
+          })
         },
       },
     },
