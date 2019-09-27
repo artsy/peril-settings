@@ -1,5 +1,3 @@
-import { calendar_v3 } from "googleapis"
-
 jest.mock("danger", () => ({
   peril: {
     env: {},
@@ -43,29 +41,9 @@ jest.mock("node-fetch", () => {
   }
 })
 
-import { sendMessageForEmails, emailsForCalendarEvents, emailsFromOpsGenie } from "../tasks/standupReminder"
+import { sendMessageForEmails, emailsFromOpsGenie } from "../tasks/standupReminder"
 
 const today = "2019-01-07"
-const events = [
-  {
-    // One event that starts today.
-    start: { date: today },
-    end: { date: "2019-01-14" },
-    attendees: [{ email: "ash@example.com" }],
-  },
-  {
-    // One event that spans today.
-    start: { date: "2019-01-02" },
-    end: { date: "2019-01-09" },
-    attendees: [{ email: "orta@example.com" }],
-  },
-  {
-    // And one event that ends today.
-    start: { date: "2018-12-31" },
-    end: { date: today },
-    attendees: [{ email: "eloy@example.com" }],
-  },
-] as calendar_v3.Schema$Event[]
 
 describe("Monday standup reminders", () => {
   beforeEach(() => {
@@ -90,28 +68,6 @@ describe("Monday standup reminders", () => {
       })
     })
 
-    it("looks up attendees on slack and mentions them", async () => {
-      var receivedMessage
-      mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
-      const emails = emailsForCalendarEvents(events, new Date(today))
-      await sendMessageForEmails(emails)
-      expect(receivedMessage).toEqual(
-        "<@ASHID>, <@ORTAID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
-      )
-    })
-
-    it("skips failed email lookups", async () => {
-      events[1].attendees = [{ email: "unknown@user.com" }]
-      var receivedMessage
-      mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
-      const emails = emailsForCalendarEvents(events, new Date(today))
-
-      await sendMessageForEmails(emails)
-      expect(receivedMessage).toEqual(
-        "<@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
-      )
-    })
-
     it("fetches on-call participants from OpsGenie", async () => {
       var receivedMessage
       mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
@@ -121,6 +77,30 @@ describe("Monday standup reminders", () => {
       await sendMessageForEmails(emails)
       expect(receivedMessage).toEqual(
         "<@ORTAID>, <@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
+      )
+    })
+  })
+
+  describe("with failed email lookup", () => {
+    beforeEach(() => {
+      mockLookupByEmail.mockImplementation(async obj => {
+        if (obj.email.startsWith("ash@")) {
+          return { ok: true, user: { id: "ASHID" } }
+        } else {
+          return { ok: false }
+        }
+      })
+    })
+
+    it("skips failed email lookups", async () => {
+      var receivedMessage
+      mockSlackDevChannel.mockImplementation(message => (receivedMessage = message))
+
+      const emails = await emailsFromOpsGenie(new Date(today))
+
+      await sendMessageForEmails(emails)
+      expect(receivedMessage).toEqual(
+        "<@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
       )
     })
   })
