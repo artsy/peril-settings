@@ -1,6 +1,5 @@
-import { schedule, danger, warn, fail, peril } from "danger"
+import { danger, peril } from "danger"
 import { IncomingWebhook } from "@slack/client"
-import { PullRequest, Issues } from "github-webhook-event-types"
 
 // Ping slack channels for related labels
 // https://github.com/artsy/peril-settings/issues/33
@@ -11,7 +10,7 @@ export default async () => {
   const labelsMap = {
     consignments: "C52403S10",
     auctions: "C0C4AJ1PF",
-    analytics: "C0KEQD4B0"
+    analytics: "C0KEQD4B0",
   } as any
 
   // Find the labels in both the map above, and in the PR's labels

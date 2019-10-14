@@ -3,6 +3,7 @@
 const companyPrefix = "artsyproduct"
 const wipLabels = ["in review", "in progress", "review"]
 const mergedLabels = ["merged", "monitor/qa", "monitoring/qa"]
+const ignoredStatuses = ["done", "closed"]
 
 import { danger, peril } from "danger"
 import { PullRequest } from "github-webhook-event-types"
@@ -49,6 +50,14 @@ export default async (webhook: PullRequest) => {
       // https://developer.atlassian.com/cloud/jira/platform/rest/#api-api-2-issue-issueIdOrKey-get
 
       const issue: Issue = (await jira.findIssue(ticketID)) as any
+
+      const currentStatusName = issue.fields.status.name
+
+      if (ignoredStatuses.includes(currentStatusName.toLowerCase())) {
+        // This Jira ticket is already in status that we don't want to move
+        console.log(`Ignored moving ${issue.key}, its in ${currentStatusName}`)
+        return
+      }
 
       // Figure out what we want to move it to
       const labelsToLookFor = danger.github.pr.merged ? mergedLabels : wipLabels
