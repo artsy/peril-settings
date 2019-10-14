@@ -3,7 +3,7 @@
 const companyPrefix = "artsyproduct"
 const wipLabels = ["in review", "in progress", "review"]
 const mergedLabels = ["merged", "monitor/qa", "monitoring/qa"]
-const ignoredStatuses = ["done"]
+const ignoredStatuses = ["done", "closed"]
 
 import { danger, peril } from "danger"
 import { PullRequest } from "github-webhook-event-types"
