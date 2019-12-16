@@ -1,29 +1,24 @@
-const companyPrefix = "artsyproduct"
+import { flatten } from "lodash"
 
 // https://stackoverflow.com/questions/19322669/regular-expression-for-a-jira-identifier#30518972
-const jiraTicketRegex = /\d+-[A-Z]+(?!-?[a-zA-Z]{1,10})/g
-const urlSuffix = `.atlassian.net\/browse\/\d+-[A-Z]+(?!-?[a-zA-Z]{1,10})/g`
-const jiraURLRegex = new RegExp("https://" + companyPrefix + urlSuffix)
+const jiraTicketRegex = /[\]\)](?<ticketID>\d+-[A-Z]+(?!-?[a-zA-Z]{1,10}))[\[\(]/g
 
 export const getJiraTicketIDsFromText = (body: string) => {
-  // Look for jira ticket references like PLAT-123
-  const shorthandReferences = reverse(body).match(jiraTicketRegex)
-  const urlReferences = body.match(jiraURLRegex)
-
-  return [
-    ...((shorthandReferences && shorthandReferences.map(id => reverse(id))) || []),
-    ...(urlReferences || []),
-  ].reverse()
+  // Look for jira ticket references in brackets like (PLAT-123)
+  const reverseBody = reverse(body)
+  const shorthandReferences: string[] = []
+  let match: RegExpExecArray | null
+  while ((match = jiraTicketRegex.exec(reverseBody)) !== null) {
+    if (match.groups) {
+      shorthandReferences.push(match.groups.ticketID)
+    }
+  }
+  return shorthandReferences.map(id => reverse(id)).reverse()
 }
 
 export const getJiraTicketIDsFromCommits = (commits: Array<{ message: string }>) => {
   const commitMessages = commits.map(m => m.message)
-  var ids: string[] = []
-  commitMessages.forEach(message => {
-    const shorthandReferences = reverse(message).match(jiraTicketRegex)
-    ids = [...ids, ...((shorthandReferences && shorthandReferences.map(id => reverse(id))) || [])]
-  })
-  return ids
+  return flatten(commitMessages.map(getJiraTicketIDsFromText))
 }
 
 export const makeJiraTransition = (comment: string, status: any) => ({
