@@ -19,6 +19,11 @@ describe("grabbing links", () => {
     expect(getJiraTicketIDsFromText(body)).toEqual(["ABC-123", "DEF-456"])
   })
 
+  it("ignores markdown links", () => {
+    const body = "ok I opened [ABC-123](https://artsyproduct.atlassian.net/browse/ABC-123) for follow-up"
+    expect(getJiraTicketIDsFromText(body)).toEqual([])
+  })
+
   it("ignores url references", () => {
     const body = "ok https://artsyproduct.atlassian.net/browse/PLATFORM-46 sure"
     expect(getJiraTicketIDsFromText(body)).toEqual([])
