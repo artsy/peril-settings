@@ -1,7 +1,9 @@
 import { flatten } from "lodash"
 
 // https://stackoverflow.com/questions/19322669/regular-expression-for-a-jira-identifier#30518972
-const jiraTicketRegex = /[\]\)](?<ticketID>\d+-[A-Z]+(?!-?[a-zA-Z]{1,10}))[\[\(]/g
+// The extra bit at the beginning is to exclude Markdown links.
+// Note: this regex operates on a reversed version of the string.
+const jiraTicketRegex = /(([^\(]\])|\))(?<ticketID>\d+-[A-Z]+(?!-?[a-zA-Z]{1,10}))[\[\(]/g
 
 export const getJiraTicketIDsFromText = (body: string) => {
   // Look for jira ticket references in brackets like (PLAT-123)
