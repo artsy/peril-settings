@@ -147,6 +147,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@graphql-inspector/core@^1.27.0":
+  version "1.27.0"
+  resolved "https://registry.yarnpkg.com/@graphql-inspector/core/-/core-1.27.0.tgz#87993675e9a1fd1e2f6cc1e1ea42afa098ae58b4"
+  integrity sha512-A5VnmNXj/5w8aoBLI3oEHWCYZAiRyMmmM0cJefKv/HYyBe6TYMzSRJLPvNp9mq3bKXU2szYp5NM5b1Bud2t5rQ==
+  dependencies:
+    dependency-graph "0.8.1"
+
 "@jest/console@^24.3.0":
   version "24.3.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.3.0.tgz#7bd920d250988ba0bf1352c4493a48e1cb97671e"
@@ -1602,6 +1609,11 @@ delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
+
+dependency-graph@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/dependency-graph/-/dependency-graph-0.8.1.tgz#9b8cae3aa2c7bd95ccb3347a09a2d1047a6c3c5a"
+  integrity sha512-g213uqF8fyk40W8SBjm079n3CZB4qSpCrA2ye1fLGzH/4HEgB6tzuW2CbLE7leb4t45/6h44Ud59Su1/ROTfqw==
 
 deprecated-decorator@^0.1.6:
   version "0.1.6"
