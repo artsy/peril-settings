@@ -45,6 +45,6 @@ export const sendMessageForEmails = async (emails: string[]) => {
   await slackMessage(
     `${onCallStaffMentions.join(
       ", "
-    )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
+    )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Add new standup notes here: https://www.notion.so/artsy/Standup-Notes-28a5dfe4864645788de1ef936f39687c The standup docs are here: https://github.com/artsy/README/blob/master/events/open-standup.md`
   )
 }
