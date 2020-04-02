@@ -10,7 +10,7 @@ export default async () => {
 }
 
 export const emailsFromOpsGenie = async (today = new Date()) => {
-  const targetDate = new Date(today.getTime() + 3600 * 24 * 1000)
+  const targetDate = new Date(today.getTime())
   const qs = querystring.stringify({ date: targetDate.toISOString() })
   const url = `https://api.opsgenie.com/v2/schedules/${peril.env.OPSGENIE_SCHEDULE_ID}/on-calls?${qs}`
   const req = await fetch(url, {
