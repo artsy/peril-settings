@@ -10,7 +10,7 @@ export default async () => {
 }
 
 export const emailsFromOpsGenie = async (today = new Date()) => {
-  const targetDate = new Date(today.getTime() + 3600 * 24 * 1000)
+  const targetDate = new Date(today.getTime())
   const qs = querystring.stringify({ date: targetDate.toISOString() })
   const url = `https://api.opsgenie.com/v2/schedules/${peril.env.OPSGENIE_SCHEDULE_ID}/on-calls?${qs}`
   const req = await fetch(url, {
@@ -45,6 +45,6 @@ export const sendMessageForEmails = async (emails: string[]) => {
   await slackMessage(
     `${onCallStaffMentions.join(
       ", "
-    )} it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md`
+    )} based on our on-call schedule, you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md Add new standup notes here: https://www.notion.so/artsy/Standup-Notes-28a5dfe4864645788de1ef936f39687c`
   )
 }

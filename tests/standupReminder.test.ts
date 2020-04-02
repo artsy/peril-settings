@@ -75,8 +75,8 @@ describe("Monday standup reminders", () => {
       const emails = await emailsFromOpsGenie(new Date(today))
 
       await sendMessageForEmails(emails)
-      expect(receivedMessage).toEqual(
-        "<@ORTAID>, <@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
+      expect(receivedMessage).toMatchInlineSnapshot(
+        `"<@ORTAID>, <@ASHID> based on our on-call schedule, you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md Add new standup notes here: https://www.notion.so/artsy/Standup-Notes-28a5dfe4864645788de1ef936f39687c"`
       )
     })
   })
@@ -99,8 +99,8 @@ describe("Monday standup reminders", () => {
       const emails = await emailsFromOpsGenie(new Date(today))
 
       await sendMessageForEmails(emails)
-      expect(receivedMessage).toEqual(
-        "<@ASHID> it looks like you are on-call this week, so you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md"
+      expect(receivedMessage).toMatchInlineSnapshot(
+        `"<@ASHID> based on our on-call schedule, you’ll be running the Monday standup at 11:30 NYC time. Here are the docs: https://github.com/artsy/README/blob/master/events/open-standup.md Add new standup notes here: https://www.notion.so/artsy/Standup-Notes-28a5dfe4864645788de1ef936f39687c"`
       )
     })
   })
