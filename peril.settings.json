@@ -21,7 +21,7 @@
   },
   "repos": {
     "artsy/metaphysics": {
-      "pull_request": "peril/compareReactionSchema.ts"
+      "pull_request": "peril/compareForceSchema.ts"
     },
     "artsy/reaction": {
       "pull_request": "danger/pr.ts"
