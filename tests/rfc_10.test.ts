@@ -67,7 +67,16 @@ describe("for adding the label", () => {
         issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
         ...repo,
       } as any)
-      expect(console.log).toBeCalledWith("Already has Merge on Green")
+      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
+    })
+
+    it("bails when the issue already has merge on green", async () => {
+      await markAsMergeOnGreen({
+        comment: { body: "#squashongreen", user: { login: "danger" } },
+        issue: { labels: [{ name: "Squash On Green" }], pull_request: {} },
+        ...repo,
+      } as any)
+      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
     })
   })
 
@@ -96,8 +105,24 @@ describe("for adding the label", () => {
         pull_request: pull_request,
         ...repo,
       } as any)
-      expect(console.log).toBeCalledWith("Already has Merge on Green")
+      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
     })
+  })
+
+  it("creates the label when the label doesn't exist on the repo", async () => {
+    dm.danger.github.api.orgs.checkMembership.mockReturnValueOnce(Promise.resolve({ data: {} }))
+    dm.danger.github.api.issues.getLabels.mockReturnValueOnce(Promise.resolve({ data: [] }))
+
+    await markAsMergeOnGreen({
+      comment: {
+        body: "#squashongreen",
+        user: { sender: { login: "orta" } },
+      },
+      issue: { labels: [], pull_request: {} },
+      ...repo,
+    } as any)
+
+    expect(dm.danger.github.utils.createOrAddLabel).toBeCalled()
   })
 
   it("creates the label when the label doesn't exist on the repo", async () => {
