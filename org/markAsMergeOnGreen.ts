@@ -2,6 +2,21 @@ import { danger } from "danger"
 import { IssueComment, PullRequestReview } from "github-webhook-event-types"
 import { IssueCommentIssue } from "github-webhook-event-types/source/IssueComment"
 
+export const labelMap = {
+  "#mergeongreen": {
+    name: "Merge On Green",
+    color: "247A38",
+    description: "A label to indicate that Peril should merge this PR when all statuses are green",
+    mergeMethod: "merge",
+  },
+  "#squashongreen": {
+    name: "Squash On Green",
+    color: "247A38",
+    description: "A label to indicate that Peril should squash-merge this PR when all statuses are green",
+    mergeMethod: "squash",
+  },
+} as const
+
 /** If a comment to an issue contains "Merge on Green", apply a label for it to be merged when green. */
 export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestReview) => {
   const api = danger.github.api
@@ -40,23 +55,6 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
     console.log("Could not find text for the webhook to look for the merge on green message")
     return
   }
-
-  // Let's people know that it will be merged
-  const mergeOnGreenLabel = {
-    name: "Merge On Green",
-    color: "247A38",
-    description: "A label to indicate that Peril should merge this PR when all statuses are green",
-  }
-  const squashOnGreenLabel = {
-    name: "Squash On Green",
-    color: "247A38",
-    description: "A label to indicate that Peril should squash-merge this PR when all statuses are green",
-  }
-
-  const labelMap = {
-    "#mergeongreen": mergeOnGreenLabel,
-    "#squashongreen": squashOnGreenLabel,
-  } as const
 
   // Don't do any work unless we have to
   const keywords = Object.keys(labelMap)

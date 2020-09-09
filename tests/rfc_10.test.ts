@@ -182,10 +182,10 @@ describe("for handling merging when green", () => {
       commit: { sha: "123abc" },
     } as any)
 
-    expect(console.log).toBeCalledWith("PR does not have Merge on Green")
+    expect(console.log).toBeCalledWith("PR does not have Merge on Green-type label")
   })
 
-  it("triggers a PR merge when there is a merge on green label", async () => {
+  it("triggers a PR merge when there is a Merge on Green label", async () => {
     // Has the right status
     dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
       Promise.resolve({ data: { state: "success" } })
@@ -210,6 +210,36 @@ describe("for handling merging when green", () => {
       number: 1,
       owner: "danger",
       repo: "doggo",
+      merge_method: "merge",
+    })
+  })
+
+  it("triggers a PR squash when there is a Squash on Green label", async () => {
+    // Has the right status
+    dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
+      Promise.resolve({ data: { state: "success" } })
+    )
+
+    // Gets a corresponding issue
+    dm.danger.github.api.search.issues.mockReturnValueOnce(Promise.resolve({ data: { items: [{ number: 1 }] } }))
+
+    // Returns an issue without the merge on green label
+    dm.danger.github.api.issues.get.mockReturnValueOnce(
+      Promise.resolve({ data: { labels: [{ name: "Squash On Green" }] } })
+    )
+
+    await mergeOnGreen({
+      state: "success",
+      repository: { owner: { login: "danger" }, name: "doggo" },
+      commit: { sha: "123abc" },
+    } as any)
+
+    expect(dm.danger.github.api.pulls.merge).toBeCalledWith({
+      commit_title: "Squash pull request #1 by Peril",
+      number: 1,
+      owner: "danger",
+      repo: "doggo",
+      merge_method: "squash",
     })
   })
 })
