@@ -38,7 +38,7 @@ export const rfc10 = async (status: Status) => {
       return console.log("PR does not have Merge on Green-type label")
     }
 
-    let commitTitle = `${capitalize(mergeLabel.mergeMethod)} pull request #${number} by Peril`
+    let commitTitle = mergeLabel.commitGenerator?.(number)
 
     if (issue.data.title) {
       // Strip any "@user =>" prefixes from the pr title

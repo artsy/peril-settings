@@ -8,12 +8,14 @@ export const labelMap = {
     color: "247A38",
     description: "A label to indicate that Peril should merge this PR when all statuses are green",
     mergeMethod: "merge",
+    commitGenerator: (prNumber: number) => `Merge pull request #${prNumber} by Peril`,
   },
   "#squashongreen": {
     name: "Squash On Green",
     color: "247A38",
     description: "A label to indicate that Peril should squash-merge this PR when all statuses are green",
     mergeMethod: "squash",
+    commitGenerator: undefined, // defaults to GitHub's generated commit messages
   },
 } as const
 

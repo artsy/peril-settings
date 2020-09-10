@@ -235,7 +235,7 @@ describe("for handling merging when green", () => {
     } as any)
 
     expect(dm.danger.github.api.pulls.merge).toBeCalledWith({
-      commit_title: "Squash pull request #1 by Peril",
+      commit_title: undefined,
       number: 1,
       owner: "danger",
       repo: "doggo",
