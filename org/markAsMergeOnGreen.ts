@@ -15,7 +15,7 @@ export const labelMap = {
     color: "247A38",
     description: "A label to indicate that Peril should squash-merge this PR when all statuses are green",
     mergeMethod: "squash",
-    commitGenerator: undefined, // defaults to GitHub's generated commit messages
+    commitGenerator: (prNumber: number) => undefined, // defaults to GitHub's generated commit messages
   },
 } as const
 
@@ -60,7 +60,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
 
   // Don't do any work unless we have to
   const keywords = Object.keys(labelMap)
-  const match = keywords.find(k => text.toLowerCase().includes(k)) as keyof typeof labelMap | undefined
+  const match = keywords.find((k) => text.toLowerCase().includes(k)) as keyof typeof labelMap | undefined
   if (!match) {
     return console.log(`Did not find any of the merging phrases in the comment beginning ${text.substring(0, 12)}.`)
   }
@@ -68,7 +68,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
   const label = labelMap[match]
 
   // Check to see if the label has already been set
-  if (issue.labels.find(l => l.name === label.name)) {
+  if (issue.labels.find((l) => l.name === label.name)) {
     return console.log("Already has Merge on Green-type label")
   }
 

@@ -31,14 +31,14 @@ export const rfc10 = async (status: Status) => {
     const issue = await api.issues.get({ owner, repo, number })
 
     // Get the PR combined status
-    const issueLabelNames = issue.data.labels.map(l => l.name)
-    const mergeLabel = Object.values(labelMap).find(label => issueLabelNames.includes(label.name))
+    const issueLabelNames = issue.data.labels.map((l) => l.name)
+    const mergeLabel = Object.values(labelMap).find((label) => issueLabelNames.includes(label.name))
 
     if (!mergeLabel) {
       return console.log("PR does not have Merge on Green-type label")
     }
 
-    let commitTitle = mergeLabel.commitGenerator?.(number)
+    let commitTitle = mergeLabel.commitGenerator(number)
 
     if (issue.data.title) {
       // Strip any "@user =>" prefixes from the pr title
