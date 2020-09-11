@@ -1,7 +1,6 @@
 import { danger } from "danger"
 import { Status } from "github-webhook-event-types"
-import { labelMap } from "./markAsMergeOnGreen"
-import { capitalize } from "lodash"
+import { LabelLabel } from "github-webhook-event-types/source/Label"
 
 export const rfc10 = async (status: Status) => {
   const api = danger.github.api
@@ -31,14 +30,12 @@ export const rfc10 = async (status: Status) => {
     const issue = await api.issues.get({ owner, repo, number })
 
     // Get the PR combined status
-    const issueLabelNames = issue.data.labels.map(l => l.name)
-    const mergeLabel = Object.values(labelMap).find(label => issueLabelNames.includes(label.name))
-
+    const mergeLabel = issue.data.labels.find((l: LabelLabel) => l.name === "Merge On Green")
     if (!mergeLabel) {
-      return console.log("PR does not have Merge on Green-type label")
+      return console.log("PR does not have Merge on Green")
     }
 
-    let commitTitle = mergeLabel.commitGenerator?.(number)
+    let commitTitle = `Merge pull request #${number} by Peril`
 
     if (issue.data.title) {
       // Strip any "@user =>" prefixes from the pr title
@@ -47,7 +44,7 @@ export const rfc10 = async (status: Status) => {
     }
 
     // Merge the PR
-    await api.pulls.merge({ owner, repo, number, commit_title: commitTitle, merge_method: mergeLabel.mergeMethod })
+    await api.pulls.merge({ owner, repo, number, commit_title: commitTitle })
     console.log(`Merged Pull Request ${number}`)
   }
 }
