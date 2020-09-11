@@ -1,10 +1,10 @@
 import { danger } from "danger"
 import { Status } from "github-webhook-event-types"
-import { labelMap } from "./markAsMergeOnGreen"
-import { capitalize } from "lodash"
 
 export const rfc10 = async (status: Status) => {
   const api = danger.github.api
+
+  const { labelMap } = await import("./markAsMergeOnGreen")
 
   if (status.state !== "success") {
     return console.log(
