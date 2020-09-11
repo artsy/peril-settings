@@ -67,16 +67,7 @@ describe("for adding the label", () => {
         issue: { labels: [{ name: "Merge On Green" }], pull_request: {} },
         ...repo,
       } as any)
-      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
-    })
-
-    it("bails when the issue already has merge on green", async () => {
-      await markAsMergeOnGreen({
-        comment: { body: "#squashongreen", user: { login: "danger" } },
-        issue: { labels: [{ name: "Squash On Green" }], pull_request: {} },
-        ...repo,
-      } as any)
-      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
+      expect(console.log).toBeCalledWith("Already has Merge on Green")
     })
   })
 
@@ -105,24 +96,8 @@ describe("for adding the label", () => {
         pull_request: pull_request,
         ...repo,
       } as any)
-      expect(console.log).toBeCalledWith("Already has Merge on Green-type label")
+      expect(console.log).toBeCalledWith("Already has Merge on Green")
     })
-  })
-
-  it("creates the label when the label doesn't exist on the repo", async () => {
-    dm.danger.github.api.orgs.checkMembership.mockReturnValueOnce(Promise.resolve({ data: {} }))
-    dm.danger.github.api.issues.getLabels.mockReturnValueOnce(Promise.resolve({ data: [] }))
-
-    await markAsMergeOnGreen({
-      comment: {
-        body: "#squashongreen",
-        user: { sender: { login: "orta" } },
-      },
-      issue: { labels: [], pull_request: {} },
-      ...repo,
-    } as any)
-
-    expect(dm.danger.github.utils.createOrAddLabel).toBeCalled()
   })
 
   it("creates the label when the label doesn't exist on the repo", async () => {
@@ -182,10 +157,10 @@ describe("for handling merging when green", () => {
       commit: { sha: "123abc" },
     } as any)
 
-    expect(console.log).toBeCalledWith("PR does not have Merge on Green-type label")
+    expect(console.log).toBeCalledWith("PR does not have Merge on Green")
   })
 
-  it("triggers a PR merge when there is a Merge on Green label", async () => {
+  it("triggers a PR merge when there is a merge on green label", async () => {
     // Has the right status
     dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
       Promise.resolve({ data: { state: "success" } })
@@ -210,36 +185,6 @@ describe("for handling merging when green", () => {
       number: 1,
       owner: "danger",
       repo: "doggo",
-      merge_method: "merge",
-    })
-  })
-
-  it("triggers a PR squash when there is a Squash on Green label", async () => {
-    // Has the right status
-    dm.danger.github.api.repos.getCombinedStatusForRef.mockReturnValueOnce(
-      Promise.resolve({ data: { state: "success" } })
-    )
-
-    // Gets a corresponding issue
-    dm.danger.github.api.search.issues.mockReturnValueOnce(Promise.resolve({ data: { items: [{ number: 1 }] } }))
-
-    // Returns an issue without the merge on green label
-    dm.danger.github.api.issues.get.mockReturnValueOnce(
-      Promise.resolve({ data: { labels: [{ name: "Squash On Green" }] } })
-    )
-
-    await mergeOnGreen({
-      state: "success",
-      repository: { owner: { login: "danger" }, name: "doggo" },
-      commit: { sha: "123abc" },
-    } as any)
-
-    expect(dm.danger.github.api.pulls.merge).toBeCalledWith({
-      commit_title: undefined,
-      number: 1,
-      owner: "danger",
-      repo: "doggo",
-      merge_method: "squash",
     })
   })
 })

@@ -2,23 +2,6 @@ import { danger } from "danger"
 import { IssueComment, PullRequestReview } from "github-webhook-event-types"
 import { IssueCommentIssue } from "github-webhook-event-types/source/IssueComment"
 
-export const labelMap = {
-  "#mergeongreen": {
-    name: "Merge On Green",
-    color: "247A38",
-    description: "A label to indicate that Peril should merge this PR when all statuses are green",
-    mergeMethod: "merge",
-    commitGenerator: (prNumber: number) => `Merge pull request #${prNumber} by Peril`,
-  },
-  "#squashongreen": {
-    name: "Squash On Green",
-    color: "247A38",
-    description: "A label to indicate that Peril should squash-merge this PR when all statuses are green",
-    mergeMethod: "squash",
-    commitGenerator: (prNumber: number) => undefined, // defaults to GitHub's generated commit messages
-  },
-} as const
-
 /** If a comment to an issue contains "Merge on Green", apply a label for it to be merged when green. */
 export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestReview) => {
   const api = danger.github.api
@@ -59,17 +42,15 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
   }
 
   // Don't do any work unless we have to
-  const keywords = Object.keys(labelMap)
-  const match = keywords.find((k) => text.toLowerCase().includes(k)) as keyof typeof labelMap | undefined
+  const keywords = ["#mergeongreen"]
+  const match = keywords.find(k => text.toLowerCase().includes(k))
   if (!match) {
     return console.log(`Did not find any of the merging phrases in the comment beginning ${text.substring(0, 12)}.`)
   }
 
-  const label = labelMap[match]
-
   // Check to see if the label has already been set
-  if (issue.labels.find((l) => l.name === label.name)) {
-    return console.log("Already has Merge on Green-type label")
+  if (issue.labels.find(l => l.name === "Merge On Green")) {
+    return console.log("Already has Merge on Green")
   }
 
   // Check for org access, so that some rando doesn't
@@ -83,6 +64,12 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
     return console.log("Sender does not have permission to merge")
   }
 
+  // Let's people know that it will be merged
+  const label = {
+    name: "Merge On Green",
+    color: "247A38",
+    description: "A label to indicate that Peril should merge this PR when all statuses are green",
+  }
   const repo = {
     owner: org,
     repo: issueCommentOrPrReview.repository.name,
@@ -91,7 +78,7 @@ export const rfc10 = async (issueCommentOrPrReview: IssueComment | PullRequestRe
 
   console.log("Adding the label:", repo)
   await danger.github.utils.createOrAddLabel(label, repo)
-  console.log("Updated the PR with a Merge on Green-type label")
+  console.log("Updated the PR with a Merge on Green label")
 }
 
 export default rfc10
