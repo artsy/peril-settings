@@ -67,6 +67,12 @@ export const rfc13 = async () => {
 // https://github.com/artsy/peril-settings/issues/16
 export const rfc16 = async () => {
   const pr = danger.github.pr
+
+  if (pr.base.repo.name === "eigen") {
+    console.log("In eigen we don't want this. We added a checkbox in our PR template.")
+    return
+  }
+
   if (pr.body.includes("#trivial")) {
     console.log("Skipping changelog check because the PR is marked as trivial")
     return

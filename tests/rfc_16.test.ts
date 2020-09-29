@@ -153,3 +153,36 @@ it("is skipped via #trivial", () => {
     expect(dm.warn).not.toBeCalled()
   })
 })
+
+it("skips for eigen", () => {
+  const prForEigen = {
+    base: {
+      user: {
+        login: "danger",
+      },
+      repo: {
+        name: "eigen",
+      },
+    },
+    state: "open",
+    body: "Hello World",
+  }
+
+  dm.danger.github = {
+    api: {
+      git: {
+        getTree: () => Promise.resolve({ data: { tree: [{ path: "code.js" }, { path: "CHANGELOG.md" }] } }),
+      },
+    },
+    pr: { ...prForEigen, body: "Normal PR title" },
+  }
+
+  dm.danger.git = {
+    modified_files: ["src/index.html"],
+    created_files: [],
+  }
+
+  return rfc16().then(() => {
+    expect(dm.warn).not.toBeCalled()
+  })
+})
