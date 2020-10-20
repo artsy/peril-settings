@@ -13,3 +13,5 @@ export const rfc327 = () => {
     )
   }
 }
+
+export default rfc327
