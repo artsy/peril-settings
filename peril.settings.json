@@ -33,7 +33,7 @@
       "pull_request": "dangerfile.ts"
     },
     "artsy/volt": {
-      "pull_request": ["dangerfile.ts", "org/rfc_327.ts"]
+      "pull_request": ["dangerfile.ts"]
     },
     "artsy/peril-settings": {
       "pull_request": ["dangerfile.ts", "org/rfc_327.ts"]
