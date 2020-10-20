@@ -2,7 +2,7 @@ jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
 
-import { rfc327 } from "../org/rfc_237"
+import { rfc327 } from "../org/rfc_327"
 
 describe("rfc327", () => {
   beforeEach(() => {
