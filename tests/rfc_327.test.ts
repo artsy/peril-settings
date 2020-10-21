@@ -2,7 +2,7 @@ jest.mock("danger", () => jest.fn())
 import * as danger from "danger"
 const dm = danger as any
 
-import { rfc327 } from "../org/rfc_327"
+import { rfc327 } from "../org/allPRs"
 
 describe("rfc327", () => {
   beforeEach(() => {
@@ -10,6 +10,11 @@ describe("rfc327", () => {
       github: {
         pr: {
           title: "",
+          base: {
+            repo: {
+              name: "volt",
+            },
+          },
         },
       },
     }
