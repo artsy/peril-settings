@@ -1,13 +1,14 @@
 import { danger, warn, fail, GitHubCommit, markdown } from "danger"
-
+import spellcheck from "danger-plugin-spellcheck"
 import yarn from "danger-plugin-yarn"
+
+import rfc327 from "./rfc_327"
 
 // "Highlight package dependencies on Node projects"
 const rfc1 = async () => {
   await yarn()
 }
 
-import spellcheck from "danger-plugin-spellcheck"
 // "Keep our Markdown documents awesome",
 const rfc2 = async () => {
   await spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
@@ -228,5 +229,6 @@ export default async () => {
   await rfc13()
   await rfc16()
   await rfc177()
+  rfc327()
   await deploySummary()
 }
