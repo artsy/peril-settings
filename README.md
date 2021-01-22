@@ -1,9 +1,9 @@
 ## Artsy Peril Settings
 
 - **State**: production
-- **Point people**: [@zephraph](https://github.com/zephraph), [@ashfurrow](https://github.com/ashfurrow)
+- **Point people**: [@zephraph](https://github.com/zephraph), [@dblandin](https://github.com/dblandin)
 - **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=master)](https://travis-ci.org/artsy/peril-settings)
-- **Peril Dashboard**: [artsy-peril-web-client.herokuapp.com](https://artsy-peril-web-client.herokuapp.com/)
+- **Peril Dashboard**: [peril-staging.artsy.net](https://peril-staging.artsy.net/)
 
 ### What is this project?
 
@@ -12,11 +12,11 @@ dangerfiles which are inside the [org folder](org/).
 
 Here's some links to the key concepts:
 
-- [Peril](https://github.com/danger/peril)
+- [Peril](https://github.com/artsy/peril)
 - [Danger JS](http://danger.systems/js/)
 - [Peril for Orgs](https://github.com/danger/peril/blob/master/docs/setup_for_org.md)
 - [Introducing Peril to the Artsy org](http://artsy.github.io/blog/2017/09/04/Introducing-Peril/)
-- [Peril's Dashboard 🔐](https://staging-dashboard.peril.systems/)
+- [Peril's Dashboard 🔐](https://peril-staging.artsy.net/)
 
 An overview of what Peril does for Artsy is available in the README repo at [`/culture/peril.md`][docs].
 
