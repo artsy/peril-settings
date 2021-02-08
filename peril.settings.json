@@ -54,7 +54,6 @@
   },
   "scheduler": {
     "daily": "daily-license-check",
-    "monday-morning-est": "monday-informationals",
     "thursday-morning-est": "simple-sups"
   }
 }
