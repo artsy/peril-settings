@@ -1,6 +1,8 @@
 import { danger, warn, fail, GitHubCommit, markdown } from "danger"
-
 import yarn from "danger-plugin-yarn"
+import { ParseResult as PRDescriptionParseResult, ParseResult } from "./helpers/changelog/changelog-types"
+// @ts-ignore
+import { parsePRDescription } from "./helpers/changelog/parsePRDescription.js"
 
 // "Highlight package dependencies on Node projects"
 const rfc1 = async () => {
@@ -8,6 +10,7 @@ const rfc1 = async () => {
 }
 
 import spellcheck from "danger-plugin-spellcheck"
+import { isEqual } from "lodash"
 // "Keep our Markdown documents awesome",
 const rfc2 = async () => {
   await spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
@@ -27,17 +30,17 @@ export const rfc5 = () => {
 export const rfc7 = async () => {
   const pr = danger.github.thisPR
   const commitLabels: string[] = danger.git.commits
-    .map(c => c.message)
-    .filter(m => m.startsWith("[") && m.includes("]"))
-    .map(m => (m.match(/\[(.*)\]/) as any)[1]) // Guaranteed to match based on filter above.
+    .map((c) => c.message)
+    .filter((m) => m.startsWith("[") && m.includes("]"))
+    .map((m) => (m.match(/\[(.*)\]/) as any)[1]) // Guaranteed to match based on filter above.
 
   if (commitLabels.length > 0) {
     const api = danger.github.api
     const githubLabels = await api.issues.listLabelsForRepo({ owner: pr.owner, repo: pr.repo })
     const matchingLabels = githubLabels.data
-      .map(l => l.name)
-      .filter(l => commitLabels.find(cl => l === cl))
-      .filter(l => !danger.github.issue.labels.find(label => label.name === l))
+      .map((l) => l.name)
+      .filter((l) => commitLabels.find((cl) => l === cl))
+      .filter((l) => !danger.github.issue.labels.find((label) => label.name === l))
 
     if (matchingLabels.length > 0) {
       await api.issues.addLabels({ owner: pr.owner, repo: pr.repo, number: pr.number, labels: matchingLabels })
@@ -97,8 +100,8 @@ export const rfc16 = async () => {
   if (isOpen && hasChangelog) {
     const files = [...danger.git.modified_files, ...danger.git.created_files]
 
-    const hasCodeChanges = files.find(file => !file.match(/(test|spec)/i))
-    const hasChangelogChanges = files.find(file => changelogs.includes(file))
+    const hasCodeChanges = files.find((file) => !file.match(/(test|spec)/i))
+    const hasChangelogChanges = files.find((file) => changelogs.includes(file))
 
     if (hasCodeChanges && !hasChangelogChanges) {
       warn(
@@ -166,7 +169,7 @@ export const deploySummary = async () => {
 
   const repo = danger.github.thisPR.repo
   const owner = danger.github.thisPR.owner
-  const fragments = danger.github.commits.map(c => fragmentForCommit(c)).join("")
+  const fragments = danger.github.commits.map((c) => fragmentForCommit(c)).join("")
   const query = `
     {
       repository(owner: "${owner}", name: "${repo}") {
@@ -211,6 +214,19 @@ export const deploySummary = async () => {
       .join("")
 
   return markdown(message)
+}
+
+// Require changelog on Eigen PRs to match to be valid
+// See Eigen RFC: https://github.com/artsy/eigen/issues/4499
+// TODO: change this
+export const rfc179 = async () => {
+  const pr = danger.github.pr
+  const repoName = pr.base.repo.name
+
+  if (repoName !== "eigen") {
+    console.log("Skipping this check because the active repo is not Eigen")
+    return
+  }
 }
 
 // The default run
