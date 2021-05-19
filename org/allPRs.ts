@@ -233,6 +233,17 @@ export const rfc179 = async () => {
     console.log("Skipping this check because the PR is not open")
     return
   }
+
+  const ERROR: PRDescriptionParseResult = { type: "error" }
+
+  const content = pr.body
+
+  const res = parsePRDescription(content) as ParseResult
+  if (isEqual(res, ERROR)) {
+    console.log("Something went wrong while parsing the PR description")
+    warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
+    return
+  }
 }
 
 // The default run

@@ -33,4 +33,12 @@ describe("RFC: 179", () => {
     rfc179()
     expect(console.log).toHaveBeenCalledWith("Skipping this check because the PR is not open")
   })
+
+  it("warns the author when the PR body is invalid", () => {
+    dm.danger.github = { pr: { body: "invalid body", base: { repo: { name: "eigen" } }, state: "open" } }
+    rfc179()
+    expect(dm.warn).toHaveBeenCalledWith(
+      "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
+    )
+  })
 })
