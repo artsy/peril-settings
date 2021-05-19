@@ -19,4 +19,18 @@ describe("RFC: 179", () => {
     rfc179()
     expect(console.log).toHaveBeenCalledWith("Skipping this check because the active repo is not Eigen")
   })
+
+  it("bails when the PR is not open", () => {
+    dm.danger.github = { pr: { base: { repo: { name: "eigen" } }, state: "closed" } }
+    rfc179()
+    expect(console.log).toHaveBeenCalledWith("Skipping this check because the PR is not open")
+
+    dm.danger.github = { pr: { base: { repo: { name: "eigen" } }, state: "locked" } }
+    rfc179()
+    expect(console.log).toHaveBeenCalledWith("Skipping this check because the PR is not open")
+
+    dm.danger.github = { pr: { base: { repo: { name: "eigen" } }, state: "merged" } }
+    rfc179()
+    expect(console.log).toHaveBeenCalledWith("Skipping this check because the PR is not open")
+  })
 })

@@ -227,6 +227,12 @@ export const rfc179 = async () => {
     console.log("Skipping this check because the active repo is not Eigen")
     return
   }
+
+  const isOpen = pr.state === "open"
+  if (!isOpen) {
+    console.log("Skipping this check because the PR is not open")
+    return
+  }
 }
 
 // The default run
