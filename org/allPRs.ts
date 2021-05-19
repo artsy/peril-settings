@@ -219,7 +219,7 @@ export const deploySummary = async () => {
 
 // Require changelog on Eigen PRs to match to be valid
 // See Eigen RFC: https://github.com/artsy/eigen/issues/4499
-// TODO: change this
+// Peril related RFC: https://github.com/artsy/peril-settings/issues/182
 export const rfc179 = () => {
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
@@ -276,5 +276,6 @@ export default async () => {
   await rfc13()
   await rfc16()
   await rfc177()
+  await rfc179()
   await deploySummary()
 }
