@@ -36,7 +36,9 @@ describe("RFC: 179", () => {
   })
 
   it("warns the author when the PR body is invalid", () => {
-    dm.danger.github = { pr: { body: "invalid body", base: { repo: { name: "eigen" } }, state: "open" } }
+    dm.danger.github = {
+      pr: { body: "#run_new_changelog_check invalid body", base: { repo: { name: "eigen" } }, state: "open" },
+    }
     rfc179()
     expect(dm.warn).toHaveBeenCalledWith(
       "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
@@ -44,7 +46,9 @@ describe("RFC: 179", () => {
   })
 
   it("warns the author when no changelog changes were detected", () => {
-    dm.danger.github = { pr: { body: "#nochangelog", base: { repo: { name: "eigen" } }, state: "open" } }
+    dm.danger.github = {
+      pr: { body: "#run_new_changelog_check #nochangelog", base: { repo: { name: "eigen" } }, state: "open" },
+    }
     rfc179()
     expect(dm.warn).toHaveBeenCalledWith("✅ **No changelog changes**")
   })
@@ -55,6 +59,7 @@ describe("RFC: 179", () => {
         body: `# Description
 
 This pull request adds some stuff to the thing so that it can blah.
+#run_new_changelog_check
 ### Changelog updates
 
 #### Cross-platform user-facing changes

@@ -238,6 +238,12 @@ export const rfc179 = () => {
   const content = pr.body
 
   const res = parsePRDescription(content) as ParseResult
+
+  // TODO: Delete this once we finish the new changelog work
+  if (!content.includes("#run_new_changelog_check")) {
+    return
+  }
+
   if (res.type === "error") {
     console.log("Something went wrong while parsing the PR description")
     warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
@@ -276,6 +282,6 @@ export default async () => {
   await rfc13()
   await rfc16()
   await rfc177()
-  await rfc179()
+  rfc179()
   await deploySummary()
 }
