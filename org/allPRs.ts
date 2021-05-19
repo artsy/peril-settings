@@ -1,8 +1,10 @@
 import { danger, warn, fail, GitHubCommit, markdown } from "danger"
 import yarn from "danger-plugin-yarn"
-import { ParseResult as PRDescriptionParseResult, ParseResult } from "./helpers/changelog/changelog-types"
+import { ParseResult } from "./helpers/changelog/changelog-types"
 // @ts-ignore
 import { parsePRDescription } from "./helpers/changelog/parsePRDescription.js"
+// @ts-ignore
+import { changelogTemplateSections } from "./helpers/changelog/generateChangelogSectionTemplate.js"
 
 // "Highlight package dependencies on Node projects"
 const rfc1 = async () => {
@@ -10,7 +12,6 @@ const rfc1 = async () => {
 }
 
 import spellcheck from "danger-plugin-spellcheck"
-import { isEqual } from "lodash"
 // "Keep our Markdown documents awesome",
 const rfc2 = async () => {
   await spellcheck({ settings: "artsy/peril-settings@spellcheck.json" })
@@ -219,7 +220,7 @@ export const deploySummary = async () => {
 // Require changelog on Eigen PRs to match to be valid
 // See Eigen RFC: https://github.com/artsy/eigen/issues/4499
 // TODO: change this
-export const rfc179 = async () => {
+export const rfc179 = () => {
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
 
@@ -234,24 +235,36 @@ export const rfc179 = async () => {
     return
   }
 
-  const ERROR: PRDescriptionParseResult = { type: "error" }
-
   const content = pr.body
 
   const res = parsePRDescription(content) as ParseResult
-  if (isEqual(res, ERROR)) {
+  if (res.type === "error") {
     console.log("Something went wrong while parsing the PR description")
     warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
     return
   }
 
-  const NO_CHANGES: PRDescriptionParseResult = { type: "no_changes" }
-
-  if (isEqual(res, NO_CHANGES)) {
+  if (res.type === "no_changes") {
     console.log("PR has no changes")
     warn("✅ **No changelog changes**")
     return
   }
+
+  // At this point, the PR description changelog changes are valid
+  // and res contains a list of the changes
+  console.log("PR Changelog is valid")
+
+  const { type, ...changedSections } = res
+  const message =
+    "### This PR contains the following changes:\n" +
+    Object.entries(changedSections)
+      .map(([section, sectionValue]) => {
+        return `\n- ${changelogTemplateSections[section]} (${sectionValue})`
+      })
+      .join("")
+
+  console.log(message)
+  return markdown(message)
 }
 
 // The default run
