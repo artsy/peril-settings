@@ -244,6 +244,14 @@ export const rfc179 = async () => {
     warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
     return
   }
+
+  const NO_CHANGES: PRDescriptionParseResult = { type: "no_changes" }
+
+  if (isEqual(res, NO_CHANGES)) {
+    console.log("PR has no changes")
+    warn("✅ **No changelog changes**")
+    return
+  }
 }
 
 // The default run

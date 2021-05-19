@@ -41,4 +41,10 @@ describe("RFC: 179", () => {
       "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
     )
   })
+
+  it("warns the author when no changelog changes were detected", () => {
+    dm.danger.github = { pr: { body: "#nochangelog", base: { repo: { name: "eigen" } }, state: "open" } }
+    rfc179()
+    expect(dm.warn).toHaveBeenCalledWith("✅ **No changelog changes**")
+  })
 })
