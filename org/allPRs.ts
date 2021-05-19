@@ -71,6 +71,12 @@ export const rfc13 = async () => {
 // https://github.com/artsy/peril-settings/issues/16
 export const rfc16 = async () => {
   const pr = danger.github.pr
+
+  if (pr.base.repo.name === "eigen") {
+    console.log("In eigen we don't want this. We added a checkbox in our PR template.")
+    return
+  }
+
   if (pr.body.includes("#trivial")) {
     console.log("Skipping changelog check because the PR is marked as trivial")
     return
@@ -273,6 +279,21 @@ export const rfc179 = () => {
   return markdown(message)
 }
 
+// Nudge PR authors to use semantic commit formatting
+// https://github.com/artsy/README/issues/327
+export const rfc327 = () => {
+  const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test)(?:\(.+\))?!?:.+$/
+
+  const pr = danger.github.pr
+  const repoName = pr.base.repo.name
+
+  if (["peril-settings", "volt"].includes(repoName) && !semanticFormat.test(pr.title)) {
+    return markdown(
+      "Hi there! :wave:\n\nWe're trialing semantic commit formatting which has not been detected in your PR title.\n\nRefer to [this RFC](https://github.com/artsy/README/issues/327#issuecomment-698842527) and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
+    )
+  }
+}
+
 // The default run
 export default async () => {
   rfc1()
@@ -283,5 +304,6 @@ export default async () => {
   await rfc16()
   await rfc177()
   rfc179()
+  rfc327()
   await deploySummary()
 }
