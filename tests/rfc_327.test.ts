@@ -33,7 +33,12 @@ describe("rfc327", () => {
       expect(dm.markdown).not.toHaveBeenCalled()
 
       // Accepts breaking change signifier
-      dm.danger.github.pr.title = "chore!: some breaking change"
+      dm.danger.github.pr.title = "feat(CX-134): some breaking change"
+      await rfc327()
+      expect(dm.markdown).not.toHaveBeenCalled()
+
+      // Accepts breaking change signifier
+      dm.danger.github.pr.title = "chore(Auctions): some small task"
       await rfc327()
       expect(dm.markdown).not.toHaveBeenCalled()
     })
