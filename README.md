@@ -1,7 +1,7 @@
 ## Artsy Peril Settings
 
 - **State**: production
-- **Point people**: [@zephraph](https://github.com/zephraph), [@dblandin](https://github.com/dblandin)
+- **Point people**: [@dblandin](https://github.com/dblandin)
 - **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=master)](https://travis-ci.org/artsy/peril-settings)
 - **Peril Dashboard**: [peril-staging.artsy.net](https://peril-staging.artsy.net/)
 
