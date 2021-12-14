@@ -2,7 +2,7 @@
 
 - **State**: production
 - **Point people**: [@dblandin](https://github.com/dblandin)
-- **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=master)](https://travis-ci.org/artsy/peril-settings)
+- **CI**: [![Build Status](https://travis-ci.org/artsy/peril-settings.svg?branch=main)](https://travis-ci.org/artsy/peril-settings)
 - **Peril Dashboard**: [peril-staging.artsy.net](https://peril-staging.artsy.net/)
 
 ### What is this project?
@@ -40,7 +40,7 @@ you auto-completion and types for Danger/Peril mainly.
 
 ### RFCs
 
-It's likely that any time you want to make a change here you should consult the [Artsy RFC process](https://github.com/artsy/README/blob/master/playbooks/rfcs.md#readme) and apply it on [artsy/README](https://github.com/artsy/README/).
+It's likely that any time you want to make a change here you should consult the [Artsy RFC process](https://github.com/artsy/README/blob/main/playbooks/rfcs.md#readme) and apply it on [artsy/README](https://github.com/artsy/README/).
 
 ### Implementing an RFC
 
@@ -100,4 +100,4 @@ We use Jest to test our Dangerfiles. It uses the same techniques as testing a
 
 4.  Validate that the `fail`/`warn`/`message`/`markdown` is called.
 
-[docs]: https://github.com/artsy/README/blob/master/culture/peril.md
+[docs]: https://github.com/artsy/README/blob/main/culture/peril.md

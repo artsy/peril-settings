@@ -82,7 +82,7 @@ export const rfc16 = async () => {
   const isOpen = danger.github.pr.state === "open"
 
   // Get all the files in the root folder of the repo
-  // e.g. https://api.github.com/repos/artsy/eigen/git/trees/master
+  // e.g. https://api.github.com/repos/artsy/eigen/git/trees/main
 
   const rootContentsAPI = await danger.github.api.git.getTree({
     owner: pr.base.user.login,

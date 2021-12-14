@@ -35,7 +35,7 @@ export default async (issues: Issues) => {
     // When someone is resolving, you nearly always need the template, so add that incase
     const urlForDocumentationAttachment: MessageAttachment = {
       title: "How to resolve an RFC",
-      title_link: "https://github.com/artsy/README/blob/master/playbooks/rfcs.md#resolution",
+      title_link: "https://github.com/artsy/README/blob/main/playbooks/rfcs.md#resolution",
     }
 
     // Send the final message

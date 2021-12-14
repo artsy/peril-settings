@@ -12,7 +12,7 @@ it("warns on rule change", async () => {
   dm.danger = { git: { JSONDiffForFile: () => Promise.resolve({ rules: "not-empty" }) } }
   await rule()
   expect(dm.warn).toHaveBeenCalledWith(
-    "New rules detected, you probably need to update [this document](https://github.com/artsy/README/blob/master/culture/peril.md)."
+    "New rules detected, you probably need to update [this document](https://github.com/artsy/README/blob/main/culture/peril.md)."
   )
 })
 
@@ -20,7 +20,7 @@ it("warns on scheduler change", async () => {
   dm.danger = { git: { JSONDiffForFile: () => Promise.resolve({ scheduler: "not-empty" }) } }
   await rule()
   expect(dm.warn).toHaveBeenCalledWith(
-    "New rules detected, you probably need to update [this document](https://github.com/artsy/README/blob/master/culture/peril.md)."
+    "New rules detected, you probably need to update [this document](https://github.com/artsy/README/blob/main/culture/peril.md)."
   )
 })
 

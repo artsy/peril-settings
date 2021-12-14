@@ -46,10 +46,10 @@ export default async () => {
     console.log(`Found ${commitLength} commits for ${org}/${repoName}`)
 
     const lastCommit = commitsSinceLastWeek.data[commitLength - 1]
-    console.log(`Looking at the difference between master and ${lastCommit.sha} for ${org}/${repoName}`)
+    console.log(`Looking at the difference between main and ${lastCommit.sha} for ${org}/${repoName}`)
 
     // Grab the SDL files
-    const masterSDL = await danger.github.utils.fileContents("_schema.graphql", `${org}/${repoName}`, "master")
+    const mainSDL = await danger.github.utils.fileContents("_schema.graphql", `${org}/${repoName}`, "main")
     const oldSDL = await danger.github.utils.fileContents("_schema.graphql", `${org}/${repoName}`, lastCommit.sha)
 
     // It could be new, and the old ref might not have it yet
@@ -72,11 +72,11 @@ export default async () => {
       })
 
     // SDL -> Schema
-    const masterSchema = makeSchema(masterSDL)
+    const mainSchema = makeSchema(mainSDL)
     const oldSchema = makeSchema(oldSDL)
 
     // Get the diff between these two schemas
-    const diffs: GraphQLDiff[] = (oldSchema as any).diff(masterSchema)
+    const diffs: GraphQLDiff[] = (oldSchema as any).diff(mainSchema)
 
     // Note: When looking at diff objects,
     // thisType = old schema
@@ -115,7 +115,7 @@ export default async () => {
       var url = peril.env.SLACK_RFC_WEBHOOK_URL || ""
       var webhook = new IncomingWebhook(url)
 
-      const compareURL = `https://github.com/${org}/${repoName}/compare/${lastCommit.sha}...master`
+      const compareURL = `https://github.com/${org}/${repoName}/compare/${lastCommit.sha}...main`
       await webhook.send({
         channel: "C1HH3KNJG",
         unfurl_links: false,

@@ -92,7 +92,7 @@ it("Triggers tasks when RFC is in the labels", async () => {
   const mockRunTask = peril.runTask as jest.Mock
   expect(mockRunTask.mock.calls[2][2].attachments[1]).toEqual({
     title: "How to resolve an RFC",
-    title_link: "https://github.com/artsy/README/blob/master/playbooks/rfcs.md#resolution",
+    title_link: "https://github.com/artsy/README/blob/main/playbooks/rfcs.md#resolution",
   })
 })
 
