@@ -227,7 +227,13 @@ export const rfc327 = () => {
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
 
-  if (["peril-settings", "volt", "eigen"].includes(repoName) && !semanticFormat.test(pr.title)) {
+  if ([
+    "eigen",
+    "force",
+    "palette",
+    "peril-settings",
+    "volt",
+  ].includes(repoName) && !semanticFormat.test(pr.title)) {
     return markdown(
       "Hi there! :wave:\n\nWe're trialing semantic commit formatting which has not been detected in your PR title.\n\nRefer to README#327 and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
     )
