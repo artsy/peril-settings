@@ -15,7 +15,7 @@
     "graphql-schema-utils": "^0.6.5",
     "graphql-tools": "^4.0.3",
     "lodash": "^4.17.21",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "@slack/client": "^4.8.0",
