@@ -222,7 +222,7 @@ export const deploySummary = async () => {
 // Nudge PR authors to use semantic commit formatting
 // https://github.com/artsy/README/issues/327
 export const rfc327 = () => {
-  const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test)(?:\(.+\))?!?:.+$/
+  const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
 
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
