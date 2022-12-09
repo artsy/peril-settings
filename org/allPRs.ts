@@ -227,7 +227,7 @@ export const rfc327 = () => {
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
 
-  const SUPPORTED_REPOS = ["eigen", "force", "palette", "peril-settings", "volt"]
+  const SUPPORTED_REPOS = ["eigen", "force", "palette", "peril-settings", "volt", "volt-v2"]
 
   if (SUPPORTED_REPOS.includes(repoName) && !semanticFormat.test(pr.title) && pr.title !== "Deploy") {
     return markdown(
