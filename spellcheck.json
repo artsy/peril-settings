@@ -257,5 +257,5 @@
     "zwirner",
     "zeplin"
   ],
-  "whitelistFiles": ["CHANGELOG.md"]
+  "ignoreFiles": ["CHANGELOG.md"]
 }
