@@ -21,6 +21,14 @@ describe("rfc327", () => {
     dm.markdown = jest.fn()
   })
 
+  describe("when it is not a supported repo", () => {
+    it("does nothing", async () => {
+      dm.danger.github.pr.base.repo.name = "unsupported"
+      await rfc327()
+      expect(dm.markdown).not.toHaveBeenCalled()
+    })
+  })
+
   describe("when a PR title matches semantic formatting", () => {
     it("does nothing", async () => {
       dm.danger.github.pr.title = "feat: add awesome new feature"
