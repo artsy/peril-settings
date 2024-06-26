@@ -21,7 +21,7 @@ describe("rfc327", () => {
     dm.fail = jest.fn()
   })
 
-  describe("when it is an exluded repo", () => {
+  describe("when it is an excluded repo", () => {
     it("does nothing", async () => {
       dm.danger.github.pr.base.repo.name = "example-excluded-repo"
       await rfc327()
