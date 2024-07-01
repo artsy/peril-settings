@@ -18,37 +18,45 @@ describe("rfc327", () => {
         },
       },
     }
-    dm.markdown = jest.fn()
+    dm.fail = jest.fn()
+  })
+
+  describe("when it is an excluded repo", () => {
+    it("does nothing", async () => {
+      dm.danger.github.pr.base.repo.name = "example-excluded-repo"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+    })
   })
 
   describe("when a PR title matches semantic formatting", () => {
     it("does nothing", async () => {
       dm.danger.github.pr.title = "feat: add awesome new feature"
       await rfc327()
-      expect(dm.markdown).not.toHaveBeenCalled()
+      expect(dm.fail).not.toHaveBeenCalled()
 
       // Includes optional scope
       dm.danger.github.pr.title = "fix(scope): add awesome new feature"
       await rfc327()
-      expect(dm.markdown).not.toHaveBeenCalled()
+      expect(dm.fail).not.toHaveBeenCalled()
 
       // Accepts breaking change signifier
       dm.danger.github.pr.title = "feat(CX-134): some breaking change"
       await rfc327()
-      expect(dm.markdown).not.toHaveBeenCalled()
+      expect(dm.fail).not.toHaveBeenCalled()
 
       // Accepts breaking change signifier
       dm.danger.github.pr.title = "chore(Auctions): some small task"
       await rfc327()
-      expect(dm.markdown).not.toHaveBeenCalled()
+      expect(dm.fail).not.toHaveBeenCalled()
     })
   })
 
   describe("when a PR title does not match semantic formatting", () => {
-    it("warns the PR author and links to the RFC", async () => {
+    it("fails the PR and links to the RFC", async () => {
       dm.danger.github.pr.title = "Does not match semantic formatting"
       await rfc327()
-      expect(dm.markdown).toHaveBeenCalled()
+      expect(dm.fail).toHaveBeenCalled()
     })
   })
 })

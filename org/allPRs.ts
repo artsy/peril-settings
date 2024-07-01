@@ -219,7 +219,7 @@ export const deploySummary = async () => {
   return markdown(message)
 }
 
-// Nudge PR authors to use semantic commit formatting
+// Enforce semantic commit formatting in pr titles
 // https://github.com/artsy/README/issues/327
 export const rfc327 = () => {
   const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
@@ -227,11 +227,16 @@ export const rfc327 = () => {
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
 
-  const SUPPORTED_REPOS = ["eigen", "force", "palette", "peril-settings", "volt", "volt-v2"]
+  const EXCLUDED_REPOS = ["example-excluded-repo"]
 
-  if (SUPPORTED_REPOS.includes(repoName) && !semanticFormat.test(pr.title) && pr.title !== "Deploy") {
-    return markdown(
-      "Hi there! :wave:\n\nWe're trialing semantic commit formatting which has not been detected in your PR title.\n\nRefer to README#327 and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
+  if (EXCLUDED_REPOS.includes(repoName)) {
+    console.log("This repo is opting out of conventional commits for time being.")
+    return
+  }
+
+  if (!semanticFormat.test(pr.title) && pr.title !== "Deploy") {
+    fail(
+      "Hi there! :wave:\n\nWe use conventional commit formatting which has not been detected in your PRs title.\n\nRefer to README#327 and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
     )
   }
 }
