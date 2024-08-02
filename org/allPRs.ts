@@ -224,6 +224,8 @@ export const deploySummary = async () => {
 export const rfc327 = () => {
   const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
 
+  const wipFormat = /^[\[\(]?(wip|do not merge|draft)[\]\)]?.*$/i
+
   const pr = danger.github.pr
   const repoName = pr.base.repo.name
 
@@ -231,6 +233,11 @@ export const rfc327 = () => {
 
   if (EXCLUDED_REPOS.includes(repoName)) {
     console.log("This repo is opting out of conventional commits for time being.")
+    return
+  }
+
+  if (wipFormat.test(pr.title)) {
+    console.log("This PR is a WIP, so skipping the check.")
     return
   }
 
