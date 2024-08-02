@@ -224,7 +224,7 @@ export const deploySummary = async () => {
 export const rfc327 = () => {
   const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
 
-  const wipFormat = /^(wip|WIP|do not merge|DO NOT MERGE|\[DO NOT MERGE\])(?:\(.+\))?!?:.+$/i
+  const wipFormat = /^(wip|\[wip\]|do not merge|\[do not merge\])(?:\(.+\))?!?:.+$/i
 
   const pr = danger.github.pr
   const repoName = pr.base.repo.name

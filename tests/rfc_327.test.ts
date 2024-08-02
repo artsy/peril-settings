@@ -35,6 +35,10 @@ describe("rfc327", () => {
       await rfc327()
       expect(dm.fail).not.toHaveBeenCalled()
 
+      dm.danger.github.pr.title = "[WIP]: test pr"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+
       dm.danger.github.pr.title = "[DO NOT MERGE]: test pr"
       await rfc327()
       expect(dm.fail).not.toHaveBeenCalled()
