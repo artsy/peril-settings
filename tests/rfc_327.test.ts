@@ -29,6 +29,22 @@ describe("rfc327", () => {
     })
   })
 
+  describe("when the PR title is a WIP", () => {
+    it("does nothing", async () => {
+      dm.danger.github.pr.title = "wip: do not merge"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+
+      dm.danger.github.pr.title = "[DO NOT MERGE]: test pr"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+
+      dm.danger.github.pr.title = "do not merge: test pr"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+    })
+  })
+
   describe("when a PR title matches semantic formatting", () => {
     it("does nothing", async () => {
       dm.danger.github.pr.title = "feat: add awesome new feature"
