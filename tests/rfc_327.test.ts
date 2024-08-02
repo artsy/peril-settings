@@ -46,6 +46,14 @@ describe("rfc327", () => {
       dm.danger.github.pr.title = "do not merge: test pr"
       await rfc327()
       expect(dm.fail).not.toHaveBeenCalled()
+
+      dm.danger.github.pr.title = "draft: test pr"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
+
+      dm.danger.github.pr.title = "[DRAFT]: test pr"
+      await rfc327()
+      expect(dm.fail).not.toHaveBeenCalled()
     })
   })
 
