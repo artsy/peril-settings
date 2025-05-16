@@ -5,15 +5,13 @@
     "disable_github_check": true
   },
   "rules": {
-    // Keep a list of all deployments in slack
-    "create (ref_type == tag)": "org/newRelease.ts",
     // Jira integration
     "pull_request": ["org/allPRs.ts", "org/jira/pr.ts", "org/ossPRsForbidForks.ts"],
-    "pull_request.closed": ["org/closedPRs.ts", "org/jira/pr.ts"],
     "pull_request.opened": "org/addVersionLabel.ts",
+    "pull_request.closed": ["org/jira/pr.ts"],
     // The RFC process
     "issues": "org/rfc/addRFCToNewIssues.ts",
-    "issues.labeled": ["org/rfc/scheduleRFCsForLabels.ts", "org/retroActionItems.ts"],
+    "issues.labeled": ["org/rfc/scheduleRFCsForLabels.ts"],
     // Merge on Green
     "issue_comment": "org/markAsMergeOnGreen.ts",
     "status.success": "org/mergeOnGreen.ts",
@@ -39,21 +37,5 @@
       "pull_request": "dangerfile.ts"
       // "pull_request.review_requested": "org/addReviewer.ts"
     }
-  },
-  "tasks": {
-    "monday-informationals": [
-      "tasks/closedSourceRationaleCheck.ts",
-      "tasks/compareSchemas.ts",
-      "tasks/standupReminder.ts",
-      "tasks/weeklyRFCSummary.ts"
-    ],
-    "slackup-reminder-tmp": "tasks/standupReminder.ts",
-    "slack-dev-channel": "tasks/slackDevChannel.ts",
-    "daily-license-check": "tasks/dailyLicenseCheck.ts",
-    "pr-review-reminder": "tasks/prReviewReminder.ts"
-  },
-  "scheduler": {
-    "daily": "daily-license-check",
-    "thursday-morning-est": "simple-sups"
   }
 }
