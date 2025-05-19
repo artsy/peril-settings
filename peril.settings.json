@@ -35,7 +35,6 @@
     },
     "artsy/peril-settings": {
       "pull_request": "dangerfile.ts"
-      // "pull_request.review_requested": "org/addReviewer.ts"
     }
   }
 }
