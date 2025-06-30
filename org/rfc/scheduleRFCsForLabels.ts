@@ -25,8 +25,8 @@ export default async (issues: Issues) => {
     ],
   })
 
-  const rfc = issue.labels.find(l => l.name === "RFC")
-  if (rfc) {
+  const rfc = issue.labels.find((l) => l.name === "RFC")
+  if (rfc && issue.state === "open") {
     console.log("Triggering slack notifications")
 
     await peril.runTask("slack-dev-channel", "in 5 minutes", slackify("🎉: A new RFC has been published."))

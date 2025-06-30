@@ -33,7 +33,7 @@ it("ignores issues which aren't RFCs", async () => {
   expect(danger.github.utils.createOrAddLabel).not.toBeCalled()
 })
 
-it("Triggers tasks when RFC is in the title", async () => {
+it("Triggers tasks when RFC is in the title and the issue is open", async () => {
   const issues: any = {
     repository: {
       owner: {
@@ -62,6 +62,32 @@ it("Triggers tasks when RFC is in the title", async () => {
   })
 })
 
+it("does not trigger tasks when RFC is in the title and the issue is closed", async () => {
+  const issues: any = {
+    repository: {
+      owner: {
+        login: "org",
+      },
+      name: "repo",
+    },
+    issue: {
+      title: "[RFC] Let's make a change",
+      html_url: "123",
+      number: 123,
+      state: "closed",
+      user: {
+        login: "orta",
+        avatar_url: "https://123.com",
+      },
+    },
+  }
+
+  await addRFCLabel(issues)
+
+  expect(peril.runTask).not.toBeCalled()
+  expect(danger.github.utils.createOrAddLabel).not.toBeCalled()
+})
+
 it("Triggers tasks when RFC is in the labels", async () => {
   const issues: any = {
     repository: {
@@ -73,6 +99,7 @@ it("Triggers tasks when RFC is in the labels", async () => {
     issue: {
       title: "[RFC] Let's make a change",
       html_url: "123",
+      state: "open",
       number: 123,
       labels: [{ name: "RFC" }],
       user: {
