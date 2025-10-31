@@ -221,32 +221,32 @@ export const deploySummary = async () => {
 
 // Enforce semantic commit formatting in pr titles
 // https://github.com/artsy/README/issues/327
-// export const rfc327 = () => {
-//   const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
+export const rfc327 = () => {
+  const semanticFormat = /^(fix|feat|build|chore|ci|docs|style|refactor|perf|test|revert)(?:\(.+\))?!?:.+$/
 
-//   const wipFormat = /^[\[\(]?(wip|do not merge|draft)[\]\)]?.*$/i
+  const wipFormat = /^[\[\(]?(wip|do not merge|draft)[\]\)]?.*$/i
 
-//   const pr = danger.github.pr
-//   const repoName = pr.base.repo.name
+  const pr = danger.github.pr
+  const repoName = pr.base.repo.name
 
-//   const EXCLUDED_REPOS = ["example-excluded-repo"]
+  const EXCLUDED_REPOS = ["example-excluded-repo"]
 
-//   if (EXCLUDED_REPOS.includes(repoName)) {
-//     console.log("This repo is opting out of conventional commits for time being.")
-//     return
-//   }
+  if (EXCLUDED_REPOS.includes(repoName)) {
+    console.log("This repo is opting out of conventional commits for time being.")
+    return
+  }
 
-//   if (wipFormat.test(pr.title)) {
-//     console.log("This PR is a WIP, so skipping the check.")
-//     return
-//   }
+  if (wipFormat.test(pr.title)) {
+    console.log("This PR is a WIP, so skipping the check.")
+    return
+  }
 
-//   if (!semanticFormat.test(pr.title) && pr.title !== "Deploy") {
-//     fail(
-//       "Hi there! :wave:\n\nWe use conventional commit formatting which has not been detected in your PRs title.\n\nRefer to README#327 and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
-//     )
-//   }
-// }
+  if (!semanticFormat.test(pr.title) && pr.title !== "Deploy") {
+    fail(
+      "Hi there! :wave:\n\nWe use conventional commit formatting which has not been detected in your PRs title.\n\nRefer to README#327 and [Conventional Commits](https://www.conventionalcommits.org) for PR/commit formatting guidelines."
+    )
+  }
+}
 
 // The default run
 export default async () => {
