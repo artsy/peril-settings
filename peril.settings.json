@@ -7,7 +7,6 @@
   "rules": {
     // Jira integration
     "pull_request": ["org/allPRs.ts", "org/jira/pr.ts", "org/ossPRsForbidForks.ts"],
-    "pull_request.opened": "org/addVersionLabel.ts",
     "pull_request.closed": ["org/jira/pr.ts"],
     // The RFC process
     "issues": "org/rfc/addRFCToNewIssues.ts",
