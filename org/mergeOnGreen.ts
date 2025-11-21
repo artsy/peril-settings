@@ -6,6 +6,13 @@ export const rfc10 = async (status: Status) => {
 
   const { labelMap } = await import("./markAsMergeOnGreen")
 
+  const prName = danger.github.pr.base.repo.name
+
+  if (prName.endsWith("quantum")) {
+    console.log("Ignoring repo.")
+    return
+  }
+
   if (status.state !== "success") {
     return console.log(
       `Not a successful state (note that you can define state in the settings.json) - got ${status.state}`
