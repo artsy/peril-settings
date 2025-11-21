@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/danger/peril/master/peril-settings-json.schema",
   "settings": {
-    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai"],
+    "ignored_repos": ["artsy/looker", "artsy/clouds", "artsy/design", "artsy/hokusai", "artsy/quantum"],
     "disable_github_check": true
   },
   "rules": {
