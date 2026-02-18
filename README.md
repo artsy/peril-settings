@@ -1,3 +1,6 @@
+## NOTICE OF RETIREMENT
+Artsy's Peril instance was retired on February 18th, 2026.
+
 ## Artsy Peril Settings
 
 - **State**: production
